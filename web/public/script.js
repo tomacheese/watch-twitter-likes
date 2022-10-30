@@ -175,12 +175,12 @@ new Vue({
       return `${(image.height / image.width) * 240}px`
     },
     open(item) {
-      this.openTwitterTweet(item.tweet.user.screenName, item.tweet.tweetId)
+      this.openTwitterTweet(item.tweet.tweetId)
     },
-    openTwitterTweet(screenName, tweetId) {
+    openTwitterTweet(tweetId) {
       return this.openUrlScheme(
         `twitter://status?id=${tweetId}`,
-        `https://twitter.com/${screenName}/status/${tweetId}`,
+        `https://twitter.com/intent/like?tweet_id=${tweetId}`,
         1000,
       )
     },
