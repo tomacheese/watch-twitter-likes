@@ -145,12 +145,26 @@ new Vue({
   vuetify: new Vuetify(),
   data: {
     items: [],
+    page: 1,
   },
   mounted() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       this.$vuetify.theme.dark = true
     }
     this.fetch()
+  },
+  watch: {
+    page() {
+      setTimeout(() => {
+        this.$refs['magic-grid'].update()
+        window.scroll({ top: 0, behavior: 'smooth' })
+      }, 100)
+    },
+  },
+  computed: {
+    getItems() {
+      return this.items.slice((this.page - 1) * 30, this.page * 30)
+    },
   },
   methods: {
     fetch() {

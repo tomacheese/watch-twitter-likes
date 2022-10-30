@@ -13,8 +13,9 @@
     <main id="app">
       <v-app>
         <v-main>
+          <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3"></v-pagination>
           <magic-grid ref="magic-grid" :animate="true" :use-min="true" :gap="10">
-            <v-card v-for="item of items" :key="item.id" @click="open(item)">
+            <v-card v-for="item of getItems" :key="item.id" @click="open(item)">
               <v-img width="240px" :height="calcHeight(item)" :src="getImageUrl(item)"
                 class="white--text align-end text-right" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)">
                 <v-card-subtitle>by \{{ getTargetName(item) }} likes</v-card-subtitle>
@@ -26,6 +27,7 @@
               </v-img>
             </v-card>
           </magic-grid>
+          <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3"></v-pagination>
       </v-app>
     </main>
 
