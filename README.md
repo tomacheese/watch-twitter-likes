@@ -1,3 +1,3 @@
-# watch-hiratake-likes
+# watch-twitter-likes
 
-👀 Watch [Hirotaisou2012](https://twitter.com/Hirotaisou2012) etc likes and notify to discord.
+👀 Watch Twitter user likes and notify to discord.
