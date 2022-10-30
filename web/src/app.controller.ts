@@ -2,10 +2,14 @@ import { Body, Controller, Get, Headers, Post, Res } from '@nestjs/common'
 import { Response } from 'express'
 import { AppService } from './app.service'
 import { getConfig } from './config'
+import { IsString } from 'class-validator'
 
 export class AddTargetDTO {
+  @IsString()
   name: string
+  @IsString()
   userId: string
+  @IsString()
   threadId: string
 }
 
