@@ -15,6 +15,7 @@ export class AppService {
     target.name = name
     target.userId = userId
     target.threadId = threadId
-    return await target.save()
+    await target.save()
+    return { success: true }
   }
 }
