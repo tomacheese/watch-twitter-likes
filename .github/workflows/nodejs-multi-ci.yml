@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [16]
-        directory: [cralwer, web]
+        directory: [crawler, web]
 
     steps:
       - name: 🛎 Checkout

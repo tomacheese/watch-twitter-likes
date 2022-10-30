@@ -32,7 +32,6 @@ jobs:
         target:
           - '{ imageName: "ghcr.io/tomacheese/watch-twitter-likes", directory: "crawler" }'
           - '{ imageName: "ghcr.io/tomacheese/watch-twitter-likes-web", directory: "web" }'
-          - '{ imageName: "ghcr.io/tomacheese/watch-twitter-likes-api", directory: "api" }'
 
     steps:
       - name: Check out the repo
