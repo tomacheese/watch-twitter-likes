@@ -155,9 +155,24 @@ new Vue({
   methods: {
     fetch() {
       axios.get('/images').then((res) => {
-        this.items = res.data.sort(
+        const results = res.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         )
+        for (const result of results) {
+          for (const image of result.images.filter(
+            (image) => image.size === 'large',
+          )) {
+            this.items.push({
+              rowId: result.rowId,
+              createdAt: result.createdAt,
+              tweet: result.tweet,
+              images: result.images.filter(
+                (img) => img.imageId === image.imageId,
+              ),
+              target: result.target,
+            })
+          }
+        }
       })
     },
     getTargetName(item) {
