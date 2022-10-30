@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true,
+    "incremental": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "newLine": "LF",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "public"]
+}

@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "web",
+      "path": "web"
+    },
+    {
+      "name": "crawler",
+      "path": "crawler"
+    },
+    {
+      "name": "watch-twitter-likes",
+      "path": "."
+    }
+  ],
+  "settings": {}
+}

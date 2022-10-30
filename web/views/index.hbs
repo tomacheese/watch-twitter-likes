@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>watch-twitter-likes</title>
+  </head>
+  <body>
+    <main id="app">
+      <v-app>
+        <v-main>
+          <magic-grid ref="magic-grid" :animate="true" :use-min="true" :gap="10">
+            <v-card v-for="item of items" :key="item.id" @click="open(item)">
+              <v-img width="240px" :height="calcHeight(item)" :src="getImageUrl(item)"
+                class="white--text align-end text-right" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)">
+                <v-card-subtitle>by \{{ getTargetName(item) }} likes</v-card-subtitle>
+                <template #placeholder>
+                  <v-row class="fill-height ma-0" align="center" justify="center">
+                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
+            </v-card>
+          </magic-grid>
+      </v-app>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
