@@ -155,7 +155,9 @@ new Vue({
   methods: {
     fetch() {
       axios.get('/images').then((res) => {
-        this.items = res.data
+        this.items = res.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        )
       })
     },
     getTargetName(item) {
