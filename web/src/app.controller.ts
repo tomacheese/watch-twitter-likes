@@ -19,7 +19,9 @@ export class AppController {
 
   @Get()
   root(@Res() res: Response) {
-    return res.render('index')
+    return res.render('index', {
+      version: process.env.npm_package_version,
+    })
   }
 
   @Get('images')
