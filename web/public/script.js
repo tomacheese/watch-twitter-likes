@@ -1,6 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('sw.js')
+    .then((registration) => {
+      console.log('Service worker registered: ', registration)
+    })
+    .catch((err) => {
+      console.log('Service worker registration failed: ', err)
+    })
+}
+
 Vue.component('magic-grid', {
   name: 'MagicGrid',
   props: {
@@ -193,6 +204,7 @@ new Vue({
       return item.target.name
     },
     getImageUrl(item) {
+      console.log('getImageUrl')
       const imageId = item.images.find(
         (image) => image.size === 'small',
       ).imageId
