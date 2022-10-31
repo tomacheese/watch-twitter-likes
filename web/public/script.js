@@ -156,6 +156,8 @@ new Vue({
   vuetify: new Vuetify(),
   data: {
     items: [],
+    selected: [],
+    targets: [],
     page: 1,
   },
   mounted() {
@@ -171,10 +173,19 @@ new Vue({
         window.scroll({ top: 0, behavior: 'smooth' })
       }, 100)
     },
+    selected() {
+      setTimeout(() => {
+        this.$refs['magic-grid'].update()
+      }, 100)
+    },
   },
   computed: {
     getItems() {
-      return this.items.slice((this.page - 1) * 30, this.page * 30)
+      return this.items
+        .filter((item) =>
+          this.selected.some((s) => item.target.userId === s.userId),
+        )
+        .slice((this.page - 1) * 30, this.page * 30)
     },
   },
   methods: {
@@ -183,6 +194,7 @@ new Vue({
         const results = res.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         )
+        this.targets = []
         for (const result of results) {
           for (const image of result.images.filter(
             (image) => image.size === 'large',
@@ -196,8 +208,12 @@ new Vue({
               ),
               target: result.target,
             })
+            if (!this.targets.some((t) => t.name === result.target.name)) {
+              this.targets.push(result.target)
+            }
           }
         }
+        this.selected = this.targets
       })
     },
     getTargetName(item) {
