@@ -22,6 +22,16 @@
     <main id="app">
       <v-app>
         <v-main>
+          <v-container>
+            <v-select
+              v-model="selected"
+              :items="targets"
+              item-text="name"
+              label="Select targets"
+              return-object
+              multiple
+            ></v-select>
+          </v-container>
           <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3"></v-pagination>
           <magic-grid ref="magic-grid" :animate="true" :use-min="true" :gap="10">
             <v-card v-for="item of getItems" :key="item.id" @click="open(item)">
