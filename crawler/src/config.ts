@@ -1,16 +1,22 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
 
+export interface TwitterAccount {
+  name: string
+  emoji: string
+  discordUserId: string
+  accessToken: string
+  accessSecret: string
+}
+
 export interface Config {
   discord: {
     token: string
-    ownerId: string
   }
   twitter: {
     consumerKey: string
     consumerSecret: string
-    accessToken: string
-    accessSecret: string
+    accounts: TwitterAccount[]
   }
   db: {
     type: 'mysql'
@@ -20,6 +26,7 @@ export interface Config {
     password: string
     database: string
   }
+  auth?: string
 }
 
 export function getConfig(): Config {
