@@ -1,20 +1,14 @@
-import axios from 'axios'
 import { Client } from 'discord.js'
 import { TwitterApi } from 'twitter-api-v2'
 import Crawler from './crawler'
 import { DBTarget } from './entities/targets'
 import { AppDataSource } from './mysql'
 import { Config, getConfig } from './config'
+import { actionFavorite } from './messageAction'
 
 const config = getConfig()
 const client = new Client({
   intents: ['Guilds', 'GuildMembers', 'GuildMessages'],
-})
-const twitterClient = new TwitterApi({
-  appKey: config.twitter.consumerKey,
-  appSecret: config.twitter.consumerSecret,
-  accessToken: config.twitter.accessToken,
-  accessSecret: config.twitter.accessSecret,
 })
 
 export function getClient() {
@@ -48,58 +42,30 @@ client.on('ready', async () => {
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isButton()) return
   console.log('interactionCreate@Button: ' + interaction.id)
-  if (interaction.customId.startsWith('favorite-')) {
-    if (interaction.user.id !== config.discord.ownerId) {
-      await interaction.reply({
-        content:
-          'このボタンはbook000でふぁぼする用のボタンです。リンクボタンを利用してください。',
-        ephemeral: true,
-      })
-      return
-    }
-    const tweetId = interaction.customId.split('-')[1]
-    await twitterClient.v1
-      .post(`favorites/create.json`, {
-        id: tweetId,
-      })
-      .then(() => {
-        interaction.reply({
-          content: ':heart: -> :white_check_mark:',
-          ephemeral: true,
-        })
-      })
-      .catch((e) => {
-        interaction.reply({
-          content: `:heart: -> :x: ${e.message}`,
-          ephemeral: true,
-        })
-      })
+  const customIds = interaction.customId.split('-') // ACTION-ACCOUNTNAME-TWEETID
+  if (customIds.length !== 3) return
+  const action = customIds[0]
+  const accountName = customIds[1]
+  const tweetId = customIds[2]
+
+  const account = config.twitter.accounts.find((a) => a.name === accountName)
+  if (!account) {
+    console.log(`Account not found: ${accountName}`)
+    return
   }
-  if (interaction.customId.startsWith('priv-fav-')) {
-    if (interaction.user.id !== config.discord.ownerId) {
-      await interaction.reply({
-        content: 'リンクボタンを利用してください。',
-        ephemeral: true,
-      })
-      return
-    }
-    const tweetId = interaction.customId.split('-')[2]
-    await axios
-      .post(`http://host.docker.internal:7003/favorite/${tweetId}`)
-      .then(() => {
-        interaction.reply({
-          content: ':comet: -> :white_check_mark:',
-          ephemeral: true,
-        })
-      })
-      .catch((e) => {
-        interaction.reply({
-          content: `:comet: -> :x: ${e.message} ${
-            e.response !== undefined ? e.response.data.detail : ''
-          }`,
-          ephemeral: true,
-        })
-      })
+
+  if (interaction.user.id !== account.discordUserId) {
+    await interaction.reply({
+      content:
+        'あなたはこのボタンを利用することができません。他のボタンをお試しください。',
+      ephemeral: true,
+    })
+    return
+  }
+
+  switch (action) {
+    case 'favorite':
+      await actionFavorite(interaction, account, tweetId)
   }
 })
 

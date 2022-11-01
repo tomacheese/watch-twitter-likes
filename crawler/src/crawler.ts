@@ -9,6 +9,7 @@ import {
   ThreadChannel,
 } from 'discord.js'
 import { MediaSizesV1, TweetV1, TwitterApi } from 'twitter-api-v2'
+import { getConfig } from './config'
 import { DBItem } from './entities/item'
 import { DBTarget } from './entities/targets'
 import { getDBImage, getDBTweet, getDBUser } from './mysql'
@@ -134,15 +135,18 @@ export default class Crawler {
 
     console.log(tweetUrl)
 
+    const config = getConfig()
+    const components = config.twitter.accounts.map((account) => {
+      return new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId(`favorite-${account.name}-${tweet.id_str}`)
+          .setEmoji(account.emoji)
+          .setStyle(ButtonStyle.Secondary)
+      )
+    })
+
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      new ButtonBuilder()
-        .setCustomId('favorite-' + tweet.id_str)
-        .setEmoji('❤')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('priv-fav-' + tweet.id_str)
-        .setEmoji('☄️')
-        .setStyle(ButtonStyle.Secondary),
+      ...components,
       new ButtonBuilder()
         .setEmoji('🔁')
         .setURL(`https://twitter.com/intent/retweet?tweet_id=${tweet.id_str}`)
