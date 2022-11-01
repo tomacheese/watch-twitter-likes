@@ -26,6 +26,7 @@ export interface Config {
     password: string
     database: string
   }
+  auth?: string
 }
 
 export function getConfig(): Config {

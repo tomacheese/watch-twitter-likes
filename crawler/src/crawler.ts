@@ -137,12 +137,10 @@ export default class Crawler {
 
     const config = getConfig()
     const components = config.twitter.accounts.map((account) => {
-      return new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-          .setCustomId(`favorite-${account.name}-${tweet.id_str}`)
-          .setEmoji(account.emoji)
-          .setStyle(ButtonStyle.Secondary)
-      )
+      return new ButtonBuilder()
+        .setCustomId(`favorite-${account.name}-${tweet.id_str}`)
+        .setEmoji(account.emoji)
+        .setStyle(ButtonStyle.Secondary)
     })
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
