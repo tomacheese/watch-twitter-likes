@@ -56,7 +56,10 @@ jobs:
         working-directory: ${{ fromJson(matrix.target).directory }}
         run: |
           sed -r -i "1,/version/s/\"version\": \".+\"/\"version\": \"${{ github.event.release.tag_name }}\"/" package.json
-          sed -r -i "s/\{\{VERSION\}\}/${{ github.event.release.tag_name }}/" web/public/sw.js
+
+          if [ -f public/sw.js ]; then
+            sed -r -i "s/\{\{VERSION\}\}/${{ github.event.release.tag_name }}/" public/sw.js
+          fi
 
           git diff
 
