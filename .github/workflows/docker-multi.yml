@@ -56,6 +56,8 @@ jobs:
         working-directory: ${{ fromJson(matrix.target).directory }}
         run: |
           sed -r -i "1,/version/s/\"version\": \".+\"/\"version\": \"${{ github.event.release.tag_name }}\"/" package.json
+          sed -r -i "s/\{\{VERSION\}\}/${{ github.event.release.tag_name }}/" web/public/sw.js
+
           git diff
 
       - name: Extract metadata (tags, labels) for Docker

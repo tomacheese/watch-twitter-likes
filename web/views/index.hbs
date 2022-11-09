@@ -47,12 +47,13 @@
             </v-card>
           </magic-grid>
           <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3"></v-pagination>
+        </v-main>
       </v-app>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="script.js?{{version}}"></script>
+    <script src="script.js"></script>
   </body>
 </html>
