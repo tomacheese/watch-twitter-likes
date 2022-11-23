@@ -6,7 +6,7 @@
 const CACHE_VERSION = '{{VERSION}}'
 const CACHE_NAME = `${registration.scope}!${CACHE_VERSION}`
 
-const urlsToCache = ['.', 'script.js']
+const urlsToCache = ['/', 'script.js', '/favicons/']
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
