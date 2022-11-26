@@ -16,21 +16,28 @@ export async function actionFavorite(
     accessToken: account.accessToken,
     accessSecret: account.accessSecret,
   })
-  const data = await twitterClient.v1
-    .post(`favorites/create.json`, {
-      id: tweetId,
+  try {
+    const data = await twitterClient.v1
+      .post(`favorites/create.json`, {
+        id: tweetId,
+      })
+      .then(() => {
+        return {
+          content: `${account.emoji} -> :white_check_mark:`,
+          ephemeral: true,
+        }
+      })
+      .catch((e) => {
+        return {
+          content: `${account.emoji} -> :x: ${e.message}`,
+          ephemeral: true,
+        }
+      })
+    await interaction.reply(data)
+  } catch (e) {
+    await interaction.reply({
+      content: `${account.emoji} -> :x: ${(e as Error).message}`,
+      ephemeral: true,
     })
-    .then(() => {
-      return {
-        content: `${account.emoji} -> :white_check_mark:`,
-        ephemeral: true,
-      }
-    })
-    .catch((e) => {
-      return {
-        content: `${account.emoji} -> :x: ${e.message}`,
-        ephemeral: true,
-      }
-    })
-  await interaction.reply(data)
+  }
 }
