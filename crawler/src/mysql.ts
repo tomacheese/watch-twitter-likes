@@ -7,6 +7,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { getConfig } from './config'
 import { DataSource } from 'typeorm'
 import { MediaEntityV1, MediaSizesV1, TweetV1 } from 'twitter-api-v2'
+import { DBMute } from './entities/mutes'
 
 const config = getConfig()
 export const AppDataSource = new DataSource({
@@ -19,7 +20,7 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: process.env.NODE_ENV === 'development',
   namingStrategy: new SnakeNamingStrategy(),
-  entities: [DBImage, DBItem, DBTarget, DBTweet, DBUser],
+  entities: [DBImage, DBItem, DBTarget, DBTweet, DBUser, DBMute],
   subscribers: [],
   migrations: [],
   timezone: '+09:00',
