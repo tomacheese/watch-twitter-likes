@@ -11,6 +11,7 @@ import {
 import { MediaSizesV1, TweetV1, TwitterApi } from 'twitter-api-v2'
 import { getConfig } from './config'
 import { DBItem } from './entities/item'
+import { DBMute } from './entities/mutes'
 import { DBTarget } from './entities/targets'
 import { getDBImage, getDBTweet, getDBUser } from './mysql'
 
@@ -73,6 +74,10 @@ export default class Crawler {
         })) !== 0
       )
     }
+    const isMuted = async (tweet: TweetV1) => {
+      const rows = await DBMute.find()
+      return rows.some((row) => tweet.text.includes(row.text))
+    }
 
     for (const tweet of tweets) {
       if (!tweet.entities.media) {
@@ -87,6 +92,9 @@ export default class Crawler {
       }
       if (await isNotified(tweet)) {
         continue // 既に通知済み
+      }
+      if (await isMuted(tweet)) {
+        continue // ミュートされている
       }
 
       // DBにアイテム挿入
