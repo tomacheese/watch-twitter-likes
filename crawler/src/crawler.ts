@@ -79,6 +79,9 @@ export default class Crawler {
       return rows.some((row) => tweet.text.includes(row.text))
     }
 
+    let countInserted = 0
+    let countNotified = 0
+    let countMuted = 0
     for (const tweet of tweets) {
       if (!tweet.entities.media) {
         continue // メディアがない
@@ -91,18 +94,27 @@ export default class Crawler {
         continue // すべてのメディアが写真でない
       }
       if (await isNotified(tweet)) {
+        countNotified++
         continue // 既に通知済み
       }
       if (await isMuted(tweet)) {
+        countMuted++
         continue // ミュートされている
       }
 
       // DBにアイテム挿入
       await this.addNewItem(this.target, tweet)
+      countInserted++
 
       // Discordにメッセージ送信
       if (!isFirst) await this.sendMessage(tweet)
     }
+
+    console.log('Crawled: ' + this.target.name)
+    console.log('| Tweets: ' + tweets.length)
+    console.log('| Inserted: ' + countInserted)
+    console.log('| Notified: ' + countNotified)
+    console.log('| Muted: ' + countMuted)
   }
 
   /** DBにアイテム挿入 */
