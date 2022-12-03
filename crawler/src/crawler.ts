@@ -76,7 +76,9 @@ export default class Crawler {
     }
     const isMuted = async (tweet: TweetV1) => {
       const rows = await DBMute.find()
-      return rows.some((row) => tweet.text.includes(row.text))
+      return rows.some((row) =>
+        (tweet.full_text ?? tweet.text).includes(row.text)
+      )
     }
 
     let countInserted = 0
