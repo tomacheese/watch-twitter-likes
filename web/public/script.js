@@ -158,6 +158,7 @@ new Vue({
     items: [],
     selected: [],
     targets: [],
+    isAnd: false,
     page: 1,
   },
   mounted() {
@@ -178,14 +179,43 @@ new Vue({
         this.$refs['magic-grid'].update()
       }, 100)
     },
+    isAnd() {
+      setTimeout(() => {
+        this.$refs['magic-grid'].update()
+      }, 100)
+    },
   },
   computed: {
     getItems() {
-      return this.items
-        .filter((item) =>
-          this.selected.some((s) => item.target.userId === s.userId),
+      if (this.isAnd) {
+        let andLikes = []
+        for (const select of this.selected) {
+          const userId = select.userId
+          const likes = this.items.filter(
+            (item) => item.target.userId === userId,
+          )
+          if (andLikes.length === 0) {
+            andLikes.push(...likes)
+          } else {
+            andLikes = andLikes.filter((item) =>
+              likes.some((l) => l.tweet.tweetId === item.tweet.tweetId),
+            )
+          }
+        }
+        return andLikes
+      } else {
+        return this.items.filter((item) =>
+          this.isAnd
+            ? this.selected.every((s) => item.target.userId === s.userId)
+            : this.selected.some((s) => item.target.userId === s.userId),
         )
-        .slice((this.page - 1) * 30, this.page * 30)
+      }
+    },
+    getPageItem() {
+      return this.getItems.slice((this.page - 1) * 30, this.page * 30)
+    },
+    getSearchType() {
+      return this.isAnd ? 'AND 検索' : 'OR 検索'
     },
   },
   methods: {
@@ -220,7 +250,6 @@ new Vue({
       return item.target.name
     },
     getImageUrl(item) {
-      console.log('getImageUrl')
       const imageId = item.images.find(
         (image) => image.size === 'small',
       ).imageId
