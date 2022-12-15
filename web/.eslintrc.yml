@@ -1,0 +1,16 @@
+root: true
+env:
+  browser: true
+  es2021: true
+  node: true
+extends:
+  - "@nuxtjs/eslint-config"
+  - eslint:recommended
+  - plugin:vue/vue3-recommended
+  - plugin:nuxt/recommended
+ignorePatterns:
+  - .nuxt/
+  - .output/
+  - dist/
+  - public/
+  - "**/*.min.js"
