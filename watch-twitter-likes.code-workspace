@@ -13,5 +13,20 @@
       "path": "."
     }
   ],
-  "settings": {}
+  "settings": {
+    "[vue]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll": true
+      },
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll": true
+      },
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
 }
