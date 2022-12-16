@@ -12,7 +12,7 @@ COPY yarn.lock yarn.lock
 WORKDIR /build
 
 # node-gyp requirements
-RUN apk add --no-cache python make g++ avahi-dev && \
+RUN apk add --no-cache python3 make g++ avahi-dev && \
   echo network-timeout 600000 > .yarnrc && \
   yarn install --frozen-lockfile --non-interactive --production
 
