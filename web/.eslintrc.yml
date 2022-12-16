@@ -4,7 +4,7 @@ env:
   es2021: true
   node: true
 extends:
-  - "@nuxtjs/eslint-config"
+  - '@nuxtjs/eslint-config-typescript'
   - eslint:recommended
   - plugin:vue/vue3-recommended
   - plugin:nuxt/recommended
@@ -13,4 +13,14 @@ ignorePatterns:
   - .output/
   - dist/
   - public/
-  - "**/*.min.js"
+  - '**/*.min.js'
+rules:
+  no-console: 'off'
+  space-before-function-paren:
+    - error
+    - anonymous: always
+      named: never
+      asyncArrow: always
+  arrow-parens:
+    - error
+    - always

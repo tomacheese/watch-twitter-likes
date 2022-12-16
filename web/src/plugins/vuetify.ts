@@ -5,6 +5,7 @@ import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
+    ssr: false,
     components,
     directives
   })
