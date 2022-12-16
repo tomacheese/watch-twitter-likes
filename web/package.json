@@ -1,4 +1,8 @@
 {
+  "name": "watch-twitter-likes-web",
+  "version": "2.0.0",
+  "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
+  "author": "Tomachi",
   "private": true,
   "scripts": {
     "build": "nuxt build",
