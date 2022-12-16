@@ -1,14 +1,14 @@
 {
   "name": "watch-twitter-likes",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/index.js",
   "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
   "author": "Tomachi",
   "private": true,
   "scripts": {
-    "build": "ts-node ./src/main.ts",
-    "dev": "ts-node-dev ./src/main.ts",
+    "build": "ts-node -r tsconfig-paths/register ./src/main.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register ./src/main.ts",
     "start": "node ./dist/main.js",
     "compile": "tsc -p .",
     "compile:test": "tsc -p . --noEmit",
@@ -34,14 +34,18 @@
     "eslint-plugin-n": "15.6.0",
     "eslint-plugin-promise": "6.1.1",
     "js-yaml": "4.1.0",
-    "mysql2": "^2.3.3",
-    "prettier": "2.8.1",
+    "mysql2": "2.3.3",
+    "prettier": "^2.8.1",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
     "twitter-api-v2": "1.12.10",
-    "typeorm": "^0.3.10",
-    "typeorm-naming-strategies": "^4.1.0",
+    "typeorm": "0.3.10",
+    "typeorm-naming-strategies": "4.1.0",
     "typescript": "4.9.4",
     "yarn-run-all": "3.1.1"
+  },
+  "dependencies": {
+    "@fastify/cors": "8.2.0",
+    "fastify": "4.10.2"
   }
 }

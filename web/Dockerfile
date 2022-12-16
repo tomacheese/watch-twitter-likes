@@ -1,19 +1,35 @@
-FROM node:19
+FROM node:16-alpine as builder
 
-RUN apt-get update && \
-  apt-get upgrade -y && \
-  apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+# ----- common start ----- #
 
-WORKDIR /app
+WORKDIR /build
 
-COPY package.json /app/
-COPY yarn.lock /app/
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+
+# -- install dependencies
+
+WORKDIR /build
 
 RUN echo network-timeout 600000 > .yarnrc && \
-  yarn install --frozen-lockfile && \
-  yarn cache clean
+  yarn install --frozen-lockfile --non-interactive --production
 
-COPY ./ /app
+# ----- common end ----- #
 
-ENTRYPOINT [ "yarn", "start" ]
+# -- build
+WORKDIR /build
+
+COPY nuxt.config.ts nuxt.config.ts
+COPY src/ src/
+
+RUN yarn generate
+
+# ----- final image ----- #
+FROM nginx:1.23.3-alpine
+
+COPY nginx-template.conf /etc/nginx/templates/default.conf.template
+
+ENV NGINX_HOST=localhost
+ENV NGINX_PORT=80
+
+COPY --from=builder /build/dist /usr/share/nginx/html

@@ -1,0 +1,26 @@
+root: true
+env:
+  browser: true
+  es2021: true
+  node: true
+extends:
+  - '@nuxtjs/eslint-config-typescript'
+  - eslint:recommended
+  - plugin:vue/vue3-recommended
+  - plugin:nuxt/recommended
+ignorePatterns:
+  - .nuxt/
+  - .output/
+  - dist/
+  - public/
+  - '**/*.min.js'
+rules:
+  no-console: 'off'
+  space-before-function-paren:
+    - error
+    - anonymous: always
+      named: never
+      asyncArrow: always
+  arrow-parens:
+    - error
+    - always

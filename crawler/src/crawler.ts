@@ -17,13 +17,17 @@ import { getDBImage, getDBTweet, getDBUser } from './mysql'
 
 export default class Crawler {
   private client: TwitterApi
-  private channel: TextChannel | AnyThreadChannel
+  private channel: TextChannel | AnyThreadChannel | null
   private target: DBTarget
 
   constructor(twitterApi: TwitterApi, discordClient: Client, target: DBTarget) {
     this.client = twitterApi
     this.target = target
 
+    if (target.threadId === null) {
+      this.channel = null
+      return
+    }
     const channel = discordClient.channels.resolve(target.threadId.toString())
     if (!channel) {
       throw new Error('Channel not found.')
@@ -149,6 +153,9 @@ export default class Crawler {
 
   /** Discordにメッセージ送信 */
   private async sendMessage(tweet: TweetV1) {
+    if (!this.channel) {
+      return
+    }
     const tweetUrl =
       'https://twitter.com/' +
       tweet.user.screen_name +

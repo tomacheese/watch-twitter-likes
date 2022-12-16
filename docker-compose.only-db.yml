@@ -1,38 +1,6 @@
 version: "3.8"
 
 services:
-  crawler:
-    build: ./crawler
-    volumes:
-      - type: bind
-        source: ./data/
-        target: /data/
-    environment:
-      CONFIG_PATH: /data/config.yml
-      TZ: Asia/Tokyo
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    init: true
-    restart: always
-
-  web:
-    build: ./web
-    volumes:
-      - type: bind
-        source: ./data/
-        target: /data/
-    ports:
-      - 8080:80
-    environment:
-      CONFIG_PATH: /data/config.yml
-      TZ: Asia/Tokyo
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    init: true
-    restart: always
-
   mariadb:
     image: mariadb
     restart: always
@@ -47,8 +15,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootPassword"]
       timeout: 20s
-      interval: 5s
-      retries: 30
+      retries: 10
     volumes:
       - "./db-data:/var/lib/mysql"
 
@@ -65,6 +32,6 @@ services:
       mariadb:
         condition: service_healthy
     ports:
-      - 8000:80
+      - 7000:80
     volumes:
       - /sessions
