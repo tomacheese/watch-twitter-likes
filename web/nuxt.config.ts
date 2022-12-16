@@ -20,12 +20,12 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'apple-mobile-web-app-title', content: baseName },
         { name: 'application-name', content: baseName },
-        { name: 'msapplication-TileColor', content: '#ffb41d' },
+        { name: 'msapplication-TileColor', content: '#1d9bf0' },
         {
           name: 'msapplication-config',
           content: baseUrl + '/favicons/browserconfig.xml'
         },
-        { name: 'theme-color', content: '#ffb41d' },
+        { name: 'theme-color', content: '#1d9bf0' },
         { key: 'description', name: 'description', content: baseDescription },
         { key: 'og:site_name', property: 'og:site_name', content: baseName },
         { key: 'og:type', property: 'og:type', content: 'article' },
@@ -81,10 +81,6 @@ export default defineNuxtConfig({
           href: baseUrl + '/favicons/favicon-16x16.png'
         },
         {
-          rel: 'manifest',
-          href: baseUrl + '/favicons/site.webmanifest'
-        },
-        {
           rel: 'mask-icon',
           href: baseUrl + '/favicons/safari-pinned-tab.svg',
           color: '#5bbad5'
@@ -128,5 +124,30 @@ export default defineNuxtConfig({
   },
 
   // https://codybontecou.com/how-to-use-vuetify-with-nuxt-3.html
-  css: ['vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.min.css']
+  css: ['vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.min.css'],
+
+  modules: [
+    // https://github.com/kevinmarrec/nuxt-pwa-module
+    '@kevinmarrec/nuxt-pwa'
+  ],
+
+  pwa: {
+    manifest: {
+      name: baseName,
+      short_name: baseName,
+      description: baseDescription,
+      lang: 'ja',
+      theme_color: '#1d9bf0',
+      background_color: '#1d9bf0',
+      display: 'standalone',
+      start_url: '/'
+    },
+    meta: {
+      name: baseName,
+      description: baseDescription,
+      theme_color: '#1d9bf0',
+      lang: 'ja',
+      mobileAppIOS: true
+    }
+  }
 })

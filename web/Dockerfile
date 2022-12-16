@@ -22,8 +22,7 @@ WORKDIR /build
 COPY nuxt.config.ts nuxt.config.ts
 COPY src/ src/
 
-RUN yarn build && \
-  yarn generate
+RUN yarn generate
 
 # ----- final image ----- #
 FROM nginx:1.23.3-alpine
