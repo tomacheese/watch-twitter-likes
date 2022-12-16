@@ -11,6 +11,10 @@ COPY yarn.lock yarn.lock
 
 WORKDIR /build
 
+# node-gyp requirements
+RUN apk add --no-cache --virtual .gyp python make g++ && \
+  apk --no-cache add avahi-dev
+
 RUN echo network-timeout 600000 > .yarnrc && \
   yarn install --frozen-lockfile --non-interactive --production
 
@@ -21,10 +25,6 @@ WORKDIR /build
 
 COPY nuxt.config.ts nuxt.config.ts
 COPY src/ src/
-
-# node-gyp requirements
-RUN apk add --no-cache --virtual .gyp python make g++ && \
-  apk --no-cache add avahi-dev
 
 RUN yarn generate
 
