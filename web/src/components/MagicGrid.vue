@@ -46,15 +46,6 @@ const gridelement = ref<HTMLElement>()
 
 // methods
 const isReady = () => {
-  console.log(
-    '[DEBUG] isReady()',
-    gridelement.value &&
-    !!items.value,
-    items.value ? items.value?.length : undefined,
-    items.value && items.value.length > 0
-      ? items.value[0].getBoundingClientRect().width
-      : undefined
-  )
   return (
     gridelement.value &&
     !!items.value &&
@@ -64,7 +55,6 @@ const isReady = () => {
 }
 
 const init = () => {
-  console.log('[DEBUG] init()', isReady(), started.value)
   if (!isReady() || started.value) {
     return
   } (gridelement.value as HTMLElement).style.position = 'relative'
@@ -79,13 +69,11 @@ const init = () => {
 }
 
 const getReady = () => {
-  console.log('[DEBUG] getReady()')
   const interval = setInterval(() => {
     const children = gridelement.value?.children
     items.value = children || null
 
     if (isReady()) {
-      console.log('[DEBUG] ready')
       clearInterval(interval)
       init()
     }
@@ -99,10 +87,6 @@ const colWidth = () => {
 }
 
 const setup = () => {
-  console.log(
-    '[DEBUG] setup::$el.getBoundingClientRect().width: ',
-    gridelement.value?.getBoundingClientRect().width
-  )
   const width = gridelement.value?.getBoundingClientRect().width
   if (!width) {
     throw new Error('MagicGrid: Wrapper element not found.')
@@ -181,8 +165,6 @@ const positionItems = () => {
 }
 
 const waitUntilReady = () => {
-  console.log('[DEBUG] waitUntilReady()', isReady())
-
   if (isReady()) {
     started.value = true
     positionItems()
@@ -200,7 +182,6 @@ onMounted(() => {
 
 // expose
 const update = () => {
-  console.log('[DEBUG] update()')
   started.value = false
   items.value = null
   waitUntilReady()
