@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM node:18 as builder
 
 # ----- common start ----- #
 
@@ -11,9 +11,7 @@ COPY yarn.lock yarn.lock
 
 WORKDIR /build
 
-# node-gyp requirements
-RUN apk add --no-cache python3 make g++ avahi-dev && \
-  echo network-timeout 600000 > .yarnrc && \
+RUN echo network-timeout 600000 > .yarnrc && \
   yarn install --frozen-lockfile --non-interactive --production
 
 # ----- common end ----- #
