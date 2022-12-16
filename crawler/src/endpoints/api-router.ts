@@ -11,11 +11,14 @@ interface ImagesQuery {
 
 export class ApiRouter extends BaseRouter {
   init(): void {
-    this.fastify.register((fastify, _, done) => {
-      fastify.get('/targets', this.routeGetTargets.bind(this))
-      fastify.get('/images', this.routeGetImages.bind(this))
-      done()
-    }, { prefix: '/api' })
+    this.fastify.register(
+      (fastify, _, done) => {
+        fastify.get('/targets', this.routeGetTargets.bind(this))
+        fastify.get('/images', this.routeGetImages.bind(this))
+        done()
+      },
+      { prefix: '/api' }
+    )
   }
 
   async routeGetTargets(
