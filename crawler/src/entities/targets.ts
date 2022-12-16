@@ -29,8 +29,9 @@ export class DBTarget extends BaseEntity {
     type: 'bigint',
     unsigned: true,
     comment: 'スレッドID',
+    nullable: true,
   })
-  threadId!: string
+  threadId!: string | null
 
   @CreateDateColumn({
     type: 'timestamp',
