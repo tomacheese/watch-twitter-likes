@@ -2,22 +2,29 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { useTheme } from 'vuetify'
 
+/**
+ * Vuetify で持っているテーマアクセス用の関数
+ */
 const vuetifyTheme = useTheme()
 
-// data
+// --- data
+/** テーマフラグ (dark = true) */
 const theme = ref(false)
 
-// computed
+// --- computed
+/** テーマに応じたアイコン */
 const themeIcon = computed(() => {
   return theme.value ? 'mdi-weather-night' : 'mdi-weather-sunny'
 })
 
-// watch
+// --- watch
+/** テーマフラグに応じて、Vuetify のテーマを切り替える */
 watch(theme, (val) => {
   vuetifyTheme.global.name.value = val ? 'dark' : 'light'
 })
 
-// mounted
+// --- onMounted
+/** ページ読み込み時に、OS のテーマに応じてテーマフラグを切り替える */
 onMounted(() => {
   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     theme.value = true

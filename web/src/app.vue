@@ -8,33 +8,44 @@ type ImagesApiResponse = Item[]
 
 const config = useRuntimeConfig()
 
-// data
+// --- data
+/** アイテム一覧 */
 const items = ref<ImagesApiResponse>([])
+/** 選択されたターゲット */
 const selected = ref<Target[]>([])
+/** すべてのターゲット */
 const targets = ref<Target[]>([])
+/** AND検索かどうか */
 const isAnd = ref(false)
+/** 現在のページ */
 const page = ref(1)
+/** ローディング中かどうか */
 const loading = ref(false)
 
-// refs
+// --- refs
+/** MagicGrid.update() アクセス用 ref */
 const magicgrid = ref()
 
-// methods
-const updateMagicGrid = () => {
+// --- methods
+/** MagicGrid.update() を遅延実行する */
+const updateMagicGrid = (): void => {
   setTimeout(() => {
     magicgrid.value?.update()
   }, 100)
 }
 
-const scrollToTop = () => {
+/** トップにスクロールする */
+const scrollToTop = (): void => {
   window.scroll({ top: 0, behavior: 'smooth' })
 }
 
-const updatedSelector = (val: Target[]) => {
+/** 選択されたターゲットを更新する */
+const updatedSelector = (val: Target[]): void => {
   selected.value = val
 }
 
-const fetchTargets = async () => {
+/** 対象一覧をAPIから取得する */
+const fetchTargets = async (): Promise<void> => {
   loading.value = true
   const response = await useFetch<TargetsApiResponse>(
     `${config.public.apiBaseURL}/targets`
@@ -51,7 +62,8 @@ const fetchTargets = async () => {
   loading.value = false
 }
 
-const fetchItems = async () => {
+/** アイテム一覧をAPIから取得する */
+const fetchItems = async (): Promise<void> => {
   loading.value = true
   const response = await useFetch<ImagesApiResponse>(
     `${config.public.apiBaseURL}/images`,
@@ -76,38 +88,44 @@ const fetchItems = async () => {
   loading.value = false
 }
 
-const open = (item: Item) => {
+/** アイテムを twitter.com で開く */
+const open = (item: Item): void => {
   window.open(
     `https://twitter.com/${item.tweet.user.screenName}/status/${item.tweet.tweetId}`
   )
 }
 
-// watch
+// --- watch
+/** ページが変更されたら、MagicGridを更新し、トップにスクロールする */
 watch(page, () => {
   updateMagicGrid()
   scrollToTop()
 })
 
+/** 選択されたターゲットが変更されたら、アイテム一覧を取得し、MagicGridを更新する */
 watch(selected, async () => {
   await fetchItems()
   updateMagicGrid()
 })
 
+/** AND検索かどうかが変更されたら、アイテム一覧を取得し、MagicGridを更新する */
 watch(isAnd, async () => {
   await fetchItems()
   updateMagicGrid()
 })
 
-// computed
+// --- computed
+/** このページに表示するアイテム一覧 */
 const getPageItem = computed(() => {
   return items.value.slice((page.value - 1) * 30, page.value * 30)
 })
 
+/** AND検索かどうかのラベル */
 const getSearchType = computed(() => {
   return isAnd.value ? 'AND' : 'OR'
 })
 
-// onMounted
+// --- onMounted
 onMounted(async () => {
   await fetchTargets()
   await fetchItems()
