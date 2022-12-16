@@ -57,7 +57,6 @@ jobs:
           - '{ imageName: "tomacheese/watch-twitter-likes-web", directory: "web", packageName: "watch-twitter-likes-web" }'
         platform:
           - linux/amd64
-          - linux/arm64
 
     steps:
       - name: Remove platform prefix

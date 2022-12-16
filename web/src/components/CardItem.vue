@@ -1,5 +1,9 @@
+<!--suppress TypeScriptCheckImport -->
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { Buffer } from 'buffer'
+import { PropType, onMounted, ref, Ref } from 'vue'
+import { useFetch } from '#app'
+import { getColor, Palette } from 'color-thief-node'
 import { Item } from '@/types/types'
 
 // props
@@ -13,6 +17,9 @@ const props = defineProps({
     required: true
   }
 })
+
+const gradient: Ref<string|undefined> = ref(undefined)
+const textColor: Ref<string|undefined> = ref(undefined)
 
 // methods
 const calcHeight = (item: Item) => {
@@ -36,6 +43,52 @@ const getTargetDisplay = (item: Item) => {
   }
   return `by ${item.target.name} likes`
 }
+
+const getGradient = async (item: Item) => {
+  const image = new Image()
+  const imageURL = getImageUrl(item)
+  const response = await useFetch(imageURL, { responseType: 'arrayBuffer' })
+  if (!response.data) {
+    throw new Error('response.data is undefined')
+  }
+  const a = response.data.value
+  if (!a) {
+    throw new Error('a is undefined')
+  }
+  // get data url
+  const dataURL = `data:image/jpeg;base64,${Buffer.from(
+      a as any,
+      'binary'
+  ).toString('base64')}`
+  image.onload = async () => {
+    const dominantColor = await getColor(image)
+    console.log('dominantColor', dominantColor)
+    if (rgb2hsl(dominantColor) <= 0.6) {
+      textColor.value = 'text-white text-right text-subtitle-2'
+    } else {
+      textColor.value = 'text-black text-right text-subtitle-2'
+    }
+    gradient.value = `to bottom, rgba(${dominantColor}, .1), rgba(${dominantColor}, .5)`
+  }
+  console.log('dataURL', dataURL)
+  image.src = dataURL
+}
+
+// mounted
+onMounted(() => {
+  getGradient(props.item)
+})
+
+function rgb2hsl(rgb: Palette): number {
+  const r = rgb[0] / 255
+  const g = rgb[1] / 255
+  const b = rgb[2] / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+
+  return (max + min) / 2
+}
 </script>
 
 <template>
@@ -44,9 +97,9 @@ const getTargetDisplay = (item: Item) => {
       :height="calcHeight(item)"
       :src="getImageUrl(item)"
       class="align-end"
-      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+      :gradient="gradient"
     >
-      <v-card-title class="white--text text-right text-subtitle-2">
+      <v-card-title :class="textColor">
         {{ getTargetDisplay(item) }}
       </v-card-title>
       <template #placeholder>
