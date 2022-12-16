@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { PropType, computed } from 'vue'
+import { useTheme } from 'vuetify'
 import { Item } from '@/types/types'
+
+const vuetifyTheme = useTheme()
 
 // props
 const props = defineProps({
@@ -36,6 +39,12 @@ const getTargetDisplay = (item: Item) => {
   }
   return `by ${item.target.name} likes`
 }
+
+// computed
+const gradient = computed(() => {
+  return vuetifyTheme.global.name.value === 'dark' ? 'to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)' : 'to bottom, rgba(0,0,0,.1), rgba(0,0,0,.3)'
+})
+
 </script>
 
 <template>
@@ -44,9 +53,9 @@ const getTargetDisplay = (item: Item) => {
       :height="calcHeight(item)"
       :src="getImageUrl(item)"
       class="align-end"
-      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+      :gradient="gradient"
     >
-      <v-card-title class="white--text text-right text-subtitle-2">
+      <v-card-title class="text-white text-right text-subtitle-2">
         {{ getTargetDisplay(item) }}
       </v-card-title>
       <template #placeholder>
