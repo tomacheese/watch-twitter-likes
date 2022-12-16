@@ -5,13 +5,21 @@ import { useFetch } from '#app'
 import { getColor, Palette } from 'color-thief-node'
 import { Item } from '@/types/types'
 
-// data
+// --- data
+/** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
 const dataUrl = ref<string>()
-const palette = ref<Palette>()
+/** 画像に掛けるグラデーション */
 const gradient = ref<string>()
+/** カードタイトルのクラス（色指定など） */
 const cardTitleClass = ref<string>()
 
-// props
+// --- props
+/**
+ * Props: コンポーネントを呼び出されたときに渡されるプロパティ
+ *
+ * @param item ツイートの情報
+ * @param isAnd ツイートが AND 検索で取得されているか
+ */
 const props = defineProps({
   item: {
     type: Object as PropType<Item>,
@@ -23,22 +31,42 @@ const props = defineProps({
   }
 })
 
-// methods
-const calcHeight = (item: Item) => {
+// --- methods
+/**
+ * 画像の高さを計算する
+ *
+ * - Twitter が画像の高さを提供する場合、横幅に応じて高さを計算する
+ * - 画像の高さが提供されない場合は、デフォルトの高さ(338px)を返す
+ *
+ * @param item ツイートの情報
+ * @returns 画像の高さ
+ */
+const calcHeight = (item: Item): string => {
   const image = item.images.find((image) => image.size === 'small')
   if (!image || !image.height) { return '338px' }
   return `${(image.height / image.width) * 240}px`
 }
 
-const getImageUrl = (item: Item) => {
+/**
+ * 画像の URL を取得する。画像サイズは small を指定する。
+ *
+ * @param item ツイートの情報
+ * @returns 画像の URL (不明な場合は undefined)
+ */
+const getImageUrl = (item: Item): string | undefined => {
   const image = item.images.find(
     (image) => image.size === 'small'
   )
-  if (!image) { return '' }
+  if (!image) { return undefined }
   const imageId = image.imageId
   return `https://pbs.twimg.com/media/${imageId}?format=jpg&name=small`
 }
 
+/**
+ * RGB を輝度に変換する
+ *
+ * @param rgb RGB パレット
+ */
 const rgb2Lightness = (rgb: Palette): number => {
   const r = rgb[0] / 255
   const g = rgb[1] / 255
@@ -50,18 +78,37 @@ const rgb2Lightness = (rgb: Palette): number => {
   return (max + min) / 2
 }
 
-const getTargetDisplay = (item: Item) => {
+/**
+ * ツイートのターゲットを表示するテキストを返す。
+ * AND 検索の場合は空文字を返す。
+ *
+ * @param item ツイートの情報
+ * @returns ツイートのターゲットテキスト
+ */
+const getTargetDisplay = (item: Item): string => {
   if (props.isAnd || !item.target) {
     return ''
   }
   return `by ${item.target.name} likes`
 }
 
+/**
+ * 値が ArrayBuffer かどうかを判定する
+ *
+ * @param value 値
+ * @returns ArrayBuffer なら true
+ */
 const isArrayBuffer = (value: any): value is ArrayBuffer => {
   return value instanceof ArrayBuffer
 }
 
-const getDataUrl = async (url: string) => {
+/**
+ * 画像の URL をもとに Data URL を取得する
+ *
+ * @param url 画像の URL
+ * @returns Data URL
+ */
+const getDataUrl = async (url: string): Promise<string> => {
   const response = await useFetch<ArrayBuffer>(url, { responseType: 'arrayBuffer' })
   if (!response.data) {
     throw new Error('response.data is undefined')
@@ -73,48 +120,71 @@ const getDataUrl = async (url: string) => {
   if (!isArrayBuffer(data)) {
     throw new Error('data is not ArrayBuffer')
   }
-  // get data url
   const base64 = Buffer.from(data).toString('base64')
   const dataURL = `data:image/jpeg;base64,${base64}`
   return dataURL
 }
 
-const getPalette = async (dataUrl: string) => {
+/**
+ * 画像の Data URL をもとにカラーパレットを取得する
+ *
+ * @param dataUrl 画像の Data URL
+ * @returns カラーパレット
+ */
+const getPalette = async (dataUrl: string): Promise<Palette> => {
   const image = new Image()
   return await new Promise<Palette>((resolve, reject) => {
-    image.onload = () => {
+    image.onload = (): void => {
       resolve(getColor(image))
     }
-    image.onerror = (error) => {
+    image.onerror = (error): void => {
       reject(error)
     }
     image.src = dataUrl
   })
 }
 
-const getCardTitleClass = (palette: Palette) => {
+/**
+ * カードタイトルのクラスを作成する
+ *
+ * - 輝度が 0.6 以上なら白文字色、0.6 未満なら黒文字色
+ *
+ * @param palette カラーパレット
+ * @returns クラス
+ */
+const getCardTitleClass = (palette: Palette): string => {
   const commonClasses = 'text-right text-subtitle-2'
   const lightness = rgb2Lightness(palette)
   // 0.6以上なら白、0.6未満なら黒
   return lightness >= 0.6 ? `${commonClasses} text-white` : `${commonClasses} text-black`
 }
 
-const getGradient = (palette: Palette) => {
+/**
+ * グラデーションを作成する
+ *
+ * @param palette カラーパレット
+ * @returns グラデーション
+ */
+const getGradient = (palette: Palette): string => {
   // Palette.toString() は、"r, g, b" の形式っぽい
   return `to bottom, rgba(${palette}, .1), rgba(${palette}, .5)`
 }
 
+// --- onMounted
 onMounted(async () => {
   // ツイートの画像 URL
   const imageURL = getImageUrl(props.item)
+  if (!imageURL) {
+    throw new Error('imageURL is undefined')
+  }
   // 画像を Data URL に変換
   dataUrl.value = await getDataUrl(imageURL)
   // パレットを取得
-  palette.value = await getPalette(dataUrl.value)
+  const palette = await getPalette(dataUrl.value)
   // カードタイトルのクラスを作成
-  cardTitleClass.value = getCardTitleClass(palette.value)
+  cardTitleClass.value = getCardTitleClass(palette)
   // gradientを作成
-  gradient.value = getGradient(palette.value)
+  gradient.value = getGradient(palette)
 })
 </script>
 

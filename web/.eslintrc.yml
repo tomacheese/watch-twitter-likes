@@ -24,3 +24,5 @@ rules:
   arrow-parens:
     - error
     - always
+  '@typescript-eslint/explicit-function-return-type':
+    - error
