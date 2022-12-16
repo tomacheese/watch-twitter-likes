@@ -14,6 +14,12 @@ WORKDIR /build
 RUN echo network-timeout 600000 > .yarnrc && \
   yarn install --frozen-lockfile --non-interactive --production
 
+# node-gyp requirements
+RUN apk add --no-cache --virtual .gyp python make g++ && \
+  apk --no-cache add avahi-dev && \
+  yarn global add mdns && \
+  apk del .gyp
+
 # ----- common end ----- #
 
 # -- build
