@@ -11,7 +11,8 @@ COPY yarn.lock yarn.lock
 
 WORKDIR /build
 
-RUN echo network-timeout 600000 > .yarnrc && \
+RUN apt-get install libpango* -y && \
+  echo network-timeout 600000 > .yarnrc && \
   yarn install --frozen-lockfile --non-interactive --production
 
 # ----- common end ----- #
