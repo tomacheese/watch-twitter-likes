@@ -7,8 +7,8 @@
   "author": "Tomachi",
   "private": true,
   "scripts": {
-    "build": "ts-node ./src/main.ts",
-    "dev": "ts-node-dev ./src/main.ts",
+    "build": "ts-node -r tsconfig-paths/register ./src/main.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register ./src/main.ts",
     "start": "node ./dist/main.js",
     "compile": "tsc -p .",
     "compile:test": "tsc -p . --noEmit",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/js-yaml": "4.0.5",
-    "@types/node": "18.11.15",
+    "@types/node": "^18.11.15",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
     "axios": "1.2.1",
@@ -43,5 +43,8 @@
     "typeorm-naming-strategies": "^4.1.0",
     "typescript": "4.9.4",
     "yarn-run-all": "3.1.1"
+  },
+  "dependencies": {
+    "fastify": "^4.10.2"
   }
 }

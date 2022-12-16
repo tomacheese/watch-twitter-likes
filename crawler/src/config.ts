@@ -30,6 +30,8 @@ export interface Config {
 }
 
 export function getConfig(): Config {
-  const path = process.env.CONFIG_PATH || 'config.yml'
+  const path = (process.env as {
+    [key: string]: string | undefined
+  }).CONFIG_PATH || 'config.yml'
   return yaml.load(fs.readFileSync(path, 'utf8')) as Config
 }
