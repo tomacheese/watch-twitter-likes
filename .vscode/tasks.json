@@ -8,7 +8,7 @@
   "tasks": [
     {
       "label": "Run",
-      "dependsOn": ["Run client-dev", "Run crawler-dev", "Open browser"],
+      "dependsOn": ["Run database-dev", "Run client-dev", "Run crawler-dev", "Open browser"],
       "runOptions": {
         "runOn": "folderOpen"
       }
@@ -28,6 +28,11 @@
       "presentation": {
         "group": "groupServerStuff"
       }
+    },
+    {
+      "label": "Run database-dev",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/database-dev.ps1",
     },
     {
       "label": "Open browser",

@@ -13,6 +13,10 @@ const props = defineProps({
   targets: {
     type: Array as () => Target[],
     required: true
+  },
+  loading: {
+    type: Boolean,
+    required: true
   }
 })
 
@@ -35,6 +39,7 @@ watch(selected, (val) => {
   <v-select
     v-model="selected"
     :items="targets"
+    :loading="loading"
     item-title="name"
     item-value="name"
     label="Select targets"

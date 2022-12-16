@@ -14,6 +14,7 @@ const selected = ref<Target[]>([])
 const targets = ref<Target[]>([])
 const isAnd = ref(false)
 const page = ref(1)
+const loading = ref(false)
 
 // refs
 const magicgrid = ref()
@@ -34,17 +35,24 @@ const updatedSelector = (val: Target[]) => {
 }
 
 const fetchTargets = async () => {
+  loading.value = true
   const response = await useFetch<TargetsApiResponse>(
     `${config.public.apiBaseURL}/targets`
-  )
-  if (!response.data.value) {
+  ).catch((e) => {
+    console.error(e)
+    alert('Error: "Failed to fetch images.')
+    return null
+  })
+  if (!response || !response.data.value) {
     return
   }
   targets.value = response.data.value
   selected.value = targets.value
+  loading.value = false
 }
 
 const fetchItems = async () => {
+  loading.value = true
   const response = await useFetch<ImagesApiResponse>(
     `${config.public.apiBaseURL}/images`,
     {
@@ -53,14 +61,19 @@ const fetchItems = async () => {
         type: isAnd.value ? 'and' : 'or'
       }
     }
-  )
-  if (!response.data.value) {
+  ).catch((e) => {
+    console.error(e)
+    alert('Error: "Failed to fetch images.')
+    return null
+  })
+  if (!response || !response.data.value) {
     return
   }
   const results = response.data.value.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
   items.value = results
+  loading.value = false
 }
 
 const open = (item: Item) => {
@@ -111,18 +124,18 @@ onMounted(async () => {
             <v-switch v-model="isAnd" :label="getSearchType" inset />
           </v-col>
           <v-col>
-            <TargetSelector :targets="targets" @updated="updatedSelector" />
+            <TargetSelector :targets="targets" :loading="loading" @updated="updatedSelector" />
           </v-col>
           <v-col cols="1">
             <DarkModeSwitch />
           </v-col>
           <v-spacer />
         </v-row>
-        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" />
+        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
         <MagicGrid ref="magicgrid" :animate="true" :use-min="true" :gap="10">
           <CardItem v-for="item of getPageItem" :key="item.rowId" :item="item" :is-and="isAnd" @click="open(item)" />
         </MagicGrid>
-        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" />
+        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
       </v-container>
     </v-main>
   </v-app>
