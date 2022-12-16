@@ -100,15 +100,15 @@ jobs:
         working-directory: ${{ matrix.directory }}
         run: yarn test
 
-      - name: Check exists dist directory
-        id: check-dist
+      - name: Check exists .output/public directory
+        id: check-output
         working-directory: ${{ matrix.directory }}
         run: |
-          echo "exists=$(test -d dist && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "exists=$(test -d .output/public && echo true || echo false)" >> $GITHUB_OUTPUT
 
       - name: 📦 Upload artifact
-        if: steps.check-dist.outputs.exists == 'true'
+        if: steps.check-output.outputs.exists == 'true'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.directory }}-dist
-          path: ${{ matrix.directory }}/dist
+          name: ${{ matrix.directory }}-public
+          path: ${{ matrix.directory }}/.output/public

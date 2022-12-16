@@ -1,6 +1,6 @@
 {
   "name": "watch-twitter-likes",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/index.js",
   "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
