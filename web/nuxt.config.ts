@@ -1,4 +1,3 @@
-import eslintPlugin from 'vite-plugin-eslint'
 import { defineNuxtConfig } from 'nuxt/config'
 
 // https://zenn.dev/skmt3p/articles/5c119886956cc9
@@ -8,7 +7,7 @@ const baseDescription =
 const baseUrl = process.env.BASE_URL || 'https://likes.amatama.net'
 const isSsr = true
 const isDev = process.env.NODE_ENV === 'development'
-const apiBaseURL = process.env.API_BASE_URL || isDev ? 'http://localhost:8000' : baseUrl
+const apiBaseURL = process.env.API_BASE_URL || isDev ? 'http://localhost:8000/api' : '/api'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -124,7 +123,8 @@ export default defineNuxtConfig({
     build: {
       emptyOutDir: true
     },
-    plugins: [eslintPlugin()]
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    plugins: [isDev ? require('vite-plugin-eslint')() : undefined]
   },
 
   // https://codybontecou.com/how-to-use-vuetify-with-nuxt-3.html

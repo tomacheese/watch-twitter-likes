@@ -15,7 +15,7 @@ export class ApiRouter extends BaseRouter {
       fastify.get('/targets', this.routeGetTargets.bind(this))
       fastify.get('/images', this.routeGetImages.bind(this))
       done()
-    })
+    }, { prefix: '/api' })
   }
 
   async routeGetTargets(
