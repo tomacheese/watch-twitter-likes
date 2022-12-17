@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Buffer } from 'buffer'
-import { PropType, onMounted, ref } from 'vue'
+import { onMounted, PropType, ref } from 'vue'
 import { useFetch } from '#app'
 import { getColor, Palette } from 'color-thief-node'
 import { Item } from '@/types/types'
@@ -121,8 +121,7 @@ const getDataUrl = async (url: string): Promise<string> => {
     throw new Error('data is not ArrayBuffer')
   }
   const base64 = Buffer.from(data).toString('base64')
-  const dataURL = `data:image/jpeg;base64,${base64}`
-  return dataURL
+  return `data:image/jpeg;base64,${base64}`
 }
 
 /**
@@ -156,7 +155,7 @@ const getCardTitleClass = (palette: Palette): string => {
   const commonClasses = 'text-right text-subtitle-2'
   const lightness = rgb2Lightness(palette)
   // 0.6以上なら白、0.6未満なら黒
-  return lightness >= 0.6 ? `${commonClasses} text-white` : `${commonClasses} text-black`
+  return lightness <= 0.6 ? `${commonClasses} text-white` : `${commonClasses} text-black`
 }
 
 /**
