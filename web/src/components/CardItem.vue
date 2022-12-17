@@ -97,7 +97,7 @@ const getTargetDisplay = (item: Item): string => {
  * @param value 値
  * @returns ArrayBuffer なら true
  */
-const isArrayBuffer = (value: any): value is ArrayBuffer => {
+const isArrayBuffer = (value: unknown): value is ArrayBuffer => {
   return value instanceof ArrayBuffer
 }
 
