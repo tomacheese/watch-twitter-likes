@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, ref, watch, toRefs } from 'vue'
 import { Target } from '../types/types'
 
 // --- emits

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
 import { useTheme } from 'vuetify'
 
 /**

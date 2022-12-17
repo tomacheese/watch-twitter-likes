@@ -1,8 +1,6 @@
 <!-- https://github.com/e-oj/vue-magic-grid -->
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 interface Column {
   height: number
   top: number

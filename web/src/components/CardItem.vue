@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { Buffer } from 'buffer'
-import { onMounted, PropType, ref } from 'vue'
-import { useFetch } from '#app'
 import { getColor, Palette } from 'color-thief-node'
 import { Item } from '@/types/types'
+import { PropType } from 'vue';
 
 // --- data
 /** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */

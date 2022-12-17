@@ -3,9 +3,12 @@ env:
   browser: true
   es2021: true
   node: true
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
 extends:
   - '@nuxtjs/eslint-config-typescript'
-  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
   - plugin:vue/vue3-recommended
   - plugin:nuxt/recommended
 ignorePatterns:
