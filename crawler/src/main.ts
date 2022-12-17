@@ -75,6 +75,11 @@ async function main() {
   await AppDataSource.initialize()
   console.log('Database initialized')
 
+  if (!config.discord.token) {
+    console.error('Discord token is not set.')
+    process.exit(1)
+  }
+
   await client.login(config.discord.token)
   console.log('Login Successful.')
 

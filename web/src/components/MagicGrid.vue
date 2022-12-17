@@ -10,17 +10,27 @@ interface Column {
 }
 
 // props: https://ja.vuejs.org/api/sfc-script-setup.html#defineprops-defineemits
+/**
+ * Props: コンポーネントを呼び出されたときに渡されるプロパティ
+ *
+ * @param wrapper このコンテナーのクラス名。デフォルト: wrapper
+ * @param gap アイテム間のスペース (px)。デフォルト: 32px
+ * @param maxCols 最大列数。デフォルト: 5
+ * @param maxColWidth 最大列幅 (px)。デフォルト: 280px
+ * @param animate アニメーションを有効にするか。デフォルト: false
+ * @param useMin 下側の列を整頓するか。デフォルト: false
+ */
 const props = defineProps({
   wrapper: {
-    type: String, // Required. Class or id of the container.
+    type: String,
     default: 'wrapper'
   },
   gap: {
-    type: Number, // Optional. Space between items. Default: 32px
+    type: Number,
     default: 32
   },
   maxCols: {
-    type: Number, // Maximum number of colums. Default: Infinite
+    type: Number,
     default: 5
   },
   maxColWidth: {
@@ -28,33 +38,44 @@ const props = defineProps({
     default: 280
   },
   animate: {
-    type: Boolean, // Animate item positioning. Default: false.
+    type: Boolean,
     default: true
   },
   useMin: {
-    type: Boolean, // Place items in lower column
+    type: Boolean,
     default: false
   }
 })
 
-// data
+// --- data
+/** 要素の待ちフェーズが終わり、初期化フェーズに入ったかどうか */
 const started = ref(false)
+/** アイテムの配列 */
 const items = ref<HTMLCollection | null>(null)
 
 // refs: https://www.memory-lovers.blog/entry/2022/06/07/143000
+/** 要素アクセス用 ref */
 const gridelement = ref<HTMLElement>()
 
-// methods
-const isReady = () => {
+// --- methods
+/**
+ * 要素が準備できているかどうか
+ *
+ * @returns 要素が準備できているかどうか
+ */
+const isReady = (): boolean => {
   return (
-    gridelement.value &&
+    !!gridelement.value &&
     !!items.value &&
     items.value.length > 0 &&
     items.value[0].getBoundingClientRect().width > 0
   )
 }
 
-const init = () => {
+/**
+ * 初期化処理
+ */
+const init = (): void => {
   if (!isReady() || started.value) {
     return
   } (gridelement.value as HTMLElement).style.position = 'relative'
@@ -68,7 +89,10 @@ const init = () => {
   waitUntilReady()
 }
 
-const getReady = () => {
+/**
+ * 要素が準備できるまで待つ
+ */
+const getReady = (): void => {
   const interval = setInterval(() => {
     const children = gridelement.value?.children
     items.value = children || null
@@ -79,14 +103,24 @@ const getReady = () => {
     }
   }, 100)
 }
-const colWidth = () => {
+
+/**
+ * アイテムの幅を取得
+ */
+const colWidth = (): number => {
   if (!items.value) {
     return 0 // ほんとに？
   }
   return items.value[0].getBoundingClientRect().width + props.gap
 }
 
-const setup = () => {
+/**
+ * セットアップ処理
+ */
+const setup = (): {
+  cols: Column[]
+  wSpace: number
+} => {
   const width = gridelement.value?.getBoundingClientRect().width
   if (!width) {
     throw new Error('MagicGrid: Wrapper element not found.')
@@ -114,7 +148,8 @@ const setup = () => {
   }
 }
 
-const getMin = (cols: any[]) => {
+/** 最小の列を取得 */
+const getMinColumn = (cols: Column[]): Column => {
   let min = cols[0]
 
   for (const col of cols) {
@@ -124,7 +159,8 @@ const getMin = (cols: any[]) => {
   return min
 }
 
-const getMax = (cols: any[]) => {
+/** 最大の列を取得 */
+const getMaxColumn = (cols: Column[]): Column => {
   let max = cols[0]
 
   for (const col of cols) {
@@ -134,13 +170,17 @@ const getMax = (cols: any[]) => {
   return max
 }
 
-const nextCol = (cols: Column[], i: number) => {
-  if (props.useMin) { return getMin(cols) }
+/** 次の列を取得 */
+const nextCol = (cols: Column[], i: number): Column => {
+  if (props.useMin) { return getMinColumn(cols) }
 
   return cols[i % cols.length]
 }
 
-const positionItems = () => {
+/**
+ * アイテムの位置を設定
+ */
+const positionItems = (): void => {
   const { cols, wSpace: _wSpace } = setup()
 
   const wSpace = Math.floor(_wSpace / 2)
@@ -161,10 +201,13 @@ const positionItems = () => {
     min.top = props.gap
   }
 
-  (gridelement.value as HTMLElement).style.height = getMax(cols).height + 'px'
+  (gridelement.value as HTMLElement).style.height = getMaxColumn(cols).height + 'px'
 }
 
-const waitUntilReady = () => {
+/**
+ * 要素が準備できるまで待つ
+ */
+const waitUntilReady = (): void => {
   if (isReady()) {
     started.value = true
     positionItems()
@@ -175,13 +218,16 @@ const waitUntilReady = () => {
   } else { getReady() }
 }
 
-// onMounted
+// --- onMounted
 onMounted(() => {
   waitUntilReady()
 })
 
-// expose
-const update = () => {
+// --- expose
+/**
+ * アイテムの位置を更新
+ */
+const update = (): void => {
   started.value = false
   items.value = null
   waitUntilReady()
