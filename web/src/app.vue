@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
-import { useFetch, useRuntimeConfig } from '#app'
 import { Item, Target } from './types/types'
 
 type TargetsApiResponse = Target[]
