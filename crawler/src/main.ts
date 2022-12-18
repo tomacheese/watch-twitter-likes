@@ -85,7 +85,7 @@ async function main() {
   console.log('Login Successful.')
 
   // migration
-  migrateTweetHashTags(
+  await migrateTweetHashTags(
     new TwitterApi({
       appKey: config.twitter.consumerKey,
       appSecret: config.twitter.consumerSecret,
