@@ -2,7 +2,7 @@
 import { Item, Target } from './types/types'
 import TagSelector from './components/TagSelector.vue'
 import ItemWrapper from './components/ItemWrapper.vue'
-import { useViewedStore } from '~~/store/viewed'
+import { useViewedStore } from './store/viewed'
 
 type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]

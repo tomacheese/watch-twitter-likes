@@ -2,8 +2,8 @@
 import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
 import { PropType } from 'vue'
+import { useViewedStore } from '../store/viewed'
 import { Item } from '@/types/types'
-import { useViewedStore } from '~~/store/viewed'
 
 const viewedStore = useViewedStore()
 
