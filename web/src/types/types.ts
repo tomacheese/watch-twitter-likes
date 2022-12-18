@@ -23,6 +23,8 @@ export interface Target {
 export interface Tweet {
   tweetId: string
   user: User
+  tags: string[]
+  text: string
   images: Image
   target: Target
 }

@@ -6,6 +6,7 @@ import { AppDataSource } from './mysql'
 import { Config, getConfig } from './config'
 import { actionFavorite } from './messageAction'
 import { buildApp } from './server'
+import { migrateTweetHashTags } from './migration'
 
 const config = getConfig()
 const client = new Client({
@@ -82,6 +83,14 @@ async function main() {
 
   await client.login(config.discord.token)
   console.log('Login Successful.')
+
+  // migration
+  migrateTweetHashTags(
+    new TwitterApi({
+      appKey: config.twitter.consumerKey,
+      appSecret: config.twitter.consumerSecret,
+    })
+  )
 
   const app = buildApp()
   const host = process.env.API_HOST || '0.0.0.0'
