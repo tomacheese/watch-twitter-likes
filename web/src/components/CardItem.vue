@@ -2,15 +2,10 @@
 import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
 import { PropType } from 'vue'
+import { useViewedStore } from '../store/viewed'
 import { Item } from '@/types/types'
 
-// --- data
-/** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
-const dataUrl = ref<string>()
-/** 画像に掛けるグラデーション */
-const gradient = ref<string>()
-/** カードタイトルのクラス（色指定など） */
-const cardTitleClass = ref<string>()
+const viewedStore = useViewedStore()
 
 // --- props
 /**
@@ -29,6 +24,17 @@ const props = defineProps({
     required: true
   }
 })
+
+/** 初めて表示するか */
+const isNew = !viewedStore.isViewed(props.item.rowId)
+
+// --- data
+/** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
+const dataUrl = ref<string>()
+/** 画像に掛けるグラデーション */
+const gradient = ref<string>()
+/** カードタイトルのクラス（色指定など） */
+const cardTitleClass = ref<string>()
 
 // --- methods
 /**
@@ -187,21 +193,23 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-card width="240px">
-    <v-img
-      :height="calcHeight(item)"
-      :src="dataUrl"
-      class="align-end"
-      :gradient="gradient"
-    >
-      <v-card-title :class="cardTitleClass">
-        {{ getTargetDisplay(item) }}
-      </v-card-title>
-      <template #placeholder>
-        <v-row class="fill-height ma-0" align="center" justify="center">
-          <v-progress-circular indeterminate color="grey lighten-5" />
-        </v-row>
-      </template>
-    </v-img>
-  </v-card>
+  <v-badge v-model="isNew" overlap content="NEW" offset-x="20" color="green">
+    <v-card width="240px">
+      <v-img
+        :height="calcHeight(item)"
+        :src="dataUrl"
+        class="align-end"
+        :gradient="gradient"
+      >
+        <v-card-title :class="cardTitleClass">
+          {{ getTargetDisplay(item) }}
+        </v-card-title>
+        <template #placeholder>
+          <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-progress-circular indeterminate color="grey lighten-5" />
+          </v-row>
+        </template>
+      </v-img>
+    </v-card>
+  </v-badge>
 </template>
