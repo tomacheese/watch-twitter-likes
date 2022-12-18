@@ -26,6 +26,8 @@
   "dependencies": {
     "@kevinmarrec/nuxt-pwa": "0.13.0",
     "@mdi/font": "7.1.96",
+    "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
+    "@pinia/nuxt": "^0.4.6",
     "color-thief-node": "^1.0.4",
     "js-yaml": "4.1.0",
     "nuxt": "3.0.0",

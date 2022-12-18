@@ -128,8 +128,18 @@ export default defineNuxtConfig({
 
   modules: [
     // https://github.com/kevinmarrec/nuxt-pwa-module
-    '@kevinmarrec/nuxt-pwa'
+    '@kevinmarrec/nuxt-pwa',
+    ['@pinia/nuxt',
+      {
+        autoImports: ['defineStore', 'acceptHMRUpdate']
+      }
+    ],
+    '@pinia-plugin-persistedstate/nuxt'
   ],
+
+  imports: {
+    dirs: ['stores']
+  },
 
   pwa: {
     manifest: {
