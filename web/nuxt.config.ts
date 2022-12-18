@@ -6,8 +6,8 @@ const baseDescription =
   process.env.BASE_DESCRIPTION || 'Watch Twitter users likes 👀'
 const baseUrl = process.env.BASE_URL || 'https://likes.amatama.net'
 const isSsr = true
-const isDev = process.env.NODE_ENV === 'development'
-const apiBaseURL = process.env.API_BASE_URL || isDev ? 'http://localhost:8000/api' : '/api'
+const isDev = true /* process.env.NODE_ENV === 'development' */
+const apiBaseURL = process.env.API_BASE_URL || isDev ? 'http://192.168.0.101:8000/api' : '/api'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({

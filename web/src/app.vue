@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Item, Target } from './types/types'
+import TagSelector from './components/TagSelector.vue'
 
 type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]
@@ -19,6 +20,8 @@ const isAnd = ref(false)
 const page = ref(1)
 /** ローディング中かどうか */
 const loading = ref(false)
+/** 選択されたタグ */
+const selectTags = ref<string[]>([])
 
 // --- refs
 /** MagicGrid.update() アクセス用 ref */
@@ -93,6 +96,32 @@ const open = (item: Item): void => {
   )
 }
 
+const updatedSelectTags = (val: string): void => {
+  selectTags.value = val.split('\t').filter((v) => v !== '')
+}
+
+// --- computed
+/** このページに表示するアイテム一覧 */
+const getItems = computed(() => {
+  if (selectTags.value.length === 0) {
+    return items.value
+  }
+  return items.value.filter((item) => {
+    return selectTags.value.some((tag) => {
+      return item.tweet.tags.includes(tag)
+    })
+  })
+})
+
+const getPageItem = computed(() => {
+  return getItems.value.slice((page.value - 1) * 30, page.value * 30)
+})
+
+/** AND検索かどうかのラベル */
+const getSearchType = computed(() => {
+  return isAnd.value ? 'AND' : 'OR'
+})
+
 // --- watch
 /** ページが変更されたら、MagicGridを更新し、トップにスクロールする */
 watch(page, () => {
@@ -100,27 +129,20 @@ watch(page, () => {
   scrollToTop()
 })
 
-/** 選択されたターゲットが変更されたら、アイテム一覧を取得し、MagicGridを更新する */
+/** 選択されたターゲットが変更されたら、アイテム一覧を取得する */
 watch(selected, async () => {
   await fetchItems()
   updateMagicGrid()
 })
 
-/** AND検索かどうかが変更されたら、アイテム一覧を取得し、MagicGridを更新する */
+/** AND検索かどうかが変更されたら、アイテム一覧を取得する */
 watch(isAnd, async () => {
   await fetchItems()
+})
+
+/** アイテム一覧が更新されたら、MagicGridを更新する */
+watch(getItems, () => {
   updateMagicGrid()
-})
-
-// --- computed
-/** このページに表示するアイテム一覧 */
-const getPageItem = computed(() => {
-  return items.value.slice((page.value - 1) * 30, page.value * 30)
-})
-
-/** AND検索かどうかのラベル */
-const getSearchType = computed(() => {
-  return isAnd.value ? 'AND' : 'OR'
 })
 
 // --- onMounted
@@ -147,11 +169,12 @@ onMounted(async () => {
           </v-col>
           <v-spacer />
         </v-row>
-        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
+        <TagSelector :items="items" @updated="updatedSelectTags" />
+        <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
         <MagicGrid ref="magicgrid" :animate="true" :use-min="true" :gap="10">
           <CardItem v-for="item of getPageItem" :key="item.rowId" :item="item" :is-and="isAnd" @click="open(item)" />
         </MagicGrid>
-        <v-pagination v-model="page" :length="Math.ceil(items.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
+        <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
       </v-container>
     </v-main>
   </v-app>

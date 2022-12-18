@@ -22,6 +22,21 @@ export class DBTweet extends BaseEntity {
   })
   tweetId!: string
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'ツイート本文',
+    nullable: true,
+  })
+  text!: string | null
+
+  @Column({
+    type: 'simple-array',
+    comment: 'タグ',
+    nullable: true,
+  })
+  tags!: string[] | null
+
   @CreateDateColumn({
     type: 'timestamp',
     comment: '行挿入日時',

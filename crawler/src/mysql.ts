@@ -57,6 +57,11 @@ export async function getDBTweet(tweet: TweetV1, dbUser: DBUser) {
   const dbTweet = new DBTweet()
   dbTweet.tweetId = tweet.id_str
   dbTweet.user = dbUser
+  dbTweet.text = tweet.text || tweet.full_text || null
+  dbTweet.tags =
+    tweet.entities.hashtags !== undefined
+      ? tweet.entities.hashtags.map((tag) => tag.text)
+      : []
   return await dbTweet.save()
 }
 
