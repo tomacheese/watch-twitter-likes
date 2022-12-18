@@ -1,5 +1,5 @@
-import { TwitterApi } from "twitter-api-v2";
-import { DBTweet } from "./entities/tweets";
+import { TwitterApi } from 'twitter-api-v2'
+import { DBTweet } from './entities/tweets'
 
 export async function migrateTweetHashTags(twitterApi: TwitterApi) {
   const tweets = await DBTweet.find()
