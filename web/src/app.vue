@@ -127,6 +127,7 @@ const getItems = computed(() => {
   }
   return filterItems.filter((item) => {
     return selectTags.value.some((tag) => {
+      if (!item.tweet.tags) { return false }
       return item.tweet.tags.includes(tag)
     })
   })
