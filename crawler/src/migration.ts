@@ -1,20 +1,14 @@
 import { TwitterApi } from 'twitter-api-v2'
+import { IsNull } from 'typeorm'
 import { DBTweet } from './entities/tweets'
 
 export async function migrateTweetHashTags(twitterApi: TwitterApi) {
-  const tweets = await DBTweet.find()
-  const checkTweetIds = []
-  for (const tweet of tweets) {
-    const tags = tweet.tags
-    if (tags === null) {
-      continue
-    }
-    checkTweetIds.push(tweet.tweetId)
-  }
-
-  if (checkTweetIds.length === 0) {
-    return
-  }
+  const tweets = await DBTweet.find({
+    where: {
+      tags: IsNull(),
+    },
+  })
+  const checkTweetIds = tweets.map((t) => t.tweetId)
   console.log('migration tweets: ' + checkTweetIds.length)
 
   // 100件ずつに分割
