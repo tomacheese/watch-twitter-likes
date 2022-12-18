@@ -3,24 +3,23 @@ import { IsNull } from 'typeorm'
 import { DBTweet } from './entities/tweets'
 
 export async function migrateTweetHashTags(twitterApi: TwitterApi) {
-  const tweets = await DBTweet.find({
+  let tweetList = await DBTweet.find({
     where: {
       tags: IsNull(),
     },
   })
-  const checkTweetIds = tweets.map((t) => t.tweetId)
-  console.log('migration tweets: ' + checkTweetIds.length)
+  console.log('migration tweets: ' + tweetList.length)
 
-  // 100件ずつに分割
-  const chunks: string[][] = checkTweetIds.reduce((acc, cur, i) => {
-    if (i % 100 === 0) {
-      acc.push([])
-    }
-    acc[acc.length - 1].push(cur)
-    return acc
-  }, [] as string[][])
-  for (const chunk of chunks) {
-    const tweets = await twitterApi.v1.tweets(chunk, {
+  let count = 0
+  while (tweetList.length > 0) {
+    tweetList = await DBTweet.find({
+      where: {
+        tags: IsNull(),
+      },
+      take: 100,
+    })
+    const tweetIds = tweetList.map((tweet) => tweet.tweetId)
+    const tweets = await twitterApi.v1.tweets(tweetIds, {
       include_entities: true,
     })
     for (const tweet of tweets) {
@@ -39,8 +38,9 @@ export async function migrateTweetHashTags(twitterApi: TwitterApi) {
           : []
       dbTweet.tags = tags
       await dbTweet.save()
+      count++
     }
   }
 
-  console.log('migration done')
+  console.log('migration done: ', count)
 }
