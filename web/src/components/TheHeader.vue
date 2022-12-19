@@ -81,27 +81,59 @@ const getOnlyNewDisplay = computed(() => {
 
 <template>
   <v-container fluid>
-    <v-row class="d-flex" justify="center">
-      <div>
-        <v-switch v-model="isAnd" :label="getSearchType" inset />
-      </div>
-      <div class="mx-10">
-        <TargetSelector v-model="selected" :targets="targets" :loading="loading" />
-      </div>
-      <div>
-        <DarkModeSwitch />
-      </div>
-    </v-row>
-    <v-row class="d-flex" justify="center" align-content="center">
-      <div>
-        <v-switch v-model="isOnlyNew" :label="getOnlyNewDisplay" inset />
-      </div>
-      <div class="py-2">
-        <v-btn class="mx-10" :disabled="loading" @click="allViewed">
-          すべて既読
-        </v-btn>
-      </div>
-    </v-row>
-    <TagSelector :items="items" @updated="updatedSelectTags" />
+    <div class="header-box">
+      <v-row class="title-container">
+        <v-col>
+          <h1 class="text-body">
+            Watch Twitter Likes
+          </h1>
+        </v-col>
+        <v-col>
+          <div class="d-flex justify-end">
+            <DarkModeSwitch />
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <TargetSelector v-model="selected" :targets="targets" :loading="loading" />
+        </v-col>
+        <v-col cols="2">
+          <v-switch v-model="isAnd" :label="getSearchType" inset class="d-flex justify-center" />
+        </v-col>
+      </v-row>
+      <TagSelector :items="items" @updated="updatedSelectTags" />
+    </div>
+    <div class="view-items-container">
+      <v-row justify="space-between">
+        <v-col>
+          <v-switch v-model="isOnlyNew" :label="getOnlyNewDisplay" inset />
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <v-btn class="my-2" :disabled="loading" @click="allViewed">
+            すべて既読
+          </v-btn>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
+
+<style scoped>
+.header-box {
+  padding: 20px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  margin: 0 10px;
+  background-color: rgb(var(--v-theme-surface))
+}
+
+.title-container {
+  border-bottom: 1px solid #aaa;
+  margin: 0 5px 10px;
+}
+
+.view-items-container {
+  margin: 10px 20px 0;
+}
+</style>
