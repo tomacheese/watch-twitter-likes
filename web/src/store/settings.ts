@@ -3,11 +3,13 @@ import { Target } from '../types/types'
 export const useSettingsStore = defineStore('settings', {
   state: (): {
     selected: string[] | null
+    selectedTagsList: string[] | null
     isAndSearch: boolean
     isOnlyNewView: boolean
     isDarkTheme: boolean | null
   } => ({
     selected: null,
+    selectedTagsList: null,
     isAndSearch: false,
     isOnlyNewView: false,
     isDarkTheme: null
@@ -15,6 +17,7 @@ export const useSettingsStore = defineStore('settings', {
 
   getters: {
     selectedUserIds: (state) => state.selected,
+    selectedTags: (state) => state.selectedTagsList,
     isAnd: (state) => state.isAndSearch,
     isOnlyNew: (state) => state.isOnlyNewView,
     isDark: (state) => state.isDarkTheme
@@ -23,6 +26,9 @@ export const useSettingsStore = defineStore('settings', {
   actions: {
     setSelected(targets: Target[]) {
       this.selected = targets.map((t) => t.userId)
+    },
+    setSelectedTags(tags: string[]) {
+      this.selectedTagsList = tags
     },
     setAnd(isAnd: boolean) {
       this.isAndSearch = isAnd

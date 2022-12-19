@@ -39,5 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-switch v-model="theme" :prepend-icon="themeIcon" inset />
+  <v-btn icon @click="theme = !theme">
+    <v-icon>{{ themeIcon }}</v-icon>
+  </v-btn>
 </template>
