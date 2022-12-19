@@ -9,6 +9,10 @@
       "path": "crawler"
     },
     {
+      "name": "mock-api",
+      "path": "mock-api"
+    },
+    {
       "name": "watch-twitter-likes",
       "path": "."
     }
