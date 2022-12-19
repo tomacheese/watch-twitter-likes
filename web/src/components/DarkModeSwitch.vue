@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
+import { useSettingsStore } from '../store/settings'
 
 /**
  * Vuetify で持っているテーマアクセス用の関数
  */
 const vuetifyTheme = useTheme()
+const settings = useSettingsStore()
 
 // --- data
 /** テーマフラグ (dark = true) */
@@ -20,13 +22,18 @@ const themeIcon = computed(() => {
 /** テーマフラグに応じて、Vuetify のテーマを切り替える */
 watch(theme, (val) => {
   vuetifyTheme.global.name.value = val ? 'dark' : 'light'
+  settings.setDark(val)
 })
 
 // --- onMounted
 /** ページ読み込み時に、OS のテーマに応じてテーマフラグを切り替える */
 onMounted(() => {
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    theme.value = true
+  if (settings.isDark === null) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme.value = true
+    }
+  } else {
+    theme.value = settings.isDark
   }
 })
 </script>

@@ -3,6 +3,7 @@ import { Item, Target } from './types/types'
 import TagSelector from './components/TagSelector.vue'
 import ItemWrapper from './components/ItemWrapper.vue'
 import { useViewedStore } from './store/viewed'
+import { useSettingsStore } from './store/settings'
 
 type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]
@@ -10,6 +11,7 @@ type ImagesApiResponse = Item[]
 const config = useRuntimeConfig()
 const viewedStore = useViewedStore()
 const viewedIds = [...viewedStore.getRowIds]
+const settings = useSettingsStore()
 
 // --- data
 /** アイテム一覧 */
@@ -109,7 +111,6 @@ const updatedSelectTags = (val: string): void => {
 
 /** 既読状態をアップデートする */
 const onViewed = (item: Item): void => {
-  console.log('onViewed', item.rowId)
   viewedStore.add(item.rowId)
 }
 
@@ -155,12 +156,14 @@ watch(page, () => {
 
 /** 選択されたターゲットが変更されたら、アイテム一覧を取得する */
 watch(selected, async () => {
+  settings.setSelected(selected.value)
   await fetchItems()
   updateMagicGrid()
 })
 
 /** AND検索かどうかが変更されたら、アイテム一覧を取得する */
 watch(isAnd, async () => {
+  settings.setAnd(isAnd.value)
   await fetchItems()
 })
 
@@ -169,9 +172,24 @@ watch(getItems, () => {
   updateMagicGrid()
 })
 
+/** 新しいアイテムのみ表示かどうかが変更されたら、設定に反映する */
+watch(isOnlyNew, () => {
+  settings.setOnlyNew(isOnlyNew.value)
+})
+
 // --- onMounted
 onMounted(async () => {
   await fetchTargets()
+
+  isAnd.value = settings.isAnd
+  isOnlyNew.value = settings.isOnlyNew
+  if (settings.selectedUserIds !== null) {
+    selected.value = targets.value.filter((t) =>
+      settings.selectedUserIds &&
+      settings.selectedUserIds.includes(t.userId)
+    )
+  }
+
   await fetchItems()
 })
 </script>
@@ -198,7 +216,14 @@ onMounted(async () => {
         </v-row>
         <TagSelector :items="items" @updated="updatedSelectTags" />
         <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
-        <MagicGrid ref="magicgrid" :animate="true" :use-min="true" :gap="10">
+        <v-container v-if="getItems.length === 0">
+          <v-card>
+            <v-card-text class="text-h6 text-center my-3">
+              該当するアイテムが見つかりませんでした
+            </v-card-text>
+          </v-card>
+        </v-container>
+        <MagicGrid v-if="getItems.length !== 0" ref="magicgrid" :animate="true" :use-min="true" :gap="10">
           <ItemWrapper v-for="item of getPageItem" :key="item.rowId" :item="item" @intersect="onViewed">
             <CardItem :item="item" :is-and="isAnd" @click="open(item)" />
           </ItemWrapper>
