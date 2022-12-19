@@ -3,6 +3,7 @@ Set-Location ..
 
 Get-ChildItem */node_modules | Remove-Item -Force -Recurse -ErrorAction Stop
 Start-Process -FilePath yarn -ArgumentList "install" -WorkingDirectory "crawler" -NoNewWindow -Wait
+Start-Process -FilePath yarn -ArgumentList "install" -WorkingDirectory "mock-api" -NoNewWindow -Wait
 Start-Process -FilePath yarn -ArgumentList "install" -WorkingDirectory "web" -NoNewWindow -Wait
 
 Write-Host

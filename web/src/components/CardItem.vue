@@ -53,21 +53,6 @@ const calcHeight = (item: Item): string => {
 }
 
 /**
- * 画像の URL を取得する。画像サイズは small を指定する。
- *
- * @param item ツイートの情報
- * @returns 画像の URL (不明な場合は undefined)
- */
-const getImageUrl = (item: Item): string | undefined => {
-  const image = item.images.find(
-    (image) => image.size === 'small'
-  )
-  if (!image) { return undefined }
-  const imageId = image.imageId
-  return `https://pbs.twimg.com/media/${imageId}?format=jpg&name=small`
-}
-
-/**
  * RGB を輝度に変換する
  *
  * @param rgb RGB パレット
@@ -177,7 +162,7 @@ const getGradient = (palette: Palette): string => {
 // --- onMounted
 onMounted(async () => {
   // ツイートの画像 URL
-  const imageURL = getImageUrl(props.item)
+  const imageURL = props.item.images[0].url
   if (!imageURL) {
     throw new Error('imageURL is undefined')
   }

@@ -11,6 +11,7 @@ export interface Image {
   width: number
   height: number
   createdAt: string
+  url: string
 }
 
 export interface Target {

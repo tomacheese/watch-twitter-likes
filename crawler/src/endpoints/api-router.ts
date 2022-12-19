@@ -42,7 +42,7 @@ export class ApiRouter extends BaseRouter {
     const filterType = request.query.type
 
     // まずはOR検索する
-    const items = await DBItem.find({
+    const results = await DBItem.find({
       relations: ['tweet', 'tweet.user', 'images', 'target'],
       where: targetIds
         ? targetIds.map((targetId) => {
@@ -53,6 +53,17 @@ export class ApiRouter extends BaseRouter {
             }
           })
         : undefined,
+    })
+    const items = results.map((item) => {
+      return {
+        ...item,
+        images: item.images.map((image) => {
+          return {
+            ...image,
+            url: `https://pbs.twimg.com/media/${image.imageId}?format=jpg&name=small`,
+          }
+        }),
+      }
     })
 
     if (filterType === 'or' || filterType === undefined || !targetIds) {
