@@ -25,11 +25,19 @@ const isAnd = ref(false)
 /** 現在のページ */
 const page = ref(1)
 /** ローディング中かどうか */
-const loading = ref(false)
+const loading = ref(true)
 /** 選択されたタグ */
 const selectTags = ref<string[]>([])
 /** 新しいアイテムだけ表示するか */
 const isOnlyNew = ref(false)
+/** 連続して選択が更新された時用のタイマー */
+const timer = ref<number>(0)
+/** スナックバー表示中かどうか */
+const snackbar = ref(false)
+/** スナックバーに表示するテキスト */
+const snackbarText = ref('')
+/** スナックバーの色 */
+const snackbarColor = ref('green')
 
 // --- refs
 /** MagicGrid.update() アクセス用 ref */
@@ -48,11 +56,6 @@ const scrollToTop = (): void => {
   window.scroll({ top: 0, behavior: 'smooth' })
 }
 
-/** 選択されたターゲットを更新する */
-const updatedSelector = (val: Target[]): void => {
-  selected.value = val
-}
-
 /** 対象一覧をAPIから取得する */
 const fetchTargets = async (): Promise<void> => {
   loading.value = true
@@ -67,12 +70,15 @@ const fetchTargets = async (): Promise<void> => {
     return
   }
   targets.value = response.data.value
-  selected.value = targets.value
   loading.value = false
 }
 
 /** アイテム一覧をAPIから取得する */
 const fetchItems = async (): Promise<void> => {
+  if (selected.value.length === 0) {
+    items.value = []
+    return
+  }
   loading.value = true
   const response = await useFetch<ImagesApiResponse>(
     `${config.public.apiBaseURL}/images`,
@@ -112,6 +118,20 @@ const updatedSelectTags = (val: string): void => {
 /** 既読状態をアップデートする */
 const onViewed = (item: Item): void => {
   viewedStore.add(item.rowId)
+}
+
+const allViewed = (): void => {
+  if (!confirm('すべてのアイテムを既読にしますか？')) {
+    return
+  }
+  viewedStore.addAll(items.value.map((item) => item.rowId))
+
+  snackbarText.value = 'すべてのアイテムを既読にしました。3秒後に再読み込みします。'
+  snackbarColor.value = 'green'
+  snackbar.value = true
+  setTimeout(() => {
+    location.reload()
+  }, 3000)
 }
 
 // --- computed
@@ -155,10 +175,13 @@ watch(page, () => {
 })
 
 /** 選択されたターゲットが変更されたら、アイテム一覧を取得する */
-watch(selected, async () => {
+watch(selected, () => {
   settings.setSelected(selected.value)
-  await fetchItems()
-  updateMagicGrid()
+  window.clearTimeout(timer.value)
+  timer.value = window.setTimeout(async () => {
+    await fetchItems()
+    updateMagicGrid()
+  }, 500)
 })
 
 /** AND検索かどうかが変更されたら、アイテム一覧を取得する */
@@ -181,6 +204,7 @@ watch(isOnlyNew, () => {
 onMounted(async () => {
   await fetchTargets()
 
+  // localStorageにある設定を反映する
   isAnd.value = settings.isAnd
   isOnlyNew.value = settings.isOnlyNew
   if (settings.selectedUserIds !== null) {
@@ -188,6 +212,8 @@ onMounted(async () => {
       settings.selectedUserIds &&
       settings.selectedUserIds.includes(t.userId)
     )
+  } else {
+    selected.value = targets.value
   }
 
   await fetchItems()
@@ -203,26 +229,34 @@ onMounted(async () => {
             <v-switch v-model="isAnd" :label="getSearchType" inset />
           </div>
           <div class="mx-10">
-            <TargetSelector :targets="targets" :loading="loading" @updated="updatedSelector" />
+            <TargetSelector v-model="selected" :targets="targets" :loading="loading" />
           </div>
           <div>
             <DarkModeSwitch />
           </div>
         </v-row>
-        <v-row class="d-flex" justify="center">
+        <v-row class="d-flex" justify="center" align-content="center">
           <div>
             <v-switch v-model="isOnlyNew" :label="getOnlyNewDisplay" inset />
+          </div>
+          <div class="py-2">
+            <v-btn class="mx-10" :disabled="loading" @click="allViewed">
+              すべて既読
+            </v-btn>
           </div>
         </v-row>
         <TagSelector :items="items" @updated="updatedSelectTags" />
         <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
-        <v-container v-if="getItems.length === 0">
+        <v-container v-if="getItems.length === 0 && !loading">
           <v-card>
             <v-card-text class="text-h6 text-center my-3">
               該当するアイテムが見つかりませんでした
             </v-card-text>
           </v-card>
         </v-container>
+        <div v-if="loading" class="d-flex justify-center my-5">
+          <v-progress-circular v-if="loading" indeterminate />
+        </div>
         <MagicGrid v-if="getItems.length !== 0" ref="magicgrid" :animate="true" :use-min="true" :gap="10">
           <ItemWrapper v-for="item of getPageItem" :key="item.rowId" :item="item" @intersect="onViewed">
             <CardItem :item="item" :is-and="isAnd" @click="open(item)" />
@@ -230,6 +264,9 @@ onMounted(async () => {
         </MagicGrid>
         <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
       </v-container>
+      <v-snackbar v-model="snackbar" :timeout="3000" :color="snackbarColor">
+        {{ snackbarText }}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
