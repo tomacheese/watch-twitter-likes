@@ -1,4 +1,4 @@
-import { Client } from 'discord.js'
+import { Client, Interaction } from 'discord.js'
 import { TwitterApi } from 'twitter-api-v2'
 import Crawler from './crawler'
 import { DBTarget } from './entities/targets'
@@ -41,7 +41,9 @@ client.on('ready', async () => {
   await crawl(config, client)
 })
 
-client.on('interactionCreate', async (interaction) => {
+const interactionCreateHandler: (interaction: Interaction) => void = async (
+  interaction
+) => {
   if (!interaction.isButton()) return
   console.log('interactionCreate@Button: ' + interaction.id)
   const customIds = interaction.customId.split('-') // ACTION-ACCOUNTNAME-TWEETID
@@ -69,6 +71,26 @@ client.on('interactionCreate', async (interaction) => {
     case 'favorite':
       await actionFavorite(interaction, account, tweetId)
   }
+}
+
+client.on('interactionCreate', interactionCreateHandler)
+// 1時間ごとに再登録
+setInterval(() => {
+  console.log('Re-register interactionCreate handler')
+  client.off('interactionCreate', interactionCreateHandler)
+  client.on('interactionCreate', interactionCreateHandler)
+}, 1000 * 60 * 60)
+
+client.on('error', (error) => {
+  console.error('discord.js@error:', error)
+})
+
+client.on('warn', (warn) => {
+  console.warn('discord.js@warn:', warn)
+})
+
+client.on('shardError', (error) => {
+  console.error('discord.js@shardError:', error)
 })
 
 async function main() {
