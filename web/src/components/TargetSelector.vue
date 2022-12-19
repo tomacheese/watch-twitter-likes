@@ -3,7 +3,7 @@ import { Target } from '../types/types'
 
 // --- emits
 interface Emits {
-  (e: 'updated', newValue: Target[]): void
+  (e: 'update:modelValue', val: Target[]): void
 }
 const emit = defineEmits<Emits>()
 
@@ -22,33 +22,25 @@ const props = defineProps({
   loading: {
     type: Boolean,
     required: true
+  },
+  modelValue: {
+    type: Array as () => Target[],
+    required: true
   }
 })
-
-// --- data
-/** 選択されたターゲット */
-const selected = ref<Target[]>([])
-const timer = ref<number>(0)
 
 // --- watch
 // propsの特定のキーをwatchする場合はtoRefでリアクティブ取出する: https://zenn.dev/tentel/articles/e52815dd33f328
 const { targets } = toRefs(props)
-/**
- * 対象一覧が更新された時にすべてのターゲットを選択状態にする
- */
-watch(targets, (val) => {
-  selected.value = val
-})
 
 /**
  * 選択されたターゲットが更新された時に親コンポーネントに通知する。
- * 連続して変更された場合のために、2秒後にemitする
  */
-watch(selected, (val) => {
-  window.clearTimeout(timer.value)
-  timer.value = window.setTimeout(() => {
-    emit('updated', val)
-  }, 2000)
+const selected = computed({
+  get: () => props.modelValue,
+  set: (val: Target[]) => {
+    emit('update:modelValue', val)
+  }
 })
 </script>
 
@@ -59,8 +51,9 @@ watch(selected, (val) => {
     :loading="loading"
     item-title="name"
     item-value="name"
-    label="Select targets"
+    label="表示対象"
     return-object
     multiple
+    chips
   />
 </template>

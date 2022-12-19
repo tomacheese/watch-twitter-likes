@@ -14,6 +14,11 @@ export const useViewedStore = defineStore('viewed', {
     add(rowId: number) {
       if (this.rowIds.includes(rowId)) { return }
       this.rowIds.push(rowId)
+    },
+    addAll(rowIds: number[]) {
+      for (const rowId of rowIds) {
+        this.add(rowId)
+      }
     }
   },
 
