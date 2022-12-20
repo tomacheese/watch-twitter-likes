@@ -164,7 +164,6 @@ watch(page, () => {
 
 /** 選択されたターゲットが変更されたら、アイテム一覧を取得する */
 watch(selected, () => {
-  settings.setSelected(selected.value)
   window.clearTimeout(timer.value)
   timer.value = window.setTimeout(async () => {
     await fetchItems()
