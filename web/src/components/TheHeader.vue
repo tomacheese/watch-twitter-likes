@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDisplay } from 'vuetify'
 import { useSettingsStore } from '../store/settings'
 import { useSnackbarStore } from '../store/snackbar'
 import { useViewedStore } from '../store/viewed'
@@ -66,16 +67,9 @@ const allViewed = (): void => {
   }, 3000)
 }
 
-// --- computed
+// --- display helpers
 
-/** AND検索かどうかのラベル */
-const getSearchType = computed(() => {
-  return isAnd.value ? 'AND' : 'OR'
-})
-
-const getOnlyNewDisplay = computed(() => {
-  return isOnlyNew.value ? '新しいアイテムのみ表示' : 'すべてのアイテムを表示'
-})
+const { mdAndUp } = useDisplay()
 
 </script>
 
@@ -83,57 +77,83 @@ const getOnlyNewDisplay = computed(() => {
   <v-container fluid>
     <div class="header-box">
       <v-row class="title-container">
-        <v-col>
-          <h1 class="text-body">
-            Watch Twitter Likes
-          </h1>
-        </v-col>
-        <v-col>
-          <div class="d-flex justify-end">
-            <DarkModeSwitch />
-          </div>
-        </v-col>
+        <div class="text-body text-h5 text-sm-h4 font-weight-bold">
+          Watch Twitter Likes
+        </div>
+        <div class="d-flex justify-end">
+          <DarkModeSwitch />
+        </div>
       </v-row>
       <v-row>
-        <v-col>
-          <TargetSelector v-model="selected" :targets="targets" :loading="loading" />
-        </v-col>
-        <v-col cols="2">
-          <v-switch v-model="isAnd" :label="getSearchType" inset class="d-flex justify-center" />
-        </v-col>
+        <div class="display-settings d-flex flex-column flex-md-row align-end align-md-center justify-md-center">
+          <TargetSelector v-model="selected" :targets="targets" :loading="loading" :class="mdAndUp ? 'w-auto' : 'w-100'" />
+          <v-btn-toggle v-model="isAnd" variant="outlined" mandatory>
+            <v-btn :value="true" selected-class="font-weight-bold">
+              AND
+            </v-btn>
+            <v-btn :value="false" selected-class="font-weight-bold">
+              OR
+            </v-btn>
+          </v-btn-toggle>
+        </div>
       </v-row>
-      <TagSelector :items="items" @updated="updatedSelectTags" />
+      <v-row>
+        <TagSelector :items="items" @updated="updatedSelectTags" />
+      </v-row>
     </div>
-    <div class="view-items-container">
-      <v-row justify="space-between">
-        <v-col>
-          <v-switch v-model="isOnlyNew" :label="getOnlyNewDisplay" inset />
-        </v-col>
-        <v-col class="d-flex justify-end">
-          <v-btn class="my-2" :disabled="loading" @click="allViewed">
-            すべて既読
-          </v-btn>
-        </v-col>
-      </v-row>
+    <div class="view-items-container d-flex flex-column flex-md-row justify-md-space-between">
+      <v-btn-toggle v-model="isOnlyNew" variant="outlined" mandatory>
+        <v-btn :value="true" selected-class="font-weight-bold">
+          <v-icon size="x-large" class="mr-1">
+            mdi-alert-decagram
+          </v-icon>
+          新しいアイテムのみ
+        </v-btn>
+        <v-btn :value="false" selected-class="font-weight-bold">
+          <v-icon size="x-large" class="mr-1">
+            mdi-all-inclusive
+          </v-icon>
+          すべて表示
+        </v-btn>
+      </v-btn-toggle>
+      <v-btn :disabled="loading" :block="!mdAndUp" size="large" @click="allViewed">
+        <v-icon size="x-large" class="mr-1">
+          mdi-check-all
+        </v-icon>
+        すべて既読
+      </v-btn>
     </div>
   </v-container>
 </template>
 
 <style scoped>
 .header-box {
-  padding: 20px;
-  border: 1px solid #aaa;
+  padding: 2rem;
+  border: 1px solid #464646;
   border-radius: 5px;
   margin: 0 10px;
   background-color: rgb(var(--v-theme-surface))
 }
 
 .title-container {
-  border-bottom: 1px solid #aaa;
-  margin: 0 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #464646;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.display-settings {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .view-items-container {
-  margin: 10px 20px 0;
+  padding: 1rem;
+  gap: 1rem;
 }
 </style>

@@ -46,6 +46,6 @@ onMounted(() => {
     chips
     clearable
     hide-no-data
-    class="my-3"
+    hide-details
   />
 </template>

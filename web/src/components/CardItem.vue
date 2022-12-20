@@ -181,7 +181,7 @@ onMounted(async () => {
 
 <template>
   <v-badge v-model="isNew" overlap content="NEW" offset-x="20" color="green">
-    <v-card width="240px">
+    <v-card width="240px" style="cursor:pointer;">
       <v-img
         :height="calcHeight(item)"
         :src="dataUrl"

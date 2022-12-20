@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-btn icon @click="theme = !theme">
+  <v-btn icon variant="tonal" @click="theme = !theme">
     <v-icon>{{ themeIcon }}</v-icon>
   </v-btn>
 </template>
