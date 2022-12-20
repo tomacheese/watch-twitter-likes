@@ -55,5 +55,6 @@ const selected = computed({
     return-object
     multiple
     chips
+    hide-details
   />
 </template>
