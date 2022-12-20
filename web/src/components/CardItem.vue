@@ -26,7 +26,7 @@ const props = defineProps({
 })
 
 /** 初めて表示するか */
-const isNew = !viewedStore.isViewed(props.item.rowId)
+const isNew = ref<boolean>(false)
 
 // --- data
 /** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
@@ -161,6 +161,8 @@ const getGradient = (palette: Palette): string => {
 
 // --- onMounted
 onMounted(async () => {
+  isNew.value = !viewedStore.isViewed(props.item.rowId)
+
   // ツイートの画像 URL
   const imageURL = props.item.images[0].url
   if (!imageURL) {
