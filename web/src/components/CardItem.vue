@@ -3,9 +3,13 @@ import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
 import { PropType } from 'vue'
 import { useViewedStore } from '../store/viewed'
+import { useSnackbarStore } from '../store/snackbar'
+import { useTwitterStore } from '../store/twitter'
 import { Item } from '@/types/types'
 
 const viewedStore = useViewedStore()
+const snackbarStore = useSnackbarStore()
+const twitterStore = useTwitterStore()
 
 // --- props
 /**
@@ -159,6 +163,27 @@ const getGradient = (palette: Palette): string => {
   return `to bottom, rgba(${palette}, .1), rgba(${palette}, .5)`
 }
 
+const openTweet = (): void => {
+  window.open(
+    `https://twitter.com/${props.item.tweet.user.screenName}/status/${props.item.tweet.tweetId}`
+  )
+}
+
+const likeTweet = (): void => {
+  if (!twitterStore.isLogin) {
+    alert('この機能を利用するには Twitter にログインしてください。\n右上の Twitter アイコンからログインできます。')
+    return
+  }
+  twitterStore.like(props.item.tweet.tweetId).catch((error) => {
+    snackbarStore.start(error.message, 'error')
+  })
+}
+
+// --- computed
+const colorTwitterIcon = computed((): string => {
+  return twitterStore.isLiked(props.item.tweet.tweetId) ? 'green' : 'grey'
+})
+
 // --- onMounted
 onMounted(async () => {
   isNew.value = !viewedStore.isViewed(props.item.rowId)
@@ -181,12 +206,14 @@ onMounted(async () => {
 
 <template>
   <v-badge v-model="isNew" overlap content="NEW" offset-x="20" color="green">
-    <v-card width="240px" style="cursor:pointer;">
+    <v-card width="240px">
       <v-img
         :height="calcHeight(item)"
         :src="dataUrl"
         class="align-end"
+        style="cursor: pointer"
         :gradient="gradient"
+        @click="openTweet()"
       >
         <v-card-title :class="cardTitleClass">
           {{ getTargetDisplay(item) }}
@@ -197,6 +224,15 @@ onMounted(async () => {
           </v-row>
         </template>
       </v-img>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon @click="likeTweet()">
+          <v-icon :color="colorTwitterIcon">
+            mdi-heart
+          </v-icon>
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-badge>
 </template>

@@ -2,14 +2,17 @@
 import { useDisplay } from 'vuetify'
 import { useSettingsStore } from '../store/settings'
 import { useSnackbarStore } from '../store/snackbar'
+import { useTwitterStore } from '../store/twitter'
 import { useViewedStore } from '../store/viewed'
 import { Item, Target } from '../types/types'
 import TagSelector from './TagSelector.vue'
 
 /// --- store
+const config = useRuntimeConfig()
 const viewedStore = useViewedStore()
 const snackbarStore = useSnackbarStore()
 const settings = useSettingsStore()
+const twitterStore = useTwitterStore()
 
 // --- settings computed
 const isAnd = computed({
@@ -67,10 +70,40 @@ const allViewed = (): void => {
   }, 3000)
 }
 
+const clickTwitter = (): void => {
+  if (!twitterStore.isLogin) {
+    location.href = `${config.public.apiBaseURL}/twitter/auth?backUrl=${location.href}`
+    return
+  }
+
+  // ログアウト
+  if (!confirm('ログアウトしますか？')) {
+    return
+  }
+  useFetch(`${config.public.apiBaseURL}/twitter/logout`).then(() => {
+    location.reload()
+  }).catch(() => {
+    snackbarStore.start('ログアウトに失敗しました。', 'red')
+  })
+}
+
+// --- computed
+const isTwitterLogin = computed<boolean>(() => twitterStore.isLogin)
+const twitterProfileUrl = computed<string>(() => {
+  if (twitterStore.me === null) {
+    return ''
+  }
+  return twitterStore.me.profile_image_url_https
+})
+
 // --- display helpers
 
 const { mdAndUp } = useDisplay()
 
+// --- onMounted
+onMounted(async () => {
+  await twitterStore.fetchMe()
+})
 </script>
 
 <template>
@@ -81,6 +114,16 @@ const { mdAndUp } = useDisplay()
           Watch Twitter Likes
         </div>
         <div class="d-flex justify-end">
+          <v-btn variant="tonal" icon class="mx-3" @click="clickTwitter()">
+            <v-avatar v-if="isTwitterLogin">
+              <v-img
+                :src="twitterProfileUrl"
+              />
+            </v-avatar>
+            <v-icon v-else>
+              mdi-twitter
+            </v-icon>
+          </v-btn>
           <DarkModeSwitch />
         </div>
       </v-row>

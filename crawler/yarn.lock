@@ -69,6 +69,14 @@
     ajv-formats "^2.1.1"
     fast-uri "^2.0.0"
 
+"@fastify/cookie@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@fastify/cookie/-/cookie-8.3.0.tgz#7d3304fcf0d11ea64ae8e02d65ae217b01fe1cf4"
+  integrity sha512-P9hY9GO11L20TnZ33XN3i0bt+3x0zaT7S0ohAzWO950E9PB2xnNhLYzPFJIGFi5AVN0yr5+/iZhWxeYvR6KCzg==
+  dependencies:
+    cookie "^0.5.0"
+    fastify-plugin "^4.0.0"
+
 "@fastify/cors@8.2.0":
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-8.2.0.tgz#44ce6b28bc111e12679cb02f980f0ce865ff4877"
@@ -93,6 +101,14 @@
   integrity sha512-ypZynRvXA3dibfPykQN3RB5wBdEUgSGgny8Qc6k163wYPLD4mEGEDkACp+00YmqkGvIm8D/xYoHajwyEdWD/eg==
   dependencies:
     fast-json-stringify "^5.0.0"
+
+"@fastify/session@^10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.1.0.tgz#53ac1d4366805715304a28eb11220de4f2b9d229"
+  integrity sha512-s7Jchybp2VvPanH5V5+RuKGSmjA5Fp6II9Gos3ntNggLTMqb/b6GYBiol+h6+o7opIQs1NRaJdWGAauOkLdnGA==
+  dependencies:
+    fastify-plugin "^4.0.0"
+    safe-stable-stringify "^2.3.1"
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"

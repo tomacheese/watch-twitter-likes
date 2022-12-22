@@ -9,6 +9,12 @@ export interface TwitterAccount {
   accessSecret: string
 }
 
+export interface TwitterAuth {
+  appKey: string
+  appSecret: string
+  callbackUrl: string
+}
+
 export interface Config {
   discord: {
     token: string
@@ -17,6 +23,7 @@ export interface Config {
     consumerKey: string
     consumerSecret: string
     accounts: TwitterAccount[]
+    auth: TwitterAuth
   }
   db: {
     type: 'mysql'
@@ -26,7 +33,10 @@ export interface Config {
     password: string
     database: string
   }
-  auth?: string
+  session?: {
+    secret: string
+    isSecure?: boolean
+  }
 }
 
 export function getConfig(): Config {

@@ -3,6 +3,9 @@ import { BaseRouter } from './base-router'
 import { getConfig } from './config'
 import { ApiRouter } from './endpoints/api-router'
 import cors from '@fastify/cors'
+import fastifyCookie from '@fastify/cookie'
+import fastifySession from '@fastify/session'
+import { TwitterRouter } from './endpoints/twitter-router'
 
 /**
  * Fastify アプリケーションを構築する
@@ -10,13 +13,33 @@ import cors from '@fastify/cors'
  * @returns Fastify アプリケーション
  */
 export function buildApp(): FastifyInstance {
-  const app = fastify()
-  app.register(cors)
-
   const config = getConfig()
 
+  const app = fastify()
+  app.register(cors, {
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+  app.register(fastifyCookie)
+  if (config.session) {
+    app.register(fastifySession, {
+      cookieName: 'wtl_session',
+      secret: config.session.secret,
+      cookie: {
+        secure: config.session.isSecure || false,
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      },
+    })
+  }
+
   // routers
-  const routers: BaseRouter[] = [new ApiRouter(app, config)]
+  const routers: BaseRouter[] = [
+    new ApiRouter(app, config),
+    new TwitterRouter(app, config),
+  ]
 
   routers.forEach((router) => {
     console.log(`Initializing route: ${router.constructor.name}`)
