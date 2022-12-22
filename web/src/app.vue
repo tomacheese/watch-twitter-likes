@@ -3,6 +3,7 @@ import { Item, Target } from './types/types'
 import ItemWrapper from './components/ItemWrapper.vue'
 import { useViewedStore } from './store/viewed'
 import { useSettingsStore } from './store/settings'
+import { useTwitterStore } from './store/twitter'
 
 type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]
@@ -11,6 +12,7 @@ const config = useRuntimeConfig()
 const viewedStore = useViewedStore()
 const viewedIds = [...viewedStore.getRowIds]
 const settings = useSettingsStore()
+const twitterStore = useTwitterStore()
 
 // --- data
 /** アイテム一覧 */
@@ -118,13 +120,6 @@ const fetchItems = async (): Promise<void> => {
   loading.value = false
 }
 
-/** アイテムを twitter.com で開く */
-const open = (item: Item): void => {
-  window.open(
-    `https://twitter.com/${item.tweet.user.screenName}/status/${item.tweet.tweetId}`
-  )
-}
-
 /** 既読状態をアップデートする */
 const onViewed = (item: Item): void => {
   viewedStore.add(item.rowId)
@@ -182,6 +177,14 @@ watch(getItems, () => {
   updateMagicGrid()
 })
 
+watch(getPageItem, async () => {
+  if (!twitterStore.isLogin || getPageItem.value.length === 0) {
+    return
+  }
+  const tweetIds = getPageItem.value.map((item) => item.tweet.tweetId)
+  await twitterStore.fetchLikedTweetIds(tweetIds)
+})
+
 /** 新しいアイテムのみ表示かどうかが変更されたら、設定に反映する */
 watch(isOnlyNew, () => {
   settings.setOnlyNew(isOnlyNew.value)
@@ -224,7 +227,7 @@ onMounted(async () => {
       </div>
       <MagicGrid v-if="getItems.length !== 0" ref="magicgrid" :animate="true" :use-min="true" :gap="10">
         <ItemWrapper v-for="item of getPageItem" :key="item.rowId" :item="item" @intersect="onViewed">
-          <CardItem :item="item" :is-and="isAnd" @click="open(item)" />
+          <CardItem :item="item" :is-and="isAnd" />
         </ItemWrapper>
       </MagicGrid>
       <v-pagination v-model="page" :length="Math.ceil(getItems.length / 30)" :total-visible="11" class="my-3" :disabled="loading" />
