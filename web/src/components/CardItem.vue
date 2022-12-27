@@ -1,3 +1,5 @@
+<!-- 個別カードアイテムコンポーネント -->
+
 <script setup lang="ts">
 import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
