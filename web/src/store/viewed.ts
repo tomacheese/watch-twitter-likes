@@ -11,10 +11,20 @@ export const useViewedStore = defineStore('viewed', {
   },
 
   actions: {
+    /**
+     * 既読済みリストに追加する
+     *
+     * @param rowId 行 ID
+     */
     add(rowId: number) {
       if (this.rowIds.includes(rowId)) { return }
       this.rowIds.push(rowId)
     },
+    /**
+     * 複数の行 ID 既読済みリストに追加する
+     *
+     * @param rowIds 行 ID 群
+     */
     addAll(rowIds: number[]) {
       for (const rowId of rowIds) {
         this.add(rowId)

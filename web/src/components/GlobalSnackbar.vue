@@ -1,3 +1,5 @@
+<!-- グローバルスナックバーコンポーネント -->
+
 <script setup lang="ts">
 import { useSnackbarStore } from '../store/snackbar'
 
@@ -8,7 +10,6 @@ const snackbar = computed({
   set: (val) => snackbarStore.setShow(val)
 })
 const { getMessage: message, getColor: color } = toRefs(snackbarStore)
-
 </script>
 
 <template>
