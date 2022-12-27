@@ -82,12 +82,12 @@ const fetchTargets = async (): Promise<void> => {
   loading.value = true
   const response = await useFetch<TargetsApiResponse>(
     `${config.public.apiBaseURL}/targets`
-  ).catch((e) => {
-    console.error(e)
-    alert('Error: "Failed to fetch images.')
-    return null
-  })
-  if (!response || !response.data.value) {
+  )
+  if (response.error.value) {
+    alert(`Error: "Failed to fetch images: ${response.error.value}`)
+    return
+  }
+  if (!response.data.value) {
     return
   }
   targets.value = response.data.value
@@ -109,11 +109,11 @@ const fetchItems = async (): Promise<void> => {
         type: isAnd.value ? 'and' : 'or'
       }
     }
-  ).catch((e) => {
-    console.error(e)
-    alert('Error: "Failed to fetch images.')
-    return null
-  })
+  )
+  if (response.error.value) {
+    alert(`Error: "Failed to fetch images: ${response.error.value}`)
+    return
+  }
   if (!response || !response.data.value) {
     return
   }

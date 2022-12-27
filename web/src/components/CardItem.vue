@@ -37,7 +37,7 @@ const isNew = ref<boolean>(false)
 
 // --- data
 /** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
-const dataUrl = ref<string>()
+const dataUrl = ref<string | null>()
 /** 画像に掛けるグラデーション */
 const gradient = ref<string>()
 /** カードタイトルのクラス（色指定など） */
@@ -206,7 +206,12 @@ onMounted(async () => {
     throw new Error('imageURL is undefined')
   }
   // 画像を Data URL に変換
-  dataUrl.value = await getDataUrl(imageURL)
+  dataUrl.value = await getDataUrl(imageURL).catch(() => {
+    return null
+  })
+  if (!dataUrl.value) {
+    return
+  }
   // パレットを取得
   const palette = await getPalette(dataUrl.value)
   // カードタイトルのクラスを作成
@@ -220,6 +225,7 @@ onMounted(async () => {
   <v-badge v-model="isNew" overlap content="NEW" offset-x="20" color="green">
     <v-card width="240px">
       <v-img
+        v-if="dataUrl"
         :height="calcHeight(item)"
         :src="dataUrl"
         class="align-end"
@@ -239,6 +245,12 @@ onMounted(async () => {
           </v-row>
         </template>
       </v-img>
+      <v-card-text v-else class="text-center">
+        <v-icon color="grey lighten-2">
+          mdi-image-off
+        </v-icon>
+        DELETED
+      </v-card-text>
     </v-card>
   </v-badge>
 </template>
