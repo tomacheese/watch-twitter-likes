@@ -57,11 +57,11 @@ export const useTwitterStore = defineStore('twitter', {
             tweetIds: tweetIds.join(',')
           }
         }
-      ).catch((e) => {
-        console.error(e)
+      )
+      if (response.error) {
         alert('Error: "Failed to fetch tweets.')
-        return null
-      })
+        return
+      }
       if (!response || !response.data.value) {
         return
       }
@@ -79,12 +79,13 @@ export const useTwitterStore = defineStore('twitter', {
         useFetch<void>(`${config.public.apiBaseURL}/twitter/like`, {
           method: 'POST',
           body: JSON.stringify({ tweetId })
-        }).then(() => {
+        }).then((result) => {
+          if (result && result.error.value && result.error.value.response && result.error.value.response._data) {
+            reject(new Error(result.error.value.response._data))
+            return
+          }
           this.likedTweetIds.push(tweetId)
           resolve()
-        }).catch((error) => {
-          reject(error.message)
-          return null
         })
       })
     }
