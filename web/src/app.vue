@@ -59,6 +59,7 @@ const selectTags = computed({
     settings.setSelectedTags(val)
   }
 })
+const { magicGrid: magicGridSettings } = toRefs(settings)
 
 // --- refs
 /** MagicGrid.update() アクセス用 ref */
@@ -231,7 +232,15 @@ onMounted(async () => {
       <div v-if="loading" class="d-flex justify-center my-5">
         <v-progress-circular v-if="loading" indeterminate />
       </div>
-      <MagicGrid v-if="getItems.length !== 0" ref="magicgrid" :animate="true" :use-min="true" :gap="10">
+      <MagicGrid
+        v-if="getItems.length !== 0"
+        ref="magicgrid"
+        :animate="true"
+        :use-min="true"
+        :gap="magicGridSettings.gap"
+        :max-cols="magicGridSettings.maxCols"
+        :max-col-width="magicGridSettings.maxColWidth"
+      >
         <ItemWrapper v-for="item of getPageItem" :key="item.rowId" :item="item" @intersect="onViewed">
           <CardItem :item="item" :is-and="isAnd" />
         </ItemWrapper>

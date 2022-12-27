@@ -124,6 +124,7 @@ onMounted(async () => {
           Watch Twitter Likes
         </div>
         <div class="d-flex justify-end">
+          <SettingsModal />
           <v-btn variant="tonal" icon class="mx-3" @click="clickTwitter()">
             <v-avatar v-if="isTwitterLogin">
               <v-img
