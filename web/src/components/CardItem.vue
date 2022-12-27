@@ -1,3 +1,5 @@
+<!-- 個別カードアイテムコンポーネント -->
+
 <script setup lang="ts">
 import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
@@ -229,7 +231,7 @@ onMounted(async () => {
           <v-card-title :class="cardTitleClass" class="mb-2 ml-2">
             {{ getTargetDisplay(item) }}
           </v-card-title>
-          <v-btn class="ma-2" variant="plain" :icon="heartIcon" color="#f45b91" @click="likeTweet()" />
+          <v-btn class="ma-2" variant="plain" :icon="heartIcon" color="#f45b91" @click.stop="likeTweet()" />
         </v-row>
         <template #placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
