@@ -1,3 +1,5 @@
+<!-- 表示対象選択コンポーネント -->
+
 <script setup lang="ts">
 import { Target } from '../types/types'
 

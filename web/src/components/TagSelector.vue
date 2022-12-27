@@ -1,3 +1,5 @@
+<!-- ハッシュタグ選択コンポーネント -->
+
 <script setup lang="ts">
 import { Item } from '../types/types'
 
@@ -8,11 +10,14 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 // --- data
+/** 選択中のハッシュタグ */
 const selected = ref<string[]>([])
+/** ハッシュタグ一覧 */
 const tags = ref<string[]>([])
 
 // --- props
 const props = defineProps({
+  /** アイテム一覧 */
   items: {
     type: Array as () => Item[],
     required: true

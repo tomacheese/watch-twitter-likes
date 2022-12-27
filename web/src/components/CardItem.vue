@@ -1,3 +1,5 @@
+<!-- 個別カードアイテムコンポーネント -->
+
 <script setup lang="ts">
 import { Buffer } from 'buffer'
 import { getColor, Palette } from 'color-thief-node'
@@ -7,6 +9,7 @@ import { useSnackbarStore } from '../store/snackbar'
 import { useTwitterStore } from '../store/twitter'
 import { Item } from '@/types/types'
 
+// --- store
 const viewedStore = useViewedStore()
 const snackbarStore = useSnackbarStore()
 const twitterStore = useTwitterStore()
@@ -163,12 +166,18 @@ const getGradient = (palette: Palette): string => {
   return `to bottom, rgba(${palette}, .1), rgba(${palette}, .5)`
 }
 
+/**
+ * ツイートを開く
+ */
 const openTweet = (): void => {
   window.open(
     `https://twitter.com/${props.item.tweet.user.screenName}/status/${props.item.tweet.tweetId}`
   )
 }
 
+/**
+ * ツイートをいいねする
+ */
 const likeTweet = (): void => {
   if (!twitterStore.isLogin) {
     alert('この機能を利用するには Twitter にログインしてください。\n右上の Twitter アイコンからログインできます。')
@@ -180,6 +189,9 @@ const likeTweet = (): void => {
 }
 
 // --- computed
+/**
+ * いいねアイコン
+ */
 const heartIcon = computed((): string => {
   return twitterStore.isLiked(props.item.tweet.tweetId) ? 'mdi-heart' : 'mdi-heart-outline'
 })
