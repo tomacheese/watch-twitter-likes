@@ -30,7 +30,7 @@ export function buildApp(): FastifyInstance {
         secure: config.session.isSecure || false,
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       },
     })
   }

@@ -9,10 +9,14 @@ type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]
 
 const config = useRuntimeConfig()
+
+// --- store
 const viewedStore = useViewedStore()
-const viewedIds = [...viewedStore.getRowIds]
 const settings = useSettingsStore()
 const twitterStore = useTwitterStore()
+
+// --- created
+const viewedIds = [...viewedStore.getRowIds]
 
 // --- data
 /** アイテム一覧 */
@@ -126,7 +130,7 @@ const onViewed = (item: Item): void => {
 }
 
 // --- computed
-/** このページに表示するアイテム一覧 */
+/** すべてのアイテム一覧 */
 const getItems = computed(() => {
   let filterItems = items.value
   if (isOnlyNew.value) {
@@ -146,6 +150,7 @@ const getItems = computed(() => {
   })
 })
 
+/** このページに表示するアイテム一覧 */
 const getPageItem = computed(() => {
   return getItems.value.slice((page.value - 1) * 30, page.value * 30)
 })
@@ -177,6 +182,7 @@ watch(getItems, () => {
   updateMagicGrid()
 })
 
+/** このページに表示するアイテム一覧が更新されたら、いいね状態を取得する */
 watch(getPageItem, async () => {
   if (!twitterStore.isLogin || getPageItem.value.length === 0) {
     return

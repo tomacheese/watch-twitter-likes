@@ -1,4 +1,8 @@
-<!-- https://github.com/e-oj/vue-magic-grid -->
+<!--
+  要素サイズに応じて調整されるグリッドビューコンポーネント
+
+  https://github.com/e-oj/vue-magic-grid
+-->
 
 <script setup lang="ts">
 interface Column {

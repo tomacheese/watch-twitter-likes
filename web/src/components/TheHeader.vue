@@ -1,3 +1,5 @@
+<!-- ヘッダーコンポーネント -->
+
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 import { useSettingsStore } from '../store/settings'
@@ -46,8 +48,11 @@ const selectTags = computed({
 
 // --- props
 const props = defineProps<{
+  /** アイテムの配列 */
   items: Item[]
+  /** ターゲットの配列 */
   targets: Target[]
+  /** ロード中かどうか */
   loading: boolean
 }>()
 
@@ -58,6 +63,7 @@ const updatedSelectTags = (val: string): void => {
   selectTags.value = val.split('\t').filter((v) => v !== '')
 }
 
+/** すべてのアイテムを既読にする */
 const allViewed = (): void => {
   if (!confirm('すべてのアイテムを既読にしますか？')) {
     return
@@ -70,6 +76,7 @@ const allViewed = (): void => {
   }, 3000)
 }
 
+/** ログイン/ログアウト */
 const clickTwitter = (): void => {
   if (!twitterStore.isLogin) {
     location.href = `${config.public.apiBaseURL}/twitter/auth?backUrl=${location.href}`
@@ -88,7 +95,9 @@ const clickTwitter = (): void => {
 }
 
 // --- computed
+/** Twitter にログインしているかどうか */
 const isTwitterLogin = computed<boolean>(() => twitterStore.isLogin)
+/** Twitter のプロフィール画像の URL */
 const twitterProfileUrl = computed<string>(() => {
   if (twitterStore.me === null) {
     return ''
@@ -97,7 +106,6 @@ const twitterProfileUrl = computed<string>(() => {
 })
 
 // --- display helpers
-
 const { mdAndUp } = useDisplay()
 
 // --- onMounted

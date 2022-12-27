@@ -1,4 +1,11 @@
-<script setup lang="ts">import { Item } from '../types/types'
+<!--
+  アイテムのラッパコンポーネント
+
+  「そのアイテムを閲覧したか」を判定するためのラッパ
+-->
+
+<script setup lang="ts">
+import { Item } from '../types/types'
 
 // props
 const props = defineProps<{
@@ -12,13 +19,16 @@ type Emits = {
 const emit = defineEmits<Emits>()
 
 // data
+/** 監視用名 */
 const observName = ref<string>('')
+/** 要素が描画内にあるか */
 const isIntersecting = ref<boolean>(false)
 
 // created
 observName.value = `item-${props.item.rowId}`
 
 // methods
+/** 監視登録処理 */
 const register = (): void => {
   if (!window) {
     return
@@ -36,6 +46,7 @@ const register = (): void => {
   observer.observe(element)
 }
 
+/** 描画範囲内かどうか */
 const isViewing = (element: Element): boolean => {
   const rect = element.getBoundingClientRect()
   return (

@@ -15,13 +15,20 @@ export const useTwitterStore = defineStore('twitter', {
   }),
 
   getters: {
+    /** Twitter でログインしているかどうか */
     isLogin: (state) => !!state.me,
+    /** 認証者の情報 */
     getMe: (state) => state.me,
+    /** いいね済みのツイート ID 群 */
     getLikedTweetIds: (state) => state.likedTweetIds,
+    /** 指定したツイート ID がいいね済みかどうか */
     isLiked: (state) => (tweetId: string): boolean => state.likedTweetIds.includes(tweetId)
   },
 
   actions: {
+    /**
+     * 認証者の情報を取得する
+     */
     async fetchMe() {
       const config = useRuntimeConfig()
       const response = await useFetch<TwitterMe>(`${config.public.apiBaseURL}/twitter/me`).catch(() => null)
@@ -30,6 +37,11 @@ export const useTwitterStore = defineStore('twitter', {
       }
       this.me = response.data.value
     },
+    /**
+     * ツイート群のうち、いいね済みのツイートIDを取得する
+     *
+     * @param tweetIds ツイート ID 群
+     */
     async fetchLikedTweetIds(tweetIds: string[]) {
       if (tweetIds.length === 0 || tweetIds.length > 100) {
         throw new Error('tweetIds.length must be 1-100')
@@ -56,6 +68,11 @@ export const useTwitterStore = defineStore('twitter', {
       const tweets = response.data.value
       this.likedTweetIds = tweets.filter((tweet) => tweet.favorited).map((tweet) => tweet.id_str)
     },
+    /**
+     * ツイートをいいねする
+     *
+     * @param tweetId ツイート ID
+     */
     like(tweetId: string): Promise<void> {
       const config = useRuntimeConfig()
       return new Promise<void>((resolve, reject) => {
