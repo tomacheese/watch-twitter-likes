@@ -59,8 +59,7 @@ export const useTwitterStore = defineStore('twitter', {
         }
       )
       if (response.error) {
-        alert('Error: "Failed to fetch tweets.')
-        return
+        return // 100件のうち一件でも存在しないツイートがある場合はエラーになる。どうしたものか
       }
       if (!response || !response.data.value) {
         return
