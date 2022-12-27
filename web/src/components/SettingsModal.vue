@@ -6,6 +6,10 @@ const settings = useSettingsStore()
 const isOpen = ref(false)
 
 // --- settings computed
+const itemPerPage = computed({
+  get: () => settings.itemPerPage,
+  set: (val) => settings.setItemPerPage(val)
+})
 const maxCols = computed({
   get: () => settings.magicGrid.maxCols,
   set: (val) => settings.setMagicGridMaxCols(val)
@@ -21,6 +25,7 @@ const gap = computed({
 
 // --- methods
 const reset = (): void => {
+  itemPerPage.value = 30
   maxCols.value = 5
   maxColWidth.value = 280
   gap.value = 10
@@ -35,9 +40,21 @@ const reset = (): void => {
   />
   <v-dialog v-model="isOpen">
     <v-card class="pa-5">
-      <v-card-title>グリッドビューの設定</v-card-title>
+      <v-card-title>表示設定</v-card-title>
 
       <v-card-text>
+        <v-row>
+          <v-col cols="4">
+            <v-subheader>1ページのアイテム数</v-subheader>
+          </v-col>
+          <v-col cols="8">
+            <v-text-field
+              v-model="itemPerPage"
+              type="number"
+              suffix="アイテム"
+            />
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="4">
             <v-subheader>最大列数</v-subheader>
