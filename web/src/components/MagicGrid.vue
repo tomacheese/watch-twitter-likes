@@ -14,35 +14,34 @@ interface Column {
 // props: https://ja.vuejs.org/api/sfc-script-setup.html#defineprops-defineemits
 /**
  * Props: コンポーネントを呼び出されたときに渡されるプロパティ
- *
- * @param wrapper このコンテナーのクラス名。デフォルト: wrapper
- * @param gap アイテム間のスペース (px)。デフォルト: 32px
- * @param maxCols 最大列数。デフォルト: 5
- * @param maxColWidth 最大列幅 (px)。デフォルト: 280px
- * @param animate アニメーションを有効にするか。デフォルト: false
- * @param useMin 下側の列を整頓するか。デフォルト: false
  */
 const props = defineProps({
+  /** このコンテナーのクラス名。デフォルト: wrapper */
   wrapper: {
     type: String,
     default: 'wrapper'
   },
+  /** アイテム間のスペース (px)。デフォルト: 32px */
   gap: {
     type: Number,
     default: 32
   },
+  /** 最大列数。デフォルト: 5 */
   maxCols: {
     type: Number,
     default: 5
   },
+  /** 最大列幅 (px)。デフォルト: 280px */
   maxColWidth: {
     type: Number,
     default: 280
   },
+  /** アニメーションを有効にするか。デフォルト: false */
   animate: {
     type: Boolean,
     default: true
   },
+  /** 下側の列を整頓するか。デフォルト: false */
   useMin: {
     type: Boolean,
     default: false
