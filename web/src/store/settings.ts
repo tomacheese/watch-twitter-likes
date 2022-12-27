@@ -7,6 +7,7 @@ export const useSettingsStore = defineStore('settings', {
     isAndSearch: boolean
     isOnlyNewView: boolean
     isDarkTheme: boolean | null
+    itemPerPage: number
     magicGrid: {
       maxCols: number
       maxColWidth: number
@@ -18,6 +19,7 @@ export const useSettingsStore = defineStore('settings', {
     isAndSearch: false,
     isOnlyNewView: false,
     isDarkTheme: null,
+    itemPerPage: 30,
     magicGrid: {
       maxCols: 5,
       maxColWidth: 280,
@@ -58,6 +60,10 @@ export const useSettingsStore = defineStore('settings', {
     /** ダークテーマかどうかを設定する */
     setDark(isDark: boolean) {
       this.isDarkTheme = isDark
+    },
+    /** 1 ページあたりの表示件数を設定する */
+    setItemPerPage(itemPerPage: number) {
+      this.itemPerPage = itemPerPage
     },
     /** MagicGrid の最大列数を設定する */
     setMagicGridMaxCols(maxCols: number) {
