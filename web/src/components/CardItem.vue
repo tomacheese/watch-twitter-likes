@@ -140,7 +140,7 @@ const getPalette = async (dataUrl: string): Promise<Palette> => {
 /**
  * カードタイトルのクラスを作成する
  *
- * - 輝度が 0.6 以上なら白文字色、0.6 未満なら黒文字色
+ * - 輝度が 0.7 以上なら白文字色、0.7 未満なら黒文字色
  *
  * @param palette カラーパレット
  * @returns クラス
@@ -148,8 +148,8 @@ const getPalette = async (dataUrl: string): Promise<Palette> => {
 const getCardTitleClass = (palette: Palette): string => {
   const commonClasses = 'text-right text-subtitle-2'
   const lightness = rgb2Lightness(palette)
-  // 0.6以上なら白、0.6未満なら黒
-  return lightness <= 0.6 ? `${commonClasses} text-white` : `${commonClasses} text-black`
+  // 0.7以上なら白、0.7未満なら黒
+  return lightness <= 0.7 ? `${commonClasses} text-white` : `${commonClasses} text-black`
 }
 
 /**
@@ -180,8 +180,8 @@ const likeTweet = (): void => {
 }
 
 // --- computed
-const colorTwitterIcon = computed((): string => {
-  return twitterStore.isLiked(props.item.tweet.tweetId) ? 'green' : 'grey'
+const heartIcon = computed((): string => {
+  return twitterStore.isLiked(props.item.tweet.tweetId) ? 'mdi-heart' : 'mdi-heart-outline'
 })
 
 // --- onMounted
@@ -215,24 +215,18 @@ onMounted(async () => {
         :gradient="gradient"
         @click="openTweet()"
       >
-        <v-card-title :class="cardTitleClass">
-          {{ getTargetDisplay(item) }}
-        </v-card-title>
+        <v-row align="end" justify="space-between">
+          <v-card-title :class="cardTitleClass" class="mb-2 ml-2">
+            {{ getTargetDisplay(item) }}
+          </v-card-title>
+          <v-btn class="ma-2" variant="plain" :icon="heartIcon" color="pink" @click="likeTweet()" />
+        </v-row>
         <template #placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
             <v-progress-circular indeterminate color="grey lighten-5" />
           </v-row>
         </template>
       </v-img>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn icon @click="likeTweet()">
-          <v-icon :color="colorTwitterIcon">
-            mdi-heart
-          </v-icon>
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-badge>
 </template>
