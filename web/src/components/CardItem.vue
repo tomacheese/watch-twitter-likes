@@ -245,7 +245,11 @@ onMounted(async () => {
           </v-row>
         </template>
       </v-img>
-      <v-card-text v-else class="text-center">
+      <v-card-text
+        v-else
+        class="text-center"
+        :style="`height:${ calcHeight(item)}; line-height:${ calcHeight(item)}`"
+      >
         <v-icon color="grey lighten-2">
           mdi-image-off
         </v-icon>
