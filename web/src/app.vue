@@ -4,6 +4,7 @@ import ItemWrapper from './components/ItemWrapper.vue'
 import { useViewedStore } from './store/viewed'
 import { useSettingsStore } from './store/settings'
 import { useTwitterStore } from './store/twitter'
+import { useSnackbarStore } from './store/snackbar'
 
 type TargetsApiResponse = Target[]
 type ImagesApiResponse = Item[]
@@ -14,6 +15,7 @@ const config = useRuntimeConfig()
 const viewedStore = useViewedStore()
 const settings = useSettingsStore()
 const twitterStore = useTwitterStore()
+const snackbarStore = useSnackbarStore()
 
 // --- created
 const viewedIds = [...viewedStore.getRowIds]
@@ -85,7 +87,7 @@ const fetchTargets = async (): Promise<void> => {
     `${config.public.apiBaseURL}/targets`
   )
   if (response.error.value) {
-    alert(`Error: "Failed to fetch images: ${response.error.value}`)
+    snackbarStore.start(`表示対象一覧の取得に失敗しました: ${response.error.value}`, 'error', response.error.value)
     return
   }
   if (!response.data.value) {
@@ -204,10 +206,10 @@ onMounted(async () => {
   // localStorageにある設定を反映する
   isAnd.value = settings.isAnd
   isOnlyNew.value = settings.isOnlyNew
-  if (settings.selectedUserIds !== null) {
+  if (settings.selected !== null) {
     selected.value = targets.value.filter((t) =>
-      settings.selectedUserIds &&
-      settings.selectedUserIds.includes(t.userId)
+      settings.selected &&
+      settings.selected.includes(t.userId)
     )
   } else {
     selected.value = targets.value

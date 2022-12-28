@@ -58,8 +58,9 @@ export const useTwitterStore = defineStore('twitter', {
           }
         }
       )
-      if (response.error) {
-        return // 100件のうち一件でも存在しないツイートがある場合はエラーになる。どうしたものか
+      if (response.error.value) {
+        alert(`[Error] Failed to tweets lookup: ${response.error.value}`)
+        return
       }
       if (!response || !response.data.value) {
         return

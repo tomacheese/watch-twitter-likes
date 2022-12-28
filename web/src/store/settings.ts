@@ -2,10 +2,15 @@ import { Target } from '../types/types'
 
 export const useSettingsStore = defineStore('settings', {
   state: (): {
+    /** 選択されているユーザー ID 群 */
     selected: string[] | null
-    selectedTagsList: string[] | null
-    isAndSearch: boolean
-    isOnlyNewView: boolean
+    /** 選択されているタグ */
+    selectedTags: string[] | null
+    /** AND 検索かどうか */
+    isAnd: boolean
+    /** 新着のみ表示かどうか */
+    isOnlyNew: boolean
+    /** ダークテーマかどうか */
     isDarkTheme: boolean | null
     itemPerPage: number
     magicGrid: {
@@ -15,9 +20,9 @@ export const useSettingsStore = defineStore('settings', {
     }
   } => ({
     selected: null,
-    selectedTagsList: null,
-    isAndSearch: false,
-    isOnlyNewView: false,
+    selectedTags: null,
+    isAnd: false,
+    isOnlyNew: false,
     isDarkTheme: null,
     itemPerPage: 30,
     magicGrid: {
@@ -27,19 +32,6 @@ export const useSettingsStore = defineStore('settings', {
     }
   }),
 
-  getters: {
-    /** 選択されているユーザー ID 群 */
-    selectedUserIds: (state) => state.selected,
-    /** 選択されているタグ */
-    selectedTags: (state) => state.selectedTagsList,
-    /** AND 検索かどうか */
-    isAnd: (state) => state.isAndSearch,
-    /** 新着のみ表示かどうか */
-    isOnlyNew: (state) => state.isOnlyNewView,
-    /** ダークテーマかどうか */
-    isDark: (state) => state.isDarkTheme
-  },
-
   actions: {
     /** 選択されているユーザー ID 群を設定する */
     setSelected(targets: Target[]) {
@@ -47,15 +39,15 @@ export const useSettingsStore = defineStore('settings', {
     },
     /** 選択されているタグを設定する */
     setSelectedTags(tags: string[]) {
-      this.selectedTagsList = tags
+      this.selectedTags = tags
     },
     /** AND 検索かどうかを設定する */
     setAnd(isAnd: boolean) {
-      this.isAndSearch = isAnd
+      this.isAnd = isAnd
     },
     /** 新着のみ表示かどうかを設定する */
     setOnlyNew(isOnlyNew: boolean) {
-      this.isOnlyNewView = isOnlyNew
+      this.isOnlyNew = isOnlyNew
     },
     /** ダークテーマかどうかを設定する */
     setDark(isDark: boolean) {

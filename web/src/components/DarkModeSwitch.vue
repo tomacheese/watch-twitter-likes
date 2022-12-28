@@ -30,12 +30,12 @@ watch(theme, (val) => {
 // --- onMounted
 /** ページ読み込み時に、OS のテーマに応じてテーマフラグを切り替える */
 onMounted(() => {
-  if (settings.isDark === null) {
+  if (settings.isDarkTheme === null) {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       theme.value = true
     }
   } else {
-    theme.value = settings.isDark
+    theme.value = settings.isDarkTheme
   }
 })
 </script>

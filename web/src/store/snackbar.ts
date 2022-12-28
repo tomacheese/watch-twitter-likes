@@ -1,22 +1,17 @@
+import { FetchError } from 'ofetch'
+
 export const useSnackbarStore = defineStore('snackbar', {
   state: (): {
-    show: boolean
+    isShow: boolean
     message: string
     color: string
+    copyText: string | undefined
   } => ({
-    show: false,
+    isShow: false,
     message: '',
-    color: ''
+    color: '',
+    copyText: undefined
   }),
-
-  getters: {
-    /** スナックバーを表示するかどうか */
-    isShow: (state) => state.show,
-    /** スナックバーに表示するメッセージ */
-    getMessage: (state) => state.message,
-    /** スナックバーに表示する色 */
-    getColor: (state) => state.color
-  },
 
   actions: {
     /**
@@ -25,7 +20,7 @@ export const useSnackbarStore = defineStore('snackbar', {
      * @param show 表示するかどうか
      */
     setShow(show: boolean) {
-      this.show = show
+      this.isShow = show
     },
     /**
      * スナックバーを表示する
@@ -33,10 +28,27 @@ export const useSnackbarStore = defineStore('snackbar', {
      * @param message 表示するメッセージ
      * @param color 表示する色
      */
-    start(message: string, color: string) {
-      this.show = true
+    start(message: string, color: string, copyText?: string | FetchError | null) {
+      this.isShow = true
       this.message = message
       this.color = color
+
+      if (copyText === null) {
+        this.copyText = undefined
+        return
+      }
+      if (copyText instanceof FetchError) {
+        this.copyText = JSON.stringify({
+          message: copyText.message,
+          cause: copyText.cause,
+          stack: copyText.stack ? copyText.stack.split('\n') : null,
+          status: copyText.status,
+          request: copyText.request,
+          response: copyText.response
+        }, null, 2)
+        return
+      }
+      this.copyText = copyText
     }
   }
 })

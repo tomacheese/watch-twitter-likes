@@ -87,9 +87,9 @@ const clickTwitter = (): void => {
   if (!confirm('ログアウトしますか？')) {
     return
   }
-  useFetch(`${config.public.apiBaseURL}/twitter/logout`).then((result) => {
-    if (result.error) {
-      snackbarStore.start(`ログアウトに失敗しました: ${result.error.value}`, 'red')
+  useFetch(`${config.public.apiBaseURL}/twitter/logout`).then((response) => {
+    if (response.error) {
+      snackbarStore.start(`ログアウトに失敗しました: ${response.error.value}`, 'red', response.error.value)
       return
     }
     location.reload()
