@@ -32,9 +32,6 @@ const props = defineProps({
   }
 })
 
-/** 初めて表示するか */
-const isNew = ref<boolean>(false)
-
 // --- data
 /** 画像ファイルの Data Url: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/Data_URLs */
 const dataUrl = ref<string | null>()
@@ -42,6 +39,10 @@ const dataUrl = ref<string | null>()
 const gradient = ref<string>()
 /** カードタイトルのクラス（色指定など） */
 const cardTitleClass = ref<string>()
+/** 初めて表示するか */
+const isNew = ref<boolean>(false)
+/** 画像をロード中か */
+const isLoading = ref<boolean>(true)
 
 // --- methods
 /**
@@ -198,11 +199,13 @@ const heartIcon = computed((): string => {
 
 // --- onMounted
 onMounted(async () => {
+  isLoading.value = true
   isNew.value = !viewedStore.isViewed(props.item.rowId)
 
   // ツイートの画像 URL
   const imageURL = props.item.images[0].url
   if (!imageURL) {
+    isLoading.value = false
     throw new Error('imageURL is undefined')
   }
   // 画像を Data URL に変換
@@ -210,6 +213,7 @@ onMounted(async () => {
     return null
   })
   if (!dataUrl.value) {
+    isLoading.value = false
     return
   }
   // パレットを取得
@@ -218,6 +222,7 @@ onMounted(async () => {
   cardTitleClass.value = getCardTitleClass(palette)
   // gradientを作成
   gradient.value = getGradient(palette)
+  isLoading.value = false
 })
 </script>
 
@@ -225,7 +230,7 @@ onMounted(async () => {
   <v-badge v-model="isNew" overlap content="NEW" offset-x="20" color="green">
     <v-card width="240px">
       <v-img
-        v-if="dataUrl"
+        v-if="dataUrl && !isLoading"
         :height="calcHeight(item)"
         :src="dataUrl"
         class="align-end"
@@ -245,6 +250,13 @@ onMounted(async () => {
           </v-row>
         </template>
       </v-img>
+      <v-card-text
+        v-else-if="isLoading"
+        class="text-center"
+        :style="`height:${ calcHeight(item)}; line-height:${ calcHeight(item)}`"
+      >
+        <v-progress-circular indeterminate color="grey lighten-5" />
+      </v-card-text>
       <v-card-text
         v-else
         class="text-center"
