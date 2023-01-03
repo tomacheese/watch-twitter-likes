@@ -23,11 +23,11 @@
   "devDependencies": {
     "@types/js-yaml": "4.0.5",
     "@types/node": "18.11.18",
-    "@typescript-eslint/eslint-plugin": "5.47.1",
-    "@typescript-eslint/parser": "5.47.1",
+    "@typescript-eslint/eslint-plugin": "5.48.0",
+    "@typescript-eslint/parser": "5.48.0",
     "discord.js": "14.7.1",
-    "eslint": "8.30.0",
-    "eslint-config-prettier": "8.5.0",
+    "eslint": "8.31.0",
+    "eslint-config-prettier": "8.6.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-n": "15.6.0",
@@ -47,6 +47,6 @@
     "@fastify/cookie": "^8.3.0",
     "@fastify/cors": "8.2.0",
     "@fastify/session": "^10.1.0",
-    "fastify": "4.10.2"
+    "fastify": "4.11.0"
   }
 }
