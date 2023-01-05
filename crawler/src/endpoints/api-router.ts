@@ -10,6 +10,8 @@ interface ImagesQuery {
   type?: 'or' | 'and'
   offset?: number
   limit?: number
+  tags?: string[]
+  vieweds?: string[]
 }
 
 export class ApiRouter extends BaseRouter {
@@ -19,6 +21,7 @@ export class ApiRouter extends BaseRouter {
         fastify.get('/targets', this.routeGetTargets.bind(this))
         fastify.get('/tags', this.routeGetTags.bind(this))
         fastify.get('/images', this.routeGetImages.bind(this))
+        fastify.post('/images', this.routePostImages.bind(this))
         done()
       },
       { prefix: '/api' }
@@ -63,13 +66,24 @@ export class ApiRouter extends BaseRouter {
     }>,
     reply: FastifyReply
   ): Promise<void> {
+    await this.getImages(request.query, reply)
+  }
+
+  async routePostImages(
+    request: FastifyRequest<{
+      Body: ImagesQuery
+    }>,
+    reply: FastifyReply
+  ): Promise<void> {
+    await this.getImages(request.body, reply)
+  }
+
+  async getImages(query: ImagesQuery, reply: FastifyReply) {
     // targets query
-    const targetIds = request.query.targetIds
-      ? request.query.targetIds.split(',')
-      : undefined
-    const filterType = request.query.type
-    const offset = request.query.offset
-    const limit = request.query.limit
+    const targetIds = query.targetIds ? query.targetIds.split(',') : undefined
+    const filterType = query.type
+    const offset = query.offset
+    const limit = query.limit
 
     // まずはOR検索する
     const results = await DBItem.find({
@@ -84,7 +98,7 @@ export class ApiRouter extends BaseRouter {
           })
         : undefined,
     })
-    const items = results.map((item) => {
+    let items = results.map((item) => {
       return {
         ...item,
         images: item.images.map((image) => {
@@ -96,6 +110,25 @@ export class ApiRouter extends BaseRouter {
       }
     })
 
+    // 閲覧済みフィルタ
+    const vieweds = query.vieweds
+    if (vieweds) {
+      items = items.filter((item) => {
+        return !vieweds.includes(item.tweet.tweetId)
+      })
+    }
+
+    // タグフィルタ
+    const tags = query.tags
+    if (tags) {
+      items = items.filter((item) => {
+        return tags.some((tag) => {
+          return item.tweet.tags?.includes(tag)
+        })
+      })
+    }
+
+    // OR検索かつ、targets指定なしの場合はここで終了
     if (filterType === 'or' || filterType === undefined || !targetIds) {
       reply.send({
         items: this.pagination(items, offset, limit),
@@ -103,6 +136,7 @@ export class ApiRouter extends BaseRouter {
       })
       return
     }
+
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
     const tweetIds = items.map((item) => item.tweet.tweetId)
     const tweetIdCount = tweetIds.reduce((acc, cur) => {

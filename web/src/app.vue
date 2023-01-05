@@ -229,7 +229,7 @@ onMounted(async () => {
   <v-app>
     <v-main>
       <TheHeader :items="items" :targets="targets" :loading="loading" />
-      <v-pagination v-model="page" :length="Math.ceil(getItems.length / settings.itemPerPage)" class="my-3" :disabled="loading" />
+      <v-pagination v-model="page" :length="Math.ceil(total / settings.itemPerPage)" class="my-3" :disabled="loading" />
       <v-container v-if="getItems.length === 0 && !loading">
         <v-card>
           <v-card-text class="text-h6 text-center my-3">
