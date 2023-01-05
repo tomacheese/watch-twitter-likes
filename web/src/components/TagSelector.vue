@@ -3,9 +3,16 @@
 <script setup lang="ts">
 import { Item } from '../types/types'
 
+type TagsApiResponse = {
+  tag: string
+  count: number
+}[]
+
+const config = useRuntimeConfig()
+
 // --- emits
 interface Emits {
-  (e: 'updated', newValue: string): void
+  (e: 'updated', newValues: string[]): void
 }
 const emit = defineEmits<Emits>()
 
@@ -31,13 +38,20 @@ watch(itemsRef, () => {
 })
 
 watch(selected, () => {
-  emit('updated', selected.value.join('\t'))
+  emit('updated', selected.value)
 })
 
 // --- mounted
-onMounted(() => {
-  tags.value = props.items.map((tweet) => tweet.tweet.tags).flat().filter((tag, index, self) => self.indexOf(tag) === index)
-  emit('updated', selected.value.join('\t'))
+onMounted(async () => {
+  const response = await useFetch<TagsApiResponse>(
+    `${config.public.apiBaseURL}/tags`
+  )
+  if (!response.data.value || response.error.value) {
+    alert(`Error: "Failed to fetch tags: ${response.error.value}`)
+    return
+  }
+  tags.value = response.data.value.map((tag) => tag.tag)
+  emit('updated', selected.value)
 })
 </script>
 

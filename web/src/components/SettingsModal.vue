@@ -8,7 +8,13 @@ const isOpen = ref(false)
 // --- settings computed
 const itemPerPage = computed({
   get: () => settings.itemPerPage,
-  set: (val) => settings.setItemPerPage(val)
+  set: (val) => {
+    // stringがくる可能性がある
+    if (typeof val === 'string') {
+      val = parseInt(val)
+    }
+    settings.setItemPerPage(val)
+  }
 })
 const maxCols = computed({
   get: () => settings.magicGrid.maxCols,

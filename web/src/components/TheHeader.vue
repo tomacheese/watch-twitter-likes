@@ -5,16 +5,21 @@ import { useDisplay } from 'vuetify'
 import { useSettingsStore } from '../store/settings'
 import { useSnackbarStore } from '../store/snackbar'
 import { useTwitterStore } from '../store/twitter'
-import { useViewedStore } from '../store/viewed'
 import { Item, Target } from '../types/types'
 import TagSelector from './TagSelector.vue'
 
 /// --- store
 const config = useRuntimeConfig()
-const viewedStore = useViewedStore()
 const snackbarStore = useSnackbarStore()
 const settings = useSettingsStore()
 const twitterStore = useTwitterStore()
+
+// --- emit
+interface Emits {
+  /** すべてのアイテムを既読にする */
+  (e: 'allViewed'): void
+}
+const emit = defineEmits<Emits>()
 
 // --- settings computed
 const isAnd = computed({
@@ -59,8 +64,8 @@ const props = defineProps<{
 // --- methods
 
 /** 選択中タグをアップデートする */
-const updatedSelectTags = (val: string): void => {
-  selectTags.value = val.split('\t').filter((v) => v !== '')
+const updatedSelectTags = (val: string[]): void => {
+  selectTags.value = val.filter((v) => v !== '')
 }
 
 /** すべてのアイテムを既読にする */
@@ -68,12 +73,7 @@ const allViewed = (): void => {
   if (!confirm('すべてのアイテムを既読にしますか？')) {
     return
   }
-  viewedStore.addAll(props.items.map((item) => item.rowId))
-
-  snackbarStore.start('すべてのアイテムを既読にしました。3秒後に再読み込みします。', 'green')
-  setTimeout(() => {
-    location.reload()
-  }, 3000)
+  emit('allViewed')
 }
 
 /** ログイン/ログアウト */
