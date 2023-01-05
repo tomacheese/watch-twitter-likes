@@ -103,7 +103,7 @@ const fetchTargets = async (): Promise<void> => {
 }
 
 /** アイテム一覧をAPIから取得する */
-const fetchItems = async (): Promise<void> => {
+const fetchItems = async (forceAll = false): Promise<void> => {
   if (selected.value.length === 0) {
     items.value = []
     return
@@ -112,9 +112,14 @@ const fetchItems = async (): Promise<void> => {
   const response = await useFetch<ImagesApiResponse>(
     `${config.public.apiBaseURL}/images`,
     {
-      params: {
-        targetIds: selected.value.map((s) => s.userId).join(','),
-        type: isAnd.value ? 'and' : 'or'
+      method: 'POST',
+      body: {
+        targetIds: selected.value.map((s) => s.userId),
+        type: isAnd.value ? 'and' : 'or',
+        offset: !forceAll ? (page.value - 1) * settings.itemPerPage : undefined,
+        limit: !forceAll ? settings.itemPerPage : undefined,
+        tags: selectTags.value && selectTags.value.length > 0 ? selectTags.value : undefined,
+        vieweds: isOnlyNew.value ? viewedIds : undefined
       }
     }
   )
@@ -125,9 +130,7 @@ const fetchItems = async (): Promise<void> => {
   if (!response || !response.data.value) {
     return
   }
-  const results = response.data.value.items.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  )
+  const results = response.data.value.items
   items.value = results
   total.value = response.data.value.total
   loading.value = false
@@ -138,71 +141,70 @@ const onViewed = (item: Item): void => {
   viewedStore.add(item.rowId)
 }
 
-// --- computed
-/** すべてのアイテム一覧 */
-const getItems = computed(() => {
-  let filterItems = items.value
-  if (isOnlyNew.value) {
-    filterItems = filterItems.filter((item) => {
-      return !viewedIds.includes(item.rowId)
-    })
-  }
-  if (selectTags.value === null || selectTags.value.length === 0) {
-    return filterItems
-  }
-  return filterItems.filter((item) => {
-    if (!selectTags.value) { return false }
-    return selectTags.value.some((tag) => {
-      if (!item.tweet.tags) { return false }
-      return item.tweet.tags.includes(tag)
-    })
-  })
-})
+/** すべてのアイテムを既読にする */
+const onAllViewed = (): void => {
+  fetchItems(true).then(() => {
+    viewedStore.addAll(items.value.map((item) => item.rowId))
 
-/** このページに表示するアイテム一覧 */
-const getPageItem = computed(() => {
-  return getItems.value.slice((page.value - 1) * settings.itemPerPage, page.value * settings.itemPerPage)
-})
+    snackbarStore.start('すべてのアイテムを既読にしました。3秒後に再読み込みします。', 'green')
+    setTimeout(() => {
+      location.reload()
+    }, 3000)
+  })
+}
 
 // --- watch
-/** ページが変更されたら、MagicGridを更新し、トップにスクロールする */
+/** ページが変更されたら、アイテム一覧を取得したうえでMagicGridを更新し、トップにスクロールする */
 watch(page, () => {
-  updateMagicGrid()
-  scrollToTop()
+  fetchItems().then(() => {
+    updateMagicGrid()
+    scrollToTop()
+  })
 })
 
 /** 選択されたターゲットが変更されたら、アイテム一覧を取得する */
 watch(selected, () => {
   window.clearTimeout(timer.value)
-  timer.value = window.setTimeout(async () => {
-    await fetchItems()
-    updateMagicGrid()
+  timer.value = window.setTimeout(() => {
+    fetchItems().then(() => {
+      updateMagicGrid()
+    })
   }, 500)
 })
 
-/** AND検索かどうかが変更されたら、アイテム一覧を取得する */
-watch(isAnd, async () => {
-  settings.setAnd(isAnd.value)
-  await fetchItems()
+/** 選択されたタグが変更されたら、アイテム一覧を取得する */
+watch(selectTags, () => {
+  window.clearTimeout(timer.value)
+  timer.value = window.setTimeout(() => {
+    fetchItems().then(() => {
+      updateMagicGrid()
+    })
+  }, 500)
 })
 
-/** アイテム一覧が更新されたら、MagicGridを更新する */
-watch(getItems, () => {
-  updateMagicGrid()
+/** AND検索かどうかが変更されたら、設定に反映したうえでアイテム一覧を取得する */
+watch(isAnd, () => {
+  settings.setAnd(isAnd.value)
+  fetchItems().then(() => {
+    updateMagicGrid()
+  })
 })
 
 /** このページに表示するアイテム一覧が更新されたら、いいね状態を取得する */
-watch(getPageItem, async () => {
-  if (!twitterStore.isLogin || getPageItem.value.length === 0) {
+watch(items, async () => {
+  if (!twitterStore.isLogin || items.value.length === 0) {
     return
   }
-  const tweetIds = getPageItem.value.map((item) => item.tweet.tweetId)
+  const tweetIds = items.value.map((item) => item.tweet.tweetId)
   await twitterStore.fetchLikedTweetIds(tweetIds)
 })
 
-/** 新しいアイテムのみ表示かどうかが変更されたら、設定に反映する */
+/** 新しいアイテムのみ表示かどうかが変更されたら、設定に反映したうえでアイテム一覧を取得する */
 watch(isOnlyNew, () => {
   settings.setOnlyNew(isOnlyNew.value)
+  fetchItems().then(() => {
+    updateMagicGrid()
+  })
 })
 
 // --- onMounted
@@ -228,9 +230,9 @@ onMounted(async () => {
 <template>
   <v-app>
     <v-main>
-      <TheHeader :items="items" :targets="targets" :loading="loading" />
+      <TheHeader :items="items" :targets="targets" :loading="loading" @all-viewed="onAllViewed" />
       <v-pagination v-model="page" :length="Math.ceil(total / settings.itemPerPage)" class="my-3" :disabled="loading" />
-      <v-container v-if="getItems.length === 0 && !loading">
+      <v-container v-if="items.length === 0 && !loading">
         <v-card>
           <v-card-text class="text-h6 text-center my-3">
             該当するアイテムが見つかりませんでした
@@ -241,7 +243,7 @@ onMounted(async () => {
         <v-progress-circular v-if="loading" indeterminate />
       </div>
       <MagicGrid
-        v-if="getItems.length !== 0"
+        v-if="!loading && items.length !== 0"
         ref="magicgrid"
         :animate="true"
         :use-min="true"
@@ -249,11 +251,11 @@ onMounted(async () => {
         :max-cols="magicGridSettings.maxCols"
         :max-col-width="magicGridSettings.maxColWidth"
       >
-        <ItemWrapper v-for="item of getPageItem" :key="item.rowId" :item="item" @intersect="onViewed">
+        <ItemWrapper v-for="item of items" :key="item.rowId" :item="item" @intersect="onViewed">
           <CardItem :item="item" :is-and="isAnd" />
         </ItemWrapper>
       </MagicGrid>
-      <v-pagination v-model="page" :length="Math.ceil(getItems.length / settings.itemPerPage)" class="my-3" :disabled="loading" />
+      <v-pagination v-model="page" :length="Math.ceil(total / settings.itemPerPage)" class="my-3" :disabled="loading" />
       <GlobalSnackbar />
     </v-main>
   </v-app>
