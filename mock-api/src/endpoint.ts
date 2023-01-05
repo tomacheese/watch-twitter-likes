@@ -12,7 +12,7 @@ export class EndPoints {
     this.fastify.register(
       (fastify, _, done) => {
         fastify.get('/targets', this.routeGetTargets.bind(this))
-        fastify.get('/images', this.routeGetImages.bind(this))
+        fastify.post('/images', this.routePostImages.bind(this))
         done()
       },
       { prefix: '/api' }
@@ -32,15 +32,14 @@ export class EndPoints {
     reply.send(response.data)
   }
 
-  async routeGetImages(
+  async routePostImages(
     request: FastifyRequest,
     reply: FastifyReply
   ): Promise<void> {
-    const queries = request.query
-
-    const response = await axios.get('https://likes.amatama.net/api/images', {
-      params: queries,
-    })
+    const response = await axios.post(
+      'https://likes.amatama.net/api/images',
+      request.body
+    )
     if (response.status !== 200) {
       reply.code(500)
       reply.send({ error: 'Internal Server Error' })

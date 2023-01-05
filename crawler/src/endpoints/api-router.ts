@@ -6,12 +6,12 @@ import { DBTarget } from '@/entities/targets'
 import { DBTweet } from '@/entities/tweets'
 
 interface ImagesQuery {
-  targetIds?: string
+  targetIds?: string[]
   type?: 'or' | 'and'
   offset?: number
   limit?: number
   tags?: string[]
-  vieweds?: string[]
+  vieweds?: number[]
 }
 
 export class ApiRouter extends BaseRouter {
@@ -20,7 +20,6 @@ export class ApiRouter extends BaseRouter {
       (fastify, _, done) => {
         fastify.get('/targets', this.routeGetTargets.bind(this))
         fastify.get('/tags', this.routeGetTags.bind(this))
-        fastify.get('/images', this.routeGetImages.bind(this))
         fastify.post('/images', this.routePostImages.bind(this))
         done()
       },
@@ -60,15 +59,6 @@ export class ApiRouter extends BaseRouter {
     reply.send(tagsWithCount)
   }
 
-  async routeGetImages(
-    request: FastifyRequest<{
-      Querystring: ImagesQuery
-    }>,
-    reply: FastifyReply
-  ): Promise<void> {
-    await this.getImages(request.query, reply)
-  }
-
   async routePostImages(
     request: FastifyRequest<{
       Body: ImagesQuery
@@ -80,7 +70,7 @@ export class ApiRouter extends BaseRouter {
 
   async getImages(query: ImagesQuery, reply: FastifyReply) {
     // targets query
-    const targetIds = query.targetIds ? query.targetIds.split(',') : undefined
+    const targetIds = query.targetIds
     const filterType = query.type
     const offset = query.offset
     const limit = query.limit
@@ -114,7 +104,7 @@ export class ApiRouter extends BaseRouter {
     const vieweds = query.vieweds
     if (vieweds) {
       items = items.filter((item) => {
-        return !vieweds.includes(item.tweet.tweetId)
+        return !vieweds.includes(item.rowId)
       })
     }
 
