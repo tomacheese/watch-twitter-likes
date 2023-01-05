@@ -3,6 +3,7 @@ import { BaseRouter } from '@/base-router'
 import { DBItem } from '@/entities/item'
 import { Equal } from 'typeorm'
 import { DBTarget } from '@/entities/targets'
+import { DBTweet } from '@/entities/tweets'
 
 interface ImagesQuery {
   targetIds?: string
@@ -16,6 +17,7 @@ export class ApiRouter extends BaseRouter {
     this.fastify.register(
       (fastify, _, done) => {
         fastify.get('/targets', this.routeGetTargets.bind(this))
+        fastify.get('/tags', this.routeGetTags.bind(this))
         fastify.get('/images', this.routeGetImages.bind(this))
         done()
       },
@@ -29,6 +31,30 @@ export class ApiRouter extends BaseRouter {
   ): Promise<void> {
     const targets = await DBTarget.find()
     reply.send(targets)
+  }
+
+  async routeGetTags(
+    _request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<void> {
+    const tweets = await DBTweet.find()
+    const tags = this.filterNull(tweets.map((tweet) => tweet.tags)).filter(
+      (tag, index, self) => self.indexOf(tag) === index
+    )
+    const tagsWithCount = this.filterNull(
+      this.filterNull(tags)
+        .flat()
+        .map((tag) => {
+          if (!tag) return null
+          return {
+            tag,
+            count: tweets.filter(
+              (tweet) => tweet.tags && tweet.tags?.includes(tag)
+            ).length,
+          }
+        })
+    ).sort((a, b) => b.count - a.count)
+    reply.send(tagsWithCount)
   }
 
   async routeGetImages(
@@ -116,5 +142,9 @@ export class ApiRouter extends BaseRouter {
     if (!offset) offset = 0
     if (!limit) limit = items.length
     return items.slice(offset, offset + limit)
+  }
+
+  filterNull<T>(items: (T | null)[]): T[] {
+    return items.filter((item) => item !== null).flatMap((item) => item) as T[]
   }
 }
