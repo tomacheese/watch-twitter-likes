@@ -51,7 +51,7 @@ const reset = (): void => {
       <v-card-text>
         <v-row>
           <v-col cols="4">
-            <v-subheader>1ページのアイテム数</v-subheader>
+            <v-list-subheader>1ページのアイテム数</v-list-subheader>
           </v-col>
           <v-col cols="8">
             <v-text-field
@@ -63,7 +63,7 @@ const reset = (): void => {
         </v-row>
         <v-row>
           <v-col cols="4">
-            <v-subheader>最大列数</v-subheader>
+            <v-list-subheader>最大列数</v-list-subheader>
           </v-col>
           <v-col cols="8">
             <v-text-field
@@ -75,7 +75,7 @@ const reset = (): void => {
         </v-row>
         <v-row>
           <v-col cols="4">
-            <v-subheader>最大列幅</v-subheader>
+            <v-list-subheader>最大列幅</v-list-subheader>
           </v-col>
           <v-col cols="8">
             <v-text-field
@@ -87,7 +87,7 @@ const reset = (): void => {
         </v-row>
         <v-row>
           <v-col cols="4">
-            <v-subheader>列間隔</v-subheader>
+            <v-list-subheader>列間隔</v-list-subheader>
           </v-col>
           <v-col cols="8">
             <v-text-field
