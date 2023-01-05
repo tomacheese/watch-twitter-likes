@@ -481,13 +481,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kevinmarrec/nuxt-pwa@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.13.0.tgz#46057724157559517793b416724631b8a8e51c81"
-  integrity sha512-0F0FwGEBvBdGEB526rK2cY0cxIf+kEKWa0EjnIQ7R4K85aAlGZVa04E+oOX1A4eGSLpjB5VxcSuZv/y2y7Pg3Q==
+"@kevinmarrec/nuxt-pwa@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.14.0.tgz#e1a4c2f8ebd73d6516eaca4e4ec5418ad086428d"
+  integrity sha512-60YWkyFAgCZVl9BKwC5aKEv7l5s/SuGIP4jf1o4uiE1B5Mxpm4n5HFPmDdirMn+RX+Xe4LFjdB2vuxxcUt3fFw==
   dependencies:
     hasha "^5.2.2"
-    sharp "^0.31.2"
+    sharp "^0.31.3"
     std-env "^3.3.1"
 
 "@mapbox/node-pre-gyp@^1.0.0", "@mapbox/node-pre-gyp@^1.0.5":
@@ -5142,10 +5142,10 @@ setprototypeof@1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-sharp@^0.31.2:
-  version "0.31.2"
-  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.31.2.tgz#a8411c80512027f5a452b76d599268760c4e5dfa"
-  integrity sha512-DUdNVEXgS5A97cTagSLIIp8dUZ/lZtk78iNVZgHdHbx1qnQR7JAHY0BnXnwwH39Iw+VKhO08CTYhIg0p98vQ5Q==
+sharp@^0.31.3:
+  version "0.31.3"
+  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.31.3.tgz#60227edc5c2be90e7378a210466c99aefcf32688"
+  integrity sha512-XcR4+FCLBFKw1bdB+GEhnUNXNXvnt0tDo4WsBsraKymuo/IAuPuCBVAL2wIkUw2r/dwFW5Q5+g66Kwl2dgDFVg==
   dependencies:
     color "^4.2.3"
     detect-libc "^2.0.1"
