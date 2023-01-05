@@ -25,7 +25,12 @@ jobs:
         uses: actions/checkout@master
 
       - name: Add reviewer
-        run: |
-          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer book000 || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.pulls.requestReviewers({
+              ...context.repo,
+              pull_number: context.issue.number,
+              reviewers: ["book000"]
+            })
