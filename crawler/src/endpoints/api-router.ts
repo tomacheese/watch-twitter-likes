@@ -87,6 +87,9 @@ export class ApiRouter extends BaseRouter {
             }
           })
         : undefined,
+      order: {
+        createdAt: 'DESC',
+      },
     })
     let items = results.map((item) => {
       return {
