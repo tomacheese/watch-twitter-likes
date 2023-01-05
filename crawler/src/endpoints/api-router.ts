@@ -71,7 +71,10 @@ export class ApiRouter extends BaseRouter {
     })
 
     if (filterType === 'or' || filterType === undefined || !targetIds) {
-      reply.send(this.pagination(items, offset, limit))
+      reply.send({
+        items: this.pagination(items, offset, limit),
+        total: items.length,
+      })
       return
     }
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
@@ -99,7 +102,10 @@ export class ApiRouter extends BaseRouter {
           index
         )
       })
-    reply.send(this.pagination(filteredItems, offset, limit))
+      reply.send({
+        items: this.pagination(filteredItems, offset, limit),
+        total: items.length,
+      })
   }
 
   pagination<T>(

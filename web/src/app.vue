@@ -7,7 +7,10 @@ import { useTwitterStore } from './store/twitter'
 import { useSnackbarStore } from './store/snackbar'
 
 type TargetsApiResponse = Target[]
-type ImagesApiResponse = Item[]
+type ImagesApiResponse = {
+  items: Item[]
+  total: number
+}
 
 const config = useRuntimeConfig()
 
@@ -22,11 +25,13 @@ const viewedIds = [...viewedStore.getRowIds]
 
 // --- data
 /** アイテム一覧 */
-const items = ref<ImagesApiResponse>([])
+const items = ref<Item[]>([])
 /** すべてのターゲット */
 const targets = ref<Target[]>([])
 /** 現在のページ */
 const page = ref(1)
+/** 総件数 */
+const total = ref(0)
 /** ローディング中かどうか */
 const loading = ref(true)
 /** 連続して選択が更新された時用のタイマー */
@@ -120,10 +125,11 @@ const fetchItems = async (): Promise<void> => {
   if (!response || !response.data.value) {
     return
   }
-  const results = response.data.value.sort(
+  const results = response.data.value.items.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
   items.value = results
+  total.value = response.data.value.total
   loading.value = false
 }
 
