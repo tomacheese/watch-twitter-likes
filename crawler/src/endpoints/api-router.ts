@@ -102,10 +102,10 @@ export class ApiRouter extends BaseRouter {
           index
         )
       })
-      reply.send({
-        items: this.pagination(filteredItems, offset, limit),
-        total: items.length,
-      })
+    reply.send({
+      items: this.pagination(filteredItems, offset, limit),
+      total: items.length,
+    })
   }
 
   pagination<T>(
