@@ -5,8 +5,10 @@ import { Equal } from 'typeorm'
 import { DBTarget } from '@/entities/targets'
 
 interface ImagesQuery {
-  targetIds: string | undefined
-  type: 'or' | 'and' | undefined
+  targetIds?: string
+  type?: 'or' | 'and'
+  offset?: number
+  limit?: number
 }
 
 export class ApiRouter extends BaseRouter {
@@ -40,6 +42,8 @@ export class ApiRouter extends BaseRouter {
       ? request.query.targetIds.split(',')
       : undefined
     const filterType = request.query.type
+    const offset = request.query.offset
+    const limit = request.query.limit
 
     // まずはOR検索する
     const results = await DBItem.find({
@@ -67,7 +71,7 @@ export class ApiRouter extends BaseRouter {
     })
 
     if (filterType === 'or' || filterType === undefined || !targetIds) {
-      reply.send(items)
+      reply.send(this.pagination(items, offset, limit))
       return
     }
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
@@ -95,6 +99,16 @@ export class ApiRouter extends BaseRouter {
           index
         )
       })
-    reply.send(filteredItems)
+    reply.send(this.pagination(filteredItems, offset, limit))
+  }
+
+  pagination<T>(
+    items: T[],
+    offset: number | undefined,
+    limit: number | undefined
+  ): T[] {
+    if (!offset) offset = 0
+    if (!limit) limit = items.length
+    return items.slice(offset, offset + limit)
   }
 }
