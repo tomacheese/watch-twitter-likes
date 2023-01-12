@@ -24,7 +24,7 @@
     "vue-tsc": "1.0.24"
   },
   "dependencies": {
-    "@kevinmarrec/nuxt-pwa": "0.14.1",
+    "@kevinmarrec/nuxt-pwa": "0.15.0",
     "@mdi/font": "7.1.96",
     "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
     "@pinia/nuxt": "^0.4.6",
