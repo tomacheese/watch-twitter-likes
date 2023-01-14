@@ -118,7 +118,7 @@ jobs:
             type=raw,value=latest
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v3.3.0
         with:
           context: ${{ fromJson(matrix.target).directory }}
           push: ${{ github.event.pull_request.merged == true }}
