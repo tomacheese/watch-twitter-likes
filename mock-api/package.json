@@ -5,7 +5,6 @@
     "build": "ts-node -r tsconfig-paths/register ./src/main.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register ./src/main.ts",
     "start": "node ./dist/main.js",
-    "test": "ts-node -r tsconfig-paths/register ./src/test.ts",
     "compile": "tsc -p .",
     "compile:test": "tsc -p . --noEmit",
     "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
