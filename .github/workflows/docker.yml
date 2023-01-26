@@ -31,7 +31,7 @@ env:
   # レジストリのログインパスワード
   DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   # ビルドするプラットフォーム
-  PLATFORMS: linux/amd64,linux/arm64
+  PLATFORMS: linux/amd64
   # ビルド対象情報の情報
   TARGETS: >-
     [
