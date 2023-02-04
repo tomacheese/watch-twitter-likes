@@ -813,14 +813,14 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kevinmarrec/nuxt-pwa@0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.15.0.tgz#c67ece324b1578c62f58d248d5de8cca1544b90f"
-  integrity sha512-7aEX3k123gq15859pHLnZZgSGSsTnH1BduK4sICktnkOJK6u62Uo0TT85ma9m5OOC27RJuCo/G8nBWEa39dD+g==
+"@kevinmarrec/nuxt-pwa@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.16.0.tgz#70e7e82bac2072f2b1319aecc3a0443e971f55a5"
+  integrity sha512-GTazJ7Ei2acmzUFPIjTOqlD14TG45QQnCvheOLi+2u8BastEOwPxt//XfIopnTms+B54z4cBJA5hIjUgeZ6irQ==
   dependencies:
     hasha "^5.2.2"
     sharp "^0.31.3"
-    std-env "^3.3.1"
+    std-env "^3.3.2"
 
 "@mapbox/node-pre-gyp@^1.0.0", "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.10"
