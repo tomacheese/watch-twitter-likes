@@ -813,10 +813,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kevinmarrec/nuxt-pwa@0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.16.1.tgz#55a4719e231f6f00293055ac9bf62e831fcf6dac"
-  integrity sha512-FKEKivxmWfXrQZ3Sq7EJLVi42d3JPyFIMpmkbUdwW892KUYmZtFq41587JEVWcZPLxZQQ5cuDnFn0rl76b5qZQ==
+"@kevinmarrec/nuxt-pwa@0.16.2":
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/@kevinmarrec/nuxt-pwa/-/nuxt-pwa-0.16.2.tgz#512caadbea8236963c71664f24bdc860cac409b3"
+  integrity sha512-KRQtJ9hrIDogG7OrofmyOG+dM/vERF6KQGeI5IvINeZmmQxoO27IWO8D/ues10Ed/qYzjs6vj0vASsbJq0IY7A==
   dependencies:
     hasha "^5.2.2"
     sharp "^0.31.3"
