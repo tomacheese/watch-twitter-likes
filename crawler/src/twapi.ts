@@ -31,12 +31,16 @@ export class TwApi {
     account: TwitterAccount,
     tweetId: string
   ): Promise<void> {
-    await axios.post(`/tweets/${tweetId}/like`, {
-      baseURL: this.baseUrl,
-      auth: {
-        username: account.basicUsername,
-        password: account.basicPassword,
-      },
-    })
+    await axios.post(
+      `/tweets/${tweetId}/like`,
+      {},
+      {
+        baseURL: this.baseUrl,
+        auth: {
+          username: account.basicUsername,
+          password: account.basicPassword,
+        },
+      }
+    )
   }
 }
