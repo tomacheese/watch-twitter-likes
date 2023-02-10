@@ -6,7 +6,7 @@ import {
   OneToMany,
   Timestamp,
 } from 'typeorm'
-import { DBTweet } from './tweets'
+import { DBTweet } from './entities/tweets'
 
 @Entity('users')
 export class DBUser extends BaseEntity {

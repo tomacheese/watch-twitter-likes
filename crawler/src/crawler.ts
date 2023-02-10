@@ -8,20 +8,22 @@ import {
   TextChannel,
   ThreadChannel,
 } from 'discord.js'
-import { MediaSizesV1, TweetV1, TwitterApi } from 'twitter-api-v2'
+import { isFullUser, Status } from 'twitter-d'
 import { getConfig } from './config'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
 import { DBTarget } from './entities/targets'
+import { Logger } from './logger'
 import { getDBImage, getDBTweet, getDBUser } from './mysql'
+import { TwApi } from './twapi'
 
 export default class Crawler {
-  private client: TwitterApi
+  private client: TwApi
   private channel: TextChannel | AnyThreadChannel | null
   private target: DBTarget
 
-  constructor(twitterApi: TwitterApi, discordClient: Client, target: DBTarget) {
-    this.client = twitterApi
+  constructor(twApi: TwApi, discordClient: Client, target: DBTarget) {
+    this.client = twApi
     this.target = target
 
     if (target.threadId === null) {
@@ -40,6 +42,7 @@ export default class Crawler {
 
   /** 収集処理 */
   public async crawl(): Promise<void> {
+    const logger = Logger.configure('Crawler.crawl')
     if (
       this.channel instanceof ThreadChannel &&
       !(this.channel as ThreadChannel).joined
@@ -47,14 +50,7 @@ export default class Crawler {
       await (this.channel as ThreadChannel).join()
     }
 
-    const favorites = await this.client.v1.favoriteTimeline(
-      this.target.userId.toString(),
-      {
-        count: 200,
-        include_entities: true,
-      }
-    )
-    const tweets = favorites.tweets
+    const tweets = await this.client.getUserLikes(this.target.userId, 200)
 
     const isFirst =
       (await DBItem.count({
@@ -64,7 +60,7 @@ export default class Crawler {
           },
         },
       })) === 0
-    const isNotified = async (tweet: TweetV1) => {
+    const isNotified = async (tweet: Status) => {
       return (
         (await DBItem.count({
           where: {
@@ -78,11 +74,9 @@ export default class Crawler {
         })) !== 0
       )
     }
-    const isMuted = async (tweet: TweetV1) => {
+    const isMuted = async (tweet: Status) => {
       const rows = await DBMute.find()
-      return rows.some((row) =>
-        (tweet.full_text ?? tweet.text).includes(row.text)
-      )
+      return rows.some((row) => tweet.full_text.includes(row.text))
     }
 
     let countInserted = 0
@@ -116,15 +110,15 @@ export default class Crawler {
       if (!isFirst) await this.sendMessage(tweet)
     }
 
-    console.log('Crawled: ' + this.target.name)
-    console.log('| Tweets: ' + tweets.length)
-    console.log('| Inserted: ' + countInserted)
-    console.log('| Notified: ' + countNotified)
-    console.log('| Muted: ' + countMuted)
+    logger.info('👀 Crawled: ' + this.target.name)
+    logger.info('👀 | Tweets: ' + tweets.length)
+    logger.info('👀 | Inserted: ' + countInserted)
+    logger.info('👀 | Notified: ' + countNotified)
+    logger.info('👀 | Muted: ' + countMuted)
   }
 
   /** DBにアイテム挿入 */
-  private async addNewItem(target: DBTarget, tweet: TweetV1) {
+  private async addNewItem(target: DBTarget, tweet: Status) {
     const extendedEntities = tweet.extended_entities
     if (!extendedEntities || !extendedEntities.media) {
       return
@@ -137,10 +131,8 @@ export default class Crawler {
       if (media.type !== 'photo') {
         continue
       }
-      for (const size of ['thumb', 'large', 'medium', 'small']) {
-        dbImages.push(
-          await getDBImage(dbTweet, media, size as keyof MediaSizesV1)
-        )
+      for (const size of ['thumb', 'large', 'medium', 'small'] as const) {
+        dbImages.push(await getDBImage(dbTweet, media, size))
       }
     }
 
@@ -152,9 +144,13 @@ export default class Crawler {
   }
 
   /** Discordにメッセージ送信 */
-  private async sendMessage(tweet: TweetV1) {
+  private async sendMessage(tweet: Status) {
+    const logger = Logger.configure('Crawler.sendMessage')
     if (!this.channel) {
       return
+    }
+    if (!isFullUser(tweet.user)) {
+      throw new Error('User is not full user.')
     }
     const tweetUrl =
       'https://twitter.com/' +
@@ -162,7 +158,7 @@ export default class Crawler {
       '/status/' +
       tweet.id_str
 
-    console.log(tweetUrl)
+    logger.info(`🔗 ${tweetUrl}`)
 
     const config = getConfig()
     const components = config.twitter.accounts.map((account) => {
@@ -192,7 +188,7 @@ export default class Crawler {
 
     // 同一ツイートのうち、一番最初の画像だけに適用する
     const firstEmbed: APIEmbed = {
-      description: tweet.full_text ?? tweet.text,
+      description: tweet.full_text,
       fields: [
         {
           name: 'Retweet',

@@ -8,7 +8,6 @@ services:
         source: ./data/
         target: /data/
     environment:
-      CONFIG_PATH: /data/config.yml
       TZ: Asia/Tokyo
     depends_on:
       mariadb:
@@ -25,7 +24,6 @@ services:
     ports:
       - 8080:80
     environment:
-      CONFIG_PATH: /data/config.yml
       TZ: Asia/Tokyo
     depends_on:
       mariadb:

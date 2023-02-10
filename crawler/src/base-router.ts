@@ -1,14 +1,14 @@
 import { FastifyInstance } from 'fastify'
-import { Config } from './config'
+import { Configuration } from './config'
 
 /**
  * REST API ルーターの基底クラス
  */
 export abstract class BaseRouter {
   protected fastify: FastifyInstance
-  protected config: Config
+  protected config: Configuration
 
-  constructor(fastify: FastifyInstance, config: Config) {
+  constructor(fastify: FastifyInstance, config: Configuration) {
     this.fastify = fastify
     this.config = config
   }

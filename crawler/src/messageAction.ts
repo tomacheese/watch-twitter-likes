@@ -1,26 +1,21 @@
 import { ButtonInteraction, CacheType } from 'discord.js'
-import { TwitterApi } from 'twitter-api-v2'
 import { getConfig, TwitterAccount } from './config'
+import { Logger } from './logger'
+import { TwApi } from './twapi'
 
 export async function actionFavorite(
   interaction: ButtonInteraction<CacheType>,
   account: TwitterAccount,
   tweetId: string
 ) {
-  console.log('actionFavorite: ' + tweetId)
+  const logger = Logger.configure('actionFavorite')
+  logger.info(`🔳 actionFavorite: ${account.name} ${tweetId}`)
 
   const config = getConfig()
-  const twitterClient = new TwitterApi({
-    appKey: config.twitter.consumerKey,
-    appSecret: config.twitter.consumerSecret,
-    accessToken: account.accessToken,
-    accessSecret: account.accessSecret,
-  })
+  const twApi = new TwApi(config)
   try {
-    const data = await twitterClient.v1
-      .post(`favorites/create.json`, {
-        id: tweetId,
-      })
+    const data = await twApi
+      .likeTweet(tweetId)
       .then(() => {
         return {
           content: `${account.emoji} -> :white_check_mark:`,

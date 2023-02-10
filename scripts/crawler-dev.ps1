@@ -1,7 +1,7 @@
 Set-Location $PSScriptRoot
 Set-Location ..
 
-$env:CONFIG_PATH = "../data/config.dev.yml"
+$env:CONFIG_PATH = "../data/config.dev.json"
 
 # if not node_modules exists, run yarn install
 if (!(Test-Path "crawler/node_modules")) {

@@ -2,12 +2,12 @@ import { DBImage } from './entities/images'
 import { DBItem } from './entities/item'
 import { DBTarget } from './entities/targets'
 import { DBTweet } from './entities/tweets'
-import { DBUser } from './entities/users'
+import { DBUser } from './users'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { getConfig } from './config'
 import { DataSource } from 'typeorm'
-import { MediaEntityV1, MediaSizesV1, TweetV1 } from 'twitter-api-v2'
 import { DBMute } from './entities/mutes'
+import { isFullUser, MediaEntity, Sizes, Status } from 'twitter-d'
 
 const config = getConfig()
 export const AppDataSource = new DataSource({
@@ -28,7 +28,10 @@ export const AppDataSource = new DataSource({
   bigNumberStrings: true,
 })
 
-export async function getDBUser(tweet: TweetV1) {
+export async function getDBUser(tweet: Status) {
+  if (!isFullUser(tweet.user)) {
+    throw new Error('User is not full user.')
+  }
   const row = await DBUser.findOne({
     where: {
       userId: tweet.user.id_str,
@@ -45,7 +48,7 @@ export async function getDBUser(tweet: TweetV1) {
   return await dbUser.save()
 }
 
-export async function getDBTweet(tweet: TweetV1, dbUser: DBUser) {
+export async function getDBTweet(tweet: Status, dbUser: DBUser) {
   const row = await DBTweet.findOne({
     where: {
       tweetId: tweet.id_str,
@@ -57,20 +60,19 @@ export async function getDBTweet(tweet: TweetV1, dbUser: DBUser) {
   const dbTweet = new DBTweet()
   dbTweet.tweetId = tweet.id_str
   dbTweet.user = dbUser
-  dbTweet.text = tweet.text || tweet.full_text || null
-  dbTweet.tags =
-    tweet.entities.hashtags !== undefined
-      ? tweet.entities.hashtags.map((tag) => tag.text)
-      : []
+  dbTweet.text = tweet.full_text
+  dbTweet.tags = tweet.entities.hashtags
+    ? tweet.entities.hashtags.map((tag) => tag.text)
+    : []
   return await dbTweet.save()
 }
 
 export async function getDBImage(
   dbTweet: DBTweet,
-  media: MediaEntityV1,
-  size: keyof MediaSizesV1
+  media: MediaEntity,
+  size: keyof Sizes
 ) {
-  const sizedMedia = media.sizes[size as keyof MediaSizesV1]
+  const sizedMedia = media.sizes[size as keyof Sizes]
   const dbImage = new DBImage()
   dbImage.tweet = dbTweet
   dbImage.imageId = getImageId(media.media_url_https)
