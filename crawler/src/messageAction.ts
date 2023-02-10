@@ -15,7 +15,7 @@ export async function actionFavorite(
   const twApi = new TwApi(config)
   try {
     const data = await twApi
-      .likeTweet(tweetId)
+      .likeTweet(account, tweetId)
       .then(() => {
         return {
           content: `${account.emoji} -> :white_check_mark:`,
