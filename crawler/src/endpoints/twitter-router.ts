@@ -1,4 +1,5 @@
 import { BaseRouter } from '@/base-router'
+import { Logger } from '@/logger'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { TwitterApi } from 'twitter-api-v2'
 
@@ -92,7 +93,7 @@ export class TwitterRouter extends BaseRouter {
     const client = this.getClient(oauthToken, oauthTokenSecret)
 
     // アクセストークンの取得
-    const result = await client.login(oauthVerifier).catch((err) => {
+    const result = await client.login(oauthVerifier).catch((err: unknown) => {
       reply.code(500).send(err)
       return null
     })
@@ -176,6 +177,7 @@ export class TwitterRouter extends BaseRouter {
     }>,
     reply: FastifyReply
   ): Promise<void> {
+    const logger = Logger.configure('TwitterRouter.routeGetLookup')
     const sessionAccessToken = request.session.get<string | undefined>(
       'accessToken'
     )
@@ -201,7 +203,7 @@ export class TwitterRouter extends BaseRouter {
     const tweetIds = tweetIdsRaw.split(',')
 
     const result = await client.v1.tweets(tweetIds).catch((err) => {
-      console.log(err)
+      logger.info('Failed to get tweets', err)
       reply
         .code(400)
         .send(
