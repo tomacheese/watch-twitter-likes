@@ -150,7 +150,7 @@ export default class Crawler {
       return
     }
     if (!isFullUser(tweet.user)) {
-      throw new Error('User is not full user.')
+      throw new Error(`User is not full user: ${tweet.user.id_str}`)
     }
     const tweetUrl =
       'https://twitter.com/' +

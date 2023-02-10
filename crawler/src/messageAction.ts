@@ -1,4 +1,4 @@
-import { ButtonInteraction, CacheType } from 'discord.js'
+import { ButtonInteraction, CacheType, InteractionEditReplyOptions } from 'discord.js'
 import { getConfig, TwitterAccount } from './config'
 import { Logger } from './logger'
 import { TwApi } from './twapi'
@@ -13,26 +13,30 @@ export async function actionFavorite(
 
   const config = getConfig()
   const twApi = new TwApi(config)
+
+  await interaction.deferReply({
+    ephemeral: true,
+  })
+
   try {
-    const data = await twApi
+    const data: InteractionEditReplyOptions = await twApi
       .likeTweet(account, tweetId)
       .then(() => {
         return {
           content: `${account.emoji} -> :white_check_mark:`,
-          ephemeral: true,
         }
       })
       .catch((e) => {
+        // eslint-disable-next-line no-console
+        console.log(e)
         return {
           content: `${account.emoji} -> :x: ${e.message}`,
-          ephemeral: true,
         }
       })
-    await interaction.reply(data)
+    await interaction.editReply(data)
   } catch (e) {
-    await interaction.reply({
+    await interaction.editReply({
       content: `${account.emoji} -> :x: ${(e as Error).message}`,
-      ephemeral: true,
     })
   }
 }

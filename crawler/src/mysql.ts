@@ -30,7 +30,7 @@ export const AppDataSource = new DataSource({
 
 export async function getDBUser(tweet: Status) {
   if (!isFullUser(tweet.user)) {
-    throw new Error('User is not full user.')
+      throw new Error(`User is not full user: ${tweet.user.id_str}`)
   }
   const row = await DBUser.findOne({
     where: {
