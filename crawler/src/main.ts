@@ -20,10 +20,12 @@ export function getClient() {
 
 async function crawl(config: Configuration, client: Client) {
   const targets = await DBTarget.find()
+  const promises = []
   for (const target of targets) {
     const crawler = new Crawler(new TwApi(config), client, target)
-    await crawler.crawl()
+    promises.push(crawler.crawl())
   }
+  await Promise.all(promises)
 }
 
 client.on('ready', async () => {
