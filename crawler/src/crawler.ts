@@ -8,7 +8,7 @@ import {
   TextChannel,
   ThreadChannel,
 } from 'discord.js'
-import { isFullUser, Status } from 'twitter-d'
+import { FullUser, Status, User } from 'twitter-d'
 import { getConfig } from './config'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
@@ -149,7 +149,7 @@ export default class Crawler {
     if (!this.channel) {
       return
     }
-    if (!isFullUser(tweet.user)) {
+    if (!this.isFullUser(tweet.user)) {
       throw new Error(`User is not full user: ${tweet.user.id_str}`)
     }
     const tweetUrl =
@@ -247,5 +247,9 @@ export default class Crawler {
       embeds,
       components: [row],
     })
+  }
+
+  isFullUser(user: User): user is FullUser {
+    return 'screen_name' in user
   }
 }

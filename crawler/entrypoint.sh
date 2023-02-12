@@ -2,7 +2,7 @@
 
 while :
 do
-  node index.js || true
+  yarn build || true
 
   echo "Restarting..."
 done
