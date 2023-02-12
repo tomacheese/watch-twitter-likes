@@ -7,7 +7,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { getConfig } from './config'
 import { DataSource } from 'typeorm'
 import { DBMute } from './entities/mutes'
-import { isFullUser, MediaEntity, Sizes, Status } from 'twitter-d'
+import { FullUser, MediaEntity, Sizes, Status, User } from 'twitter-d'
 
 const config = getConfig()
 export const AppDataSource = new DataSource({
@@ -89,4 +89,8 @@ function getImageId(url: string) {
     return match[1]
   }
   return ''
+}
+
+function isFullUser(user: User): user is FullUser {
+  return 'screen_name' in user
 }
