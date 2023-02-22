@@ -1,37 +1,24 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { Logger } from './logger'
 
 export const PATH = {
-  config: process.env.CONFIG_PATH || 'data/config.json',
+  config: process.env.CONFIG_PATH || 'data/config.json'
 }
 
 export interface TwitterAccount {
   name: string
   emoji: string
   discordUserId: string
-  basicUsername: string
-  basicPassword: string
+  username: string
+  password: string
+  authCodeSecret?: string
 }
 
-export interface TwitterAuth {
-  appKey: string
-  appSecret: string
-  callbackUrl: string
-}
-
-export interface Configuration {
+export interface WTLConfiguration {
   discord: {
     token: string
   }
-  twitter: {
-    accounts: TwitterAccount[]
-    auth: TwitterAuth
-  }
-  twapi: {
-    baseUrl: string
-    basicUsername: string
-    basicPassword: string
-  }
+  twitter: TwitterAccount
   db: {
     type: 'mysql'
     host: string
@@ -46,7 +33,7 @@ export interface Configuration {
   }
 }
 
-const isConfig = (config: any): config is Configuration => {
+const isConfig = (config: any): config is WTLConfiguration => {
   const logger = Logger.configure('isConfig')
   const checks: {
     [key: string]: boolean
@@ -56,47 +43,17 @@ const isConfig = (config: any): config is Configuration => {
     'discord.token is defined': !!config.discord.token,
     'discord.token is string': typeof config.discord.token === 'string',
     'twitter is defined': !!config.twitter,
-    'twitter.accounts is defined': !!config.twitter.accounts,
-    'twitter.accounts is array': Array.isArray(config.twitter.accounts),
-    'twitter.accounts is not empty': config.twitter.accounts.length > 0,
-    'twitter.accounts is valid': config.twitter.accounts.every(
-      (account: {
-        name: any
-        emoji: any
-        discordUserId: any
-        basicUsername: any
-        basicPassword: any
-      }) =>
-        !!account.name &&
-        typeof account.name === 'string' &&
-        !!account.emoji &&
-        typeof account.emoji === 'string' &&
-        !!account.discordUserId &&
-        typeof account.discordUserId === 'string' &&
-        !!account.basicUsername &&
-        typeof account.basicUsername === 'string' &&
-        !!account.basicPassword &&
-        typeof account.basicPassword === 'string'
-    ),
-    'twitter.auth is defined': !!config.twitter.auth,
-    'twitter.auth.appKey is defined': !!config.twitter.auth.appKey,
-    'twitter.auth.appKey is string':
-      typeof config.twitter.auth.appKey === 'string',
-    'twitter.auth.appSecret is defined': !!config.twitter.auth.appSecret,
-    'twitter.auth.appSecret is string':
-      typeof config.twitter.auth.appSecret === 'string',
-    'twitter.auth.callbackUrl is defined': !!config.twitter.auth.callbackUrl,
-    'twitter.auth.callbackUrl is string':
-      typeof config.twitter.auth.callbackUrl === 'string',
-    'twapi is defined': !!config.twapi,
-    'twapi.baseUrl is defined': !!config.twapi.baseUrl,
-    'twapi.baseUrl is string': typeof config.twapi.baseUrl === 'string',
-    'twapi.basicUsername is defined': !!config.twapi.basicUsername,
-    'twapi.basicUsername is string':
-      typeof config.twapi.basicUsername === 'string',
-    'twapi.basicPassword is defined': !!config.twapi.basicPassword,
-    'twapi.basicPassword is string':
-      typeof config.twapi.basicPassword === 'string',
+    'twitter.name is defined': !!config.twitter.name,
+    'twitter.name is string': typeof config.twitter.name === 'string',
+    'twitter.emoji is defined': !!config.twitter.emoji,
+    'twitter.emoji is string': typeof config.twitter.emoji === 'string',
+    'twitter.discordUserId is defined': !!config.twitter.discordUserId,
+    'twitter.discordUserId is string':
+      typeof config.twitter.discordUserId === 'string',
+    'twitter.username is defined': !!config.twitter.username,
+    'twitter.username is string': typeof config.twitter.username === 'string',
+    'twitter.password is defined': !!config.twitter.password,
+    'twitter.password is string': typeof config.twitter.password === 'string',
     'db is defined': !!config.db,
     'db.type is defined': !!config.db.type,
     'db.type is string': typeof config.db.type === 'string',
@@ -109,7 +66,7 @@ const isConfig = (config: any): config is Configuration => {
     'db.password is defined': !!config.db.password,
     'db.password is string': typeof config.db.password === 'string',
     'db.database is defined': !!config.db.database,
-    'db.database is string': typeof config.db.database === 'string',
+    'db.database is string': typeof config.db.database === 'string'
   }
   if (config.session) {
     checks['session.secret is defined'] = !!config.session.secret
@@ -132,7 +89,7 @@ const isConfig = (config: any): config is Configuration => {
   return result
 }
 
-export function getConfig(): Configuration {
+export function getConfig(): WTLConfiguration {
   if (!fs.existsSync(PATH.config)) {
     throw new Error(`Config file not found: ${PATH.config}`)
   }

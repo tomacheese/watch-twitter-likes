@@ -1,3 +1,6 @@
-webpack.config.js
 dist
+output
 node_modules
+data
+logs
+src/models

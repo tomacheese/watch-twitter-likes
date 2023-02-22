@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "TwitterAccount": {
+            "properties": {
+                "authCodeSecret": {
+                    "type": "string"
+                },
+                "discordUserId": {
+                    "type": "string"
+                },
+                "emoji": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "discordUserId",
+                "emoji",
+                "name",
+                "password",
+                "username"
+            ],
+            "type": "object"
+        }
+    },
+    "properties": {
+        "db": {
+            "properties": {
+                "database": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "number"
+                },
+                "type": {
+                    "enum": [
+                        "mysql"
+                    ],
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "database",
+                "host",
+                "password",
+                "port",
+                "type",
+                "username"
+            ],
+            "type": "object"
+        },
+        "discord": {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "token"
+            ],
+            "type": "object"
+        },
+        "session": {
+            "properties": {
+                "isSecure": {
+                    "type": "boolean"
+                },
+                "secret": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "secret"
+            ],
+            "type": "object"
+        },
+        "twitter": {
+            "$ref": "#/definitions/TwitterAccount"
+        }
+    },
+    "required": [
+        "db",
+        "discord",
+        "twitter"
+    ],
+    "type": "object"
+}
+

@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 import { DBImage } from './images'
 import { DBItem } from './item'
-import { DBUser } from '../users'
+import { DBUser } from './users'
 
 @Entity('tweets')
 export class DBTweet extends BaseEntity {

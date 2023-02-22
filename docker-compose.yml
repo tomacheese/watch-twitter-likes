@@ -1,35 +1,23 @@
 version: "3.8"
 
 services:
-  crawler:
-    build: ./crawler
-    volumes:
-      - type: bind
-        source: ./data/
-        target: /data/
+  app:
+    build:
+      context: crawler
+      dockerfile: Dockerfile
     environment:
-      TZ: Asia/Tokyo
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    init: true
-    restart: always
-
-  web:
-    build: ./web
-    volumes:
-      - type: bind
-        source: ./data/
-        target: /data/
+      ENABLE_DEVTOOLS: "true"
     ports:
-      - 8080:80
-    environment:
-      TZ: Asia/Tokyo
+      - 5910:5910
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
     depends_on:
       mariadb:
         condition: service_healthy
     init: true
-    restart: always
+    restart: on-failure:5
 
   mariadb:
     image: mariadb
@@ -43,7 +31,16 @@ services:
     ports:
       - 3306:3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootPassword"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-prootPassword",
+        ]
       timeout: 20s
       interval: 5s
       retries: 30

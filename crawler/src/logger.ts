@@ -40,6 +40,7 @@ export class Logger {
 
     const textFormat = format.printf((info) => {
       const { timestamp, level, message, ...rest } = info
+      // eslint-disable-next-line unicorn/no-array-reduce
       const filteredRest = Object.keys(rest).reduce((accumulator, key) => {
         if (key === 'stack') {
           return accumulator
