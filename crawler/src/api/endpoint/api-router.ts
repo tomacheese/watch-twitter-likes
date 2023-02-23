@@ -153,7 +153,7 @@ export class ApiRouter extends BaseRouter {
       .filter((item, index, self) => {
         return (
           self.findIndex(
-            (index_) => index_.tweet.tweetId === item.tweet.tweetId
+            (index) => index.tweet.tweetId === item.tweet.tweetId
           ) === index
         )
       })
