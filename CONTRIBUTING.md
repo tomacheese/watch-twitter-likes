@@ -46,7 +46,7 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 
 1. データベースからクロール対象の Twitter ユーザ ID とメッセージ送信先の Discord スレッド ID を取得します。
 2. Puppeteer を用いて、`twitter.com` から Twitter ユーザ ID に対応するスクリーンネームを取得します。
-3. Puppeteer を用いて、`twitter.com` から対象ユーザーがいいねしたツイート一覧を取得します。
+3. Puppeteer を用いて、`twitter.com` から対象ユーザがいいねしたツイート一覧を取得します。
 4. 新しいツイートをデータベースに登録し、必要に応じて Discord スレッドに送信します。
 
 また、外部に公開するポートを1つにしたいという思想から、`nginx` を用いて API 部分（`/api` 以下）をポートフォワーディングしています。
@@ -56,6 +56,18 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 初めて開発に取り組む場合、以下の手段で開発環境を構築する必要があります。
 まず、[Fork](https://github.com/tomacheese/watch-twitter-likes/fork) から自分のアカウントへリポジトリをフォークしてください。  
 その後、リポジトリをコンピューターにクローンしてください。
+
+以降の作業は、どのプロジェクトで開発するかによって異なります。
+
+### `crawler` の開発をする場合
+
+この場合、以下の依存関係と初期設定を必要とします。
+
+- MariaDB (MySQL でも可)
+- `crawler/package.json` に記載された依存パッケージ群
+- `data/config.json` への設定情報の入力
+
+### `web` の開発をする場合
 
 次に、2 つのプロジェクトディレクトリで依存関係パッケージのダウンロード・インストールを行う必要があります。  
 プロジェクトのルートディレクトリで `.\scripts\install-deps.ps1` を実行し、依存パッケージのインストールを実施してください。
@@ -77,20 +89,58 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 
 | カラム       | タイプ              | 関数 | NULL | 値                                                    |
 | :----------- | :------------------ | :--- | :--- | :---------------------------------------------------- |
-| `user_id`    | bigint(20) unsigned |      |      | **監視対象の Twitter アカウントのユーザー ID (数字)** |
+| `user_id`    | bigint(20) unsigned |      |      | **監視対象の Twitter アカウントのユーザ ID (数字)** |
 | `name`       | varchar(255)        |      |      | **任意の名前**                                        |
-| `thread_id`  | bigint(20) unsigned |      | ✅   |                                                       |
+| `thread_id`  | bigint(20) unsigned |      | ✅    |                                                       |
 | `created_at` | timestamp(6)        |      |      | **`current_timestamp()`**                             |
 
-- `監視対象の Twitter アカウントのユーザー ID` にはスクリーンネームではなくアカウント固有の ID (Snowflake とも呼ばれます) を入力してください。
+- `監視対象の Twitter アカウントのユーザ ID` にはスクリーンネームではなくアカウント固有の ID (Snowflake とも呼ばれます) を入力してください。
   - 次のサイトが利用できます: [tweeterid.com](https://tweeterid.com/) / [codeofaninja.com](https://www.codeofaninja.com/tools/find-twitter-id/) / [idtwi.com](https://idtwi.com/)
-- `任意の名前` には、そのユーザーのニックネームなどをおすすめします。この文字列は Discord に送信される Embed のフッターに挿入されます。
+- `任意の名前` には、そのユーザのニックネームなどをおすすめします。この文字列は Discord に送信される Embed のフッターに挿入されます。
 - `created_at` の `current_timestamp()` は、MySQL 環境の場合うまく動作しない場合があります。この場合は入力欄の横にあるカレンダーボタンから任意の日時を選択してください。
 
 入力できたら、右下の `実行` をクリックし監視対象の設定は終了です。即座にクロールしてもらうために、一度クローラーを再起動しましょう。  
 既に起動している場合は Ctrl + C などで停止し、もう一度 `.\scripts\crawler-dev.ps1` を実行してください。
 
-### Troubleshooting
+## Configuration
+
+`data/config.json` の設定項目は以下の通りです。記載がない場合、項目は必須項目です。
+
+- `discord`: Discord に関する設定
+  - `token`: Discord Bot のトークン
+- `twitter`: Twitter アカウントに関する設定
+  - `username`: ログインユーザ名
+  - `password`: ログインパスワード
+  - `authCodeSecret`: ワンタイムパスワードのシークレット（任意）
+  - `discordUserId`: Discord 経由でのツイートのいいねをする場合に、その操作を許可する Discord ユーザ ID
+- `twAuth`: Web サイトにて、Twitter アカウントログインするための API 情報（任意）
+  - `appKey`: Twitter API Consumer Key (App Key)
+  - `appSecret`: Twitter API Consumer Secret (App Secret)
+  - `callbackUrl`: Twitter API のアプリ画面で登録したコールバック URL
+- `db`: データベースに関する設定
+  - `type`: データベースの種別。`mysql` で固定
+  - `host`: ホスト名。Docker で動作させる場合はサービス名である `mariadb` で固定
+  - `port`: ポート番号。Docker で動作させる場合は `3306` で固定
+  - `username`: ユーザ名
+  - `password`: パスワード
+  - `database`: データベース名
+- `session`: Web サイトにおける、セッション管理の設定（任意）
+  - `secret`: セッションのシークレット。ランダムな文字列を指定
+  - `isSecure`: HTTPS 接続のみで動作するセッションとするか（任意）
+
+`twitter` で設定するアカウントは「いいねされたツイートの収集」と「Discord 経由でのツイートのいいね」に利用されます。
+`twAuth` を設定しない場合、Web サイトにおける Twitter ログイン機能は利用できません。  
+`session` を指定しない場合、Web サイトにおける Twitter ログインが保持されなくなります。
+
+JSON Schemaとして、`crawler/schema/Configuration.json` が利用できます。`config.json` 内で以下のように定義してください。  
+
+```json
+{
+  "$schema": "../crawler/schema/Configuration.json"
+}
+```
+
+## Troubleshooting
 
 一部の環境において、2 回目以降のデータベース接続時に MariaDB がエラーを発生し二度と起動できなくなる症状があるようです。  
 この場合、MariaDB と互換性のある MySQL サーバを利用することで回避できるかもしれません。
