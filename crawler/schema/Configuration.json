@@ -9,12 +9,6 @@
                 "discordUserId": {
                     "type": "string"
                 },
-                "emoji": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
@@ -24,8 +18,6 @@
             },
             "required": [
                 "discordUserId",
-                "emoji",
-                "name",
                 "password",
                 "username"
             ],

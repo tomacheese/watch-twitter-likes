@@ -1,5 +1,5 @@
 import { DBTarget } from './entities/targets'
-import { AnyThreadChannel, APIEmbed, Client, TextChannel } from 'discord.js'
+import { AnyThreadChannel, APIEmbed, TextChannel } from 'discord.js'
 import { Logger } from './logger'
 import { WTLBrowser } from './browser'
 import { Twitter } from './twitter'
@@ -16,7 +16,11 @@ export class Crawler {
 
   private readonly logger
 
-  constructor(browser: WTLBrowser, client: Client, target: DBTarget) {
+  constructor(
+    browser: WTLBrowser,
+    discord: Discord | undefined,
+    target: DBTarget
+  ) {
     this.target = target
     this.browser = browser
 
@@ -25,6 +29,14 @@ export class Crawler {
     if (!target.threadId) {
       return
     }
+    if (!discord) {
+      this.logger.warn(
+        '⚠️ Discord linking feature disabled. The send message to Discord feature will not work.'
+      )
+      return
+    }
+
+    const client = discord.getClient()
     const channel = client.channels.resolve(target.threadId.toString())
     if (!channel) {
       throw new Error('Channel not found.')
@@ -255,13 +267,16 @@ export class Crawler {
     return 'screen_name' in user
   }
 
-  public static async crawlAll(browser: WTLBrowser, client: Client) {
+  public static async crawlAll(
+    browser: WTLBrowser,
+    discord: Discord | undefined
+  ) {
     const logger = Logger.configure('Crawler.crawlAll')
 
     const targets = await DBTarget.find()
     const promises = []
     for (const target of targets) {
-      const crawler = new Crawler(browser, client, target)
+      const crawler = new Crawler(browser, discord, target)
       promises.push(crawler.crawl())
     }
 

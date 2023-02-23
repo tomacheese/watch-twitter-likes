@@ -6,12 +6,10 @@ export const PATH = {
 }
 
 export interface TwitterAccount {
-  name: string
-  emoji: string
-  discordUserId: string
   username: string
   password: string
   authCodeSecret?: string
+  discordUserId: string
 }
 
 export interface WTLConfiguration {
@@ -44,17 +42,13 @@ const isConfig = (config: any): config is WTLConfiguration => {
     'discord.token is defined': !!config.discord.token,
     'discord.token is string': typeof config.discord.token === 'string',
     'twitter is defined': !!config.twitter,
-    'twitter.name is defined': !!config.twitter.name,
-    'twitter.name is string': typeof config.twitter.name === 'string',
-    'twitter.emoji is defined': !!config.twitter.emoji,
-    'twitter.emoji is string': typeof config.twitter.emoji === 'string',
-    'twitter.discordUserId is defined': !!config.twitter.discordUserId,
-    'twitter.discordUserId is string':
-      typeof config.twitter.discordUserId === 'string',
     'twitter.username is defined': !!config.twitter.username,
     'twitter.username is string': typeof config.twitter.username === 'string',
     'twitter.password is defined': !!config.twitter.password,
     'twitter.password is string': typeof config.twitter.password === 'string',
+    'twitter.discordUserId is defined': !!config.twitter.discordUserId,
+    'twitter.discordUserId is string':
+      typeof config.twitter.discordUserId === 'string',
     'db is defined': !!config.db,
     'db.type is defined': !!config.db.type,
     'db.type is string': typeof config.db.type === 'string',

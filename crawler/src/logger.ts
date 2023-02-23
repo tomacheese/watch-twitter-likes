@@ -1,6 +1,7 @@
 import winston, { format } from 'winston'
 import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 import { Format } from 'logform'
+// @ts-ignore
 import cycle from 'cycle'
 
 export class Logger {

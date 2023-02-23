@@ -15,11 +15,11 @@ import { Twitter } from './twitter'
 
 export class Discord {
   private readonly logger = Logger.configure('Discord')
-  private readonly browser: WTLBrowser
+  private readonly browser: WTLBrowser | undefined
   private readonly client: Client
   private readonly config: WTLConfiguration
 
-  constructor(config: WTLConfiguration, browser: WTLBrowser) {
+  constructor(config: WTLConfiguration, browser: WTLBrowser | undefined) {
     this.client = new Client({
       intents: ['Guilds', 'GuildMembers', 'GuildMessages']
     })
@@ -88,6 +88,13 @@ export class Discord {
     interaction: ButtonInteraction<CacheType>,
     tweetId: string
   ) {
+    if (!this.browser) {
+      await interaction.reply({
+        content: ':warning: Disabled browser! This feature is not available.',
+        ephemeral: true
+      })
+      return
+    }
     const twitter = new Twitter(this.browser)
     await interaction.deferReply()
 

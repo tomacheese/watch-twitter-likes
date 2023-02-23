@@ -93,7 +93,7 @@ export class WTLBrowser {
 
     const browser = await puppeteer.launch({
       headless: false,
-      executablePath: '/usr/bin/chromium-browser',
+      executablePath: process.env.CHROMIUM_PATH ,
       args: puppeteerArguments,
       defaultViewport: {
         width: 600,
