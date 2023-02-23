@@ -172,32 +172,32 @@ export class Crawler {
         {
           name: 'Retweet',
           value: tweet.retweet_count.toString(),
-          inline: true
+          inline: true,
         },
         {
           name: 'Likes',
           value: tweet.favorite_count.toString(),
-          inline: true
+          inline: true,
         },
         {
           name: 'TweetURL',
           value: tweetUrl,
-          inline: false
-        }
+          inline: false,
+        },
       ],
       author: {
         name: `${tweet.user.name} (@${tweet.user.screen_name})`,
         url: `https://twitter.com/${tweet.user.screen_name}`,
-        icon_url: tweet.user.profile_image_url_https
-      }
+        icon_url: tweet.user.profile_image_url_https,
+      },
     }
     // 同一ツイートのうち、一番最後の画像だけに適用する
     // 単一画像の場合は、一番最初の画像に適用する
     const lastEmbed: APIEmbed = {
       footer: {
-        text: `Twitter by ${this.target.name} likes`
+        text: `Twitter by ${this.target.name} likes`,
       },
-      timestamp: new Date(tweet.created_at).toISOString()
+      timestamp: new Date(tweet.created_at).toISOString(),
     }
 
     for (const mediaIndex in extendedEntities.media) {
@@ -214,20 +214,20 @@ export class Crawler {
       embeds.push({
         title,
         image: {
-          url: media.media_url_https
+          url: media.media_url_https,
         },
         color: 0x1d_9b_f0,
         ...(Number.parseInt(mediaIndex, 10) === 0 ? firstEmbed : {}),
         ...(Number.parseInt(mediaIndex, 10) ===
         extendedEntities.media.length - 1
           ? lastEmbed
-          : {})
+          : {}),
       })
     }
 
     await this.channel.send({
       embeds,
-      components
+      components,
     })
   }
 
@@ -236,9 +236,9 @@ export class Crawler {
       (await DBItem.count({
         where: {
           target: {
-            userId: this.target.userId
-          }
-        }
+            userId: this.target.userId,
+          },
+        },
       })) === 0
     )
   }
@@ -248,12 +248,12 @@ export class Crawler {
       (await DBItem.count({
         where: {
           target: {
-            userId: this.target.userId
+            userId: this.target.userId,
           },
           tweet: {
-            tweetId: tweet.id_str
-          }
-        }
+            tweetId: tweet.id_str,
+          },
+        },
       })) !== 0
     )
   }

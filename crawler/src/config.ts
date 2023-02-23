@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { Logger } from './logger'
 
 export const PATH = {
-  config: process.env.CONFIG_PATH || 'data/config.json'
+  config: process.env.CONFIG_PATH || 'data/config.json',
 }
 
 export interface TwitterAccount {
@@ -61,7 +61,7 @@ const isConfig = (config: any): config is WTLConfiguration => {
     'db.password is defined': !!config.db.password,
     'db.password is string': typeof config.db.password === 'string',
     'db.database is defined': !!config.db.database,
-    'db.database is string': typeof config.db.database === 'string'
+    'db.database is string': typeof config.db.database === 'string',
   }
   if (config.session) {
     checks['session.secret is defined'] = !!config.session.secret

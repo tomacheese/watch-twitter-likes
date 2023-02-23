@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  Timestamp
+  Timestamp,
 } from 'typeorm'
 import { DBItem } from './item'
 
@@ -15,13 +15,13 @@ export class DBTarget extends BaseEntity {
     unsigned: true,
     comment: 'ユーザーID',
     primary: true,
-    unique: true
+    unique: true,
   })
   userId!: string
 
   @Column({
     type: 'varchar',
-    comment: 'ユーザー名'
+    comment: 'ユーザー名',
   })
   name!: string
 
@@ -29,13 +29,13 @@ export class DBTarget extends BaseEntity {
     type: 'bigint',
     unsigned: true,
     comment: 'スレッドID',
-    nullable: true
+    nullable: true,
   })
   threadId!: string | null
 
   @CreateDateColumn({
     type: 'timestamp',
-    comment: '行挿入日時'
+    comment: '行挿入日時',
   })
   createdAt!: Timestamp
 

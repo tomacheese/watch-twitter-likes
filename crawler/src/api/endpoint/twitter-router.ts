@@ -40,19 +40,19 @@ export class TwitterRouter extends BaseRouter {
       return
     }
     const {
-      twAuth: { appKey, appSecret, callbackUrl }
+      twAuth: { appKey, appSecret, callbackUrl },
     } = this.config
     const client = new TwitterApi({
       appKey,
-      appSecret
+      appSecret,
     })
 
     const {
       url,
       oauth_token: oauthToken,
-      oauth_token_secret: oauthTokenSecret
+      oauth_token_secret: oauthTokenSecret,
     } = await client.generateAuthLink(callbackUrl, {
-      linkMode: 'authorize'
+      linkMode: 'authorize',
     })
 
     request.session.set('oauth_token', oauthToken)
@@ -250,7 +250,7 @@ export class TwitterRouter extends BaseRouter {
 
     const result = await client.v1
       .post('favorites/create.json', {
-        id: tweetId
+        id: tweetId,
       })
       .catch((error) => {
         reply
@@ -297,7 +297,7 @@ export class TwitterRouter extends BaseRouter {
 
     const result = await client.v1
       .post('favorites/destroy.json', {
-        id: tweetId
+        id: tweetId,
       })
       .catch((error) => {
         reply
@@ -318,13 +318,13 @@ export class TwitterRouter extends BaseRouter {
       throw new Error('twAuth is not configured')
     }
     const {
-      twAuth: { appKey, appSecret }
+      twAuth: { appKey, appSecret },
     } = this.config
     return new TwitterApi({
       appKey,
       appSecret,
       accessToken,
-      accessSecret
+      accessSecret,
     })
   }
 }

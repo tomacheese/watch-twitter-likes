@@ -6,7 +6,7 @@ import {
   CacheType,
   Client,
   Interaction,
-  Message
+  Message,
 } from 'discord.js'
 import { WTLBrowser } from './browser'
 import { WTLConfiguration } from './config'
@@ -21,7 +21,7 @@ export class Discord {
 
   constructor(config: WTLConfiguration, browser: WTLBrowser | undefined) {
     this.client = new Client({
-      intents: ['Guilds', 'GuildMembers', 'GuildMessages']
+      intents: ['Guilds', 'GuildMembers', 'GuildMessages'],
     })
     this.client.on('ready', this.onReady.bind(this))
     this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
@@ -61,7 +61,7 @@ export class Discord {
       await interaction.reply({
         content:
           'あなたはこのボタンを利用することができません。他のボタンをお試しください。',
-        ephemeral: true
+        ephemeral: true,
       })
       return
     }
@@ -91,7 +91,7 @@ export class Discord {
     if (!this.browser) {
       await interaction.reply({
         content: ':warning: Disabled browser! This feature is not available.',
-        ephemeral: true
+        ephemeral: true,
       })
       return
     }
@@ -102,12 +102,12 @@ export class Discord {
       .likeTweet(Number(tweetId))
       .catch(async (error) => {
         await interaction.editReply({
-          content: `:green_heart: -> :x: (${error.message})`
+          content: `:green_heart: -> :x: (${error.message})`,
         })
       })
       .then(async () => {
         await interaction.editReply({
-          content: ':green_heart: -> :white_check_mark:'
+          content: ':green_heart: -> :white_check_mark:',
         })
 
         await this.disableFavoriteButton(interaction.message, tweetId)
@@ -118,7 +118,7 @@ export class Discord {
     const component = Discord.getButtonComponents(tweetId, true)
 
     await message.edit({
-      components: component
+      components: component,
     })
   }
 
@@ -138,7 +138,7 @@ export class Discord {
           .setEmoji('❤️')
           .setURL(`https://twitter.com/intent/like?tweet_id=${tweetId}`)
           .setStyle(ButtonStyle.Link)
-      )
+      ),
     ]
   }
 }

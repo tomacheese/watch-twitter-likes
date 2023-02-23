@@ -85,7 +85,7 @@ export class WTLBrowser {
       '--no-zygote',
       '--disable-gpu',
       '--lang=ja',
-      '--window-size=600,1000'
+      '--window-size=600,1000',
     ]
 
     if (process.env.ENABLE_DEVTOOLS)
@@ -97,9 +97,9 @@ export class WTLBrowser {
       args: puppeteerArguments,
       defaultViewport: {
         width: 600,
-        height: 1000
+        height: 1000,
       },
-      userDataDir: userDataDirectory
+      userDataDir: userDataDirectory,
     })
 
     process.on('SIGINT', async () => {
@@ -118,7 +118,7 @@ export class WTLBrowser {
     const logger = Logger.configure('WTLBrowser.login')
     logger.info(`✨ Login to twitter`)
     await page.goto('https://twitter.com', {
-      waitUntil: ['load', 'networkidle2']
+      waitUntil: ['load', 'networkidle2'],
     })
     await new Promise<void>((resolve) => setTimeout(resolve, 3000))
 
@@ -129,7 +129,7 @@ export class WTLBrowser {
       logger.warn('❗ You need to login again.')
 
       await page.goto('https://twitter.com/i/flow/login', {
-        waitUntil: ['load', 'networkidle2']
+        waitUntil: ['load', 'networkidle2'],
       })
 
       await page

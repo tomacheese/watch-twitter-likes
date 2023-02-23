@@ -54,7 +54,7 @@ export class Twitter {
 
     const graphqlResponse = new GraphQLResponse(page, 'Likes')
     await page.goto(`https://twitter.com/${screenName}/likes`, {
-      waitUntil: 'networkidle2'
+      waitUntil: 'networkidle2',
     })
 
     const scrollInterval = setInterval(async () => {
@@ -85,26 +85,26 @@ export class Twitter {
     const result = await Promise.race([
       page
         .waitForSelector('div[role="button"][data-testid="like"]', {
-          timeout: 5000
+          timeout: 5000,
         })
         .then((element) => element?.click())
         .then(() => 'LIKED')
         .catch(() => null),
       page
         .waitForSelector('div[role="button"][data-testid="unlike"]', {
-          timeout: 5000
+          timeout: 5000,
         })
         .then((element) => element?.click())
         .then(() => 'ALREADY_LIKED')
         .catch(() => null),
       page
         .waitForSelector('div#layers div[role="alert][data-testid="toast"]', {
-          timeout: 5000
+          timeout: 5000,
         })
         // innerText
         .then((element) =>
           page.evaluate((element) => element?.textContent, element)
-        )
+        ),
     ])
     await page.close()
 
@@ -164,14 +164,14 @@ export class Twitter {
       user: {
         id: Number(tweet.core?.user_results.result.rest_id),
         id_str: tweet.core?.user_results.result.rest_id ?? 'NULL',
-        ...tweet.core?.user_results.result.legacy
+        ...tweet.core?.user_results.result.legacy,
       },
       ...legacy,
       display_text_range: legacy.display_text_range
         ? [legacy.display_text_range[0], legacy.display_text_range[1]]
         : undefined,
       // @ts-ignore
-      entities: legacy.entities
+      entities: legacy.entities,
     }
   }
 

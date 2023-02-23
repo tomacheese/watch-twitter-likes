@@ -19,7 +19,7 @@ interface Errors {
 
 export class GraphQLResponse<T extends GraphQLEndPoint> {
   private errors: Errors = {
-    RATE_LIMIT_EXCEEDED: 0
+    RATE_LIMIT_EXCEEDED: 0,
   }
 
   private responses: Return<T>[] = []

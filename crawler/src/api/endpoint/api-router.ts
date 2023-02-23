@@ -52,7 +52,7 @@ export class ApiRouter extends BaseRouter {
             tag,
             count: tweets.filter(
               (tweet) => tweet.tags && tweet.tags?.includes(tag)
-            ).length
+            ).length,
           }
         })
     ).sort((a, b) => b.count - a.count)
@@ -82,14 +82,14 @@ export class ApiRouter extends BaseRouter {
         ? targetIds.map((targetId) => {
             return {
               target: {
-                userId: Equal(targetId)
-              }
+                userId: Equal(targetId),
+              },
             }
           })
         : undefined,
       order: {
-        createdAt: 'DESC'
-      }
+        createdAt: 'DESC',
+      },
     })
     let items = results.map((item) => {
       return {
@@ -97,9 +97,9 @@ export class ApiRouter extends BaseRouter {
         images: item.images.map((image) => {
           return {
             ...image,
-            url: `https://pbs.twimg.com/media/${image.imageId}?format=jpg&name=small`
+            url: `https://pbs.twimg.com/media/${image.imageId}?format=jpg&name=small`,
           }
-        })
+        }),
       }
     })
 
@@ -125,7 +125,7 @@ export class ApiRouter extends BaseRouter {
     if (filterType === 'or' || filterType === undefined || !targetIds) {
       reply.send({
         items: this.pagination(items, offset, limit),
-        total: items.length
+        total: items.length,
       })
       return
     }
@@ -146,7 +146,7 @@ export class ApiRouter extends BaseRouter {
       .map((item) => {
         return {
           ...item,
-          target: undefined
+          target: undefined,
         }
       })
       // 同一ツイートIDの中で最初のものだけ残す
@@ -159,7 +159,7 @@ export class ApiRouter extends BaseRouter {
       })
     reply.send({
       items: this.pagination(filteredItems, offset, limit),
-      total: items.length
+      total: items.length,
     })
   }
 

@@ -25,7 +25,7 @@ export const AppDataSource = new DataSource({
   migrations: [],
   timezone: '+09:00',
   supportBigNumbers: true,
-  bigNumberStrings: true
+  bigNumberStrings: true,
 })
 
 export async function getDBUser(tweet: Status) {
@@ -36,8 +36,8 @@ export async function getDBUser(tweet: Status) {
   }
   const row = await DBUser.findOne({
     where: {
-      userId: tweet.user.id_str
-    }
+      userId: tweet.user.id_str,
+    },
   })
   if (row) {
     row.screenName = tweet.user.screen_name
@@ -53,8 +53,8 @@ export async function getDBUser(tweet: Status) {
 export async function getDBTweet(tweet: Status, databaseUser: DBUser) {
   const row = await DBTweet.findOne({
     where: {
-      tweetId: tweet.id_str
-    }
+      tweetId: tweet.id_str,
+    },
   })
   if (row) {
     return row

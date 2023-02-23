@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  Timestamp
+  Timestamp,
 } from 'typeorm'
 import { DBTweet } from './tweets'
 
@@ -15,19 +15,19 @@ export class DBUser extends BaseEntity {
     unsigned: true,
     comment: 'ユーザID',
     primary: true,
-    unique: true
+    unique: true,
   })
   userId!: string
 
   @Column({
     type: 'varchar',
-    comment: 'ユーザ名'
+    comment: 'ユーザ名',
   })
   screenName!: string
 
   @CreateDateColumn({
     type: 'timestamp',
-    comment: '行挿入日時'
+    comment: '行挿入日時',
   })
   createdAt!: Timestamp
 

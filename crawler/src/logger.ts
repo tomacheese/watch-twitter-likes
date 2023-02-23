@@ -48,7 +48,7 @@ export class Logger {
         }
         return {
           ...accumulator,
-          [key]: rest[key]
+          [key]: rest[key],
         }
       }, {})
       const standardLine = [
@@ -62,7 +62,7 @@ export class Logger {
         message,
         Object.keys(filteredRest).length > 0
           ? ` (${JSON.stringify(filteredRest)})`
-          : ''
+          : '',
       ].join('')
       const errorLine = info.stack
         ? info.stack.split('\n').slice(1).join('\n')
@@ -78,26 +78,26 @@ export class Logger {
         format.errors({ stack: true }),
         selectLogFileFormat === 'ndjson'
           ? format.colorize({
-              message: true
+              message: true,
             })
           : format.uncolorize(),
         decycleFormat(),
         format.timestamp({
-          format: 'YYYY-MM-DD hh:mm:ss.SSS'
+          format: 'YYYY-MM-DD hh:mm:ss.SSS',
         }),
-        logFileFormat
+        logFileFormat,
       ].filter((f) => f !== undefined) as Format[])
     )
     const consoleFormat = format.combine(
       ...([
         format.colorize({
-          message: true
+          message: true,
         }),
         decycleFormat(),
         format.timestamp({
-          format: 'YYYY-MM-DD hh:mm:ss.SSS'
+          format: 'YYYY-MM-DD hh:mm:ss.SSS',
         }),
-        textFormat
+        textFormat,
       ].filter((f) => f !== undefined) as Format[])
     )
     const extension = selectLogFileFormat === 'ndjson' ? 'ndjson' : 'log'
@@ -108,17 +108,17 @@ export class Logger {
       datePattern: 'YYYY-MM-DD',
       maxFiles: logFileMaxAge,
       format: fileFormat,
-      auditFile: `${logDirectory}/audit.json`
+      auditFile: `${logDirectory}/audit.json`,
     })
 
     const logger = winston.createLogger({
       transports: [
         new winston.transports.Console({
           level: logLevel,
-          format: consoleFormat
+          format: consoleFormat,
         }),
-        transportRotateFile
-      ]
+        transportRotateFile,
+      ],
     })
     return new Logger(logger)
   }

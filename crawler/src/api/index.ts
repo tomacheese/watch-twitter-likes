@@ -20,7 +20,7 @@ export function buildApp(config: WTLConfiguration): FastifyInstance {
   app.register(cors, {
     origin: true,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
   })
   app.register(fastifyCookie)
   if (config.session) {
@@ -31,15 +31,15 @@ export function buildApp(config: WTLConfiguration): FastifyInstance {
         secure: config.session.isSecure || false,
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-      }
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      },
     })
   }
 
   // routers
   const routers: BaseRouter[] = [
     new ApiRouter(app, config),
-    new TwitterRouter(app, config)
+    new TwitterRouter(app, config),
   ]
 
   for (const router of routers) {
