@@ -17,5 +17,5 @@ jobs:
     name: Node CI
     uses: book000/templates/.github/workflows/reusable-nodejs-ci.yml@master
     with:
-      directorys: crawler, web, mock-api
+      directorys: crawler, web
       disabled-jobs: depcheck

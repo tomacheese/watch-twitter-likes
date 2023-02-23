@@ -76,7 +76,7 @@ export const useTwitterStore = defineStore('twitter', {
     like(tweetId: string): Promise<void> {
       const config = useRuntimeConfig()
       return new Promise<void>((resolve, reject) => {
-        useFetch<void>(`${config.public.apiBaseURL}/twitter/like`, {
+        useFetch(`${config.public.apiBaseURL}/twitter/like`, {
           method: 'POST',
           body: JSON.stringify({ tweetId })
         }).then((result) => {

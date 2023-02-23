@@ -3,47 +3,23 @@
     "definitions": {
         "TwitterAccount": {
             "properties": {
-                "basicPassword": {
-                    "type": "string"
-                },
-                "basicUsername": {
+                "authCodeSecret": {
                     "type": "string"
                 },
                 "discordUserId": {
                     "type": "string"
                 },
-                "emoji": {
+                "password": {
                     "type": "string"
                 },
-                "name": {
+                "username": {
                     "type": "string"
                 }
             },
             "required": [
-                "basicPassword",
-                "basicUsername",
                 "discordUserId",
-                "emoji",
-                "name"
-            ],
-            "type": "object"
-        },
-        "TwitterAuth": {
-            "properties": {
-                "appKey": {
-                    "type": "string"
-                },
-                "appSecret": {
-                    "type": "string"
-                },
-                "callbackUrl": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "appKey",
-                "appSecret",
-                "callbackUrl"
+                "password",
+                "username"
             ],
             "type": "object"
         }
@@ -108,48 +84,32 @@
             ],
             "type": "object"
         },
-        "twapi": {
+        "twAuth": {
             "properties": {
-                "baseUrl": {
+                "appKey": {
                     "type": "string"
                 },
-                "basicPassword": {
+                "appSecret": {
                     "type": "string"
                 },
-                "basicUsername": {
+                "callbackUrl": {
                     "type": "string"
                 }
             },
             "required": [
-                "baseUrl",
-                "basicPassword",
-                "basicUsername"
+                "appKey",
+                "appSecret",
+                "callbackUrl"
             ],
             "type": "object"
         },
         "twitter": {
-            "properties": {
-                "accounts": {
-                    "items": {
-                        "$ref": "#/definitions/TwitterAccount"
-                    },
-                    "type": "array"
-                },
-                "auth": {
-                    "$ref": "#/definitions/TwitterAuth"
-                }
-            },
-            "required": [
-                "accounts",
-                "auth"
-            ],
-            "type": "object"
+            "$ref": "#/definitions/TwitterAccount"
         }
     },
     "required": [
         "db",
         "discord",
-        "twapi",
         "twitter"
     ],
     "type": "object"

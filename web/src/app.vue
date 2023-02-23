@@ -88,7 +88,7 @@ const scrollToTop = (): void => {
 /** 対象一覧をAPIから取得する */
 const fetchTargets = async (): Promise<void> => {
   loading.value = true
-  const response = await useFetch<TargetsApiResponse>(
+  const response = await useFetch(
     `${config.public.apiBaseURL}/targets`
   )
   if (response.error.value) {
@@ -98,7 +98,8 @@ const fetchTargets = async (): Promise<void> => {
   if (!response.data.value) {
     return
   }
-  targets.value = response.data.value
+  const data = response.data.value as TargetsApiResponse
+  targets.value = data
   loading.value = false
 }
 
@@ -109,7 +110,7 @@ const fetchItems = async (forceAll = false): Promise<void> => {
     return
   }
   loading.value = true
-  const response = await useFetch<ImagesApiResponse>(
+  const response = await useFetch(
     `${config.public.apiBaseURL}/images`,
     {
       method: 'POST',
@@ -130,9 +131,10 @@ const fetchItems = async (forceAll = false): Promise<void> => {
   if (!response || !response.data.value) {
     return
   }
-  const results = response.data.value.items
-  items.value = results
-  total.value = response.data.value.total
+  // asで型をつけたくはないが…
+  const data = response.data.value as ImagesApiResponse
+  items.value = data.items
+  total.value = data.total
   loading.value = false
 }
 

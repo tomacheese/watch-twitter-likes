@@ -1,17 +1,19 @@
 {
   "name": "watch-twitter-likes",
-  "version": "2.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
+  "version": "3.0.0",
+  "description": "Watch Twitter user likes and notify to discord.",
+  "main": "dist/main.js",
+  "repository": "https://github.com/tomacheese/watch-twitter-likes",
   "author": "Tomachi",
+  "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "build": "ts-node -r tsconfig-paths/register ./src/main.ts",
-    "dev": "ts-node-dev -r tsconfig-paths/register ./src/main.ts",
-    "compile": "tsc -p .",
-    "compile:test": "tsc -p . --noEmit",
-    "generate-schema": "typescript-json-schema --required tsconfig.json Configuration -o ../schema/Configuration.json",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/main.ts",
+    "generate-schema": "typescript-json-schema --required tsconfig.json WTLConfiguration -o schema/Configuration.json",
     "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
     "lint:prettier": "prettier --check src",
     "lint:eslint": "eslint . --ext ts,tsx",
@@ -24,7 +26,6 @@
     "@types/node": "18.14.1",
     "@typescript-eslint/eslint-plugin": "5.53.0",
     "@typescript-eslint/parser": "5.53.0",
-    "axios": "1.3.4",
     "cycle": "1.0.3",
     "discord.js": "14.7.1",
     "eslint": "8.34.0",
@@ -33,9 +34,12 @@
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-n": "15.6.1",
     "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-unicorn": "45.0.2",
     "logform": "2.5.1",
     "mysql2": "3.1.2",
-    "prettier": "^2.8.1",
+    "otplib": "12.0.1",
+    "prettier": "2.8.4",
+    "puppeteer-core": "19.7.1",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
     "twitter-api-v2": "1.14.1",
@@ -49,9 +53,9 @@
     "yarn-run-all": "3.1.1"
   },
   "dependencies": {
-    "@fastify/cookie": "^8.3.0",
+    "@fastify/cookie": "8.3.0",
     "@fastify/cors": "8.2.0",
-    "@fastify/session": "^10.1.0",
+    "@fastify/session": "10.1.1",
     "fastify": "4.13.0"
   }
 }

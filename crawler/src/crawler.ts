@@ -1,36 +1,43 @@
-import {
-  ActionRowBuilder,
-  AnyThreadChannel,
-  APIEmbed,
-  ButtonBuilder,
-  ButtonStyle,
-  Client,
-  TextChannel,
-  ThreadChannel,
-} from 'discord.js'
-import { FullUser, Status, User } from 'twitter-d'
-import { getConfig } from './config'
+import { DBTarget } from './entities/targets'
+import { AnyThreadChannel, APIEmbed, TextChannel } from 'discord.js'
+import { Logger } from './logger'
+import { WTLBrowser } from './browser'
+import { Twitter } from './twitter'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
-import { DBTarget } from './entities/targets'
-import { Logger } from './logger'
-import { getDBImage, getDBTweet, getDBUser } from './mysql'
-import { TwApi } from './twapi'
+import { FullUser, Status, User } from 'twitter-d'
+import { getDBImage, getDBTweet, getDBUser } from './database'
+import { Discord } from './discord'
 
-export default class Crawler {
-  private client: TwApi
-  private channel: TextChannel | AnyThreadChannel | null
-  private target: DBTarget
+export class Crawler {
+  private readonly browser: WTLBrowser
+  private readonly target: DBTarget
+  private channel?: TextChannel | AnyThreadChannel
 
-  constructor(twApi: TwApi, discordClient: Client, target: DBTarget) {
-    this.client = twApi
+  private readonly logger
+
+  constructor(
+    browser: WTLBrowser,
+    discord: Discord | undefined,
+    target: DBTarget
+  ) {
     this.target = target
+    this.browser = browser
 
-    if (target.threadId === null) {
-      this.channel = null
+    this.logger = Logger.configure(`Crawler@${target.name}`)
+
+    if (!target.threadId) {
       return
     }
-    const channel = discordClient.channels.resolve(target.threadId.toString())
+    if (!discord) {
+      this.logger.warn(
+        '⚠️ Discord linking feature disabled. The send message to Discord feature will not work.'
+      )
+      return
+    }
+
+    const client = discord.getClient()
+    const channel = client.channels.resolve(target.threadId.toString())
     if (!channel) {
       throw new Error('Channel not found.')
     }
@@ -40,44 +47,27 @@ export default class Crawler {
     this.channel = channel as TextChannel | AnyThreadChannel
   }
 
-  /** 収集処理 */
-  public async crawl(): Promise<void> {
-    const logger = Logger.configure('Crawler.crawl')
-    if (
-      this.channel instanceof ThreadChannel &&
-      !(this.channel as ThreadChannel).joined
-    ) {
-      await (this.channel as ThreadChannel).join()
-    }
+  public async crawl() {
+    this.logger.info(
+      `👀 Crawling ${this.target.name} (${this.target.userId})...`
+    )
 
-    const tweets = await this.client.getUserLikes(this.target.userId, 200)
+    const twitter = new Twitter(this.browser)
 
-    const isFirst =
-      (await DBItem.count({
-        where: {
-          target: {
-            userId: this.target.userId,
-          },
-        },
-      })) === 0
-    const isNotified = async (tweet: Status) => {
-      return (
-        (await DBItem.count({
-          where: {
-            target: {
-              userId: this.target.userId,
-            },
-            tweet: {
-              tweetId: tweet.id_str,
-            },
-          },
-        })) !== 0
-      )
+    const screenName = await twitter
+      .getUserScreenName(this.target.userId)
+      .catch((error) => {
+        this.logger.error('Failed to get screen name.', error)
+      })
+    if (!screenName) {
+      return
     }
-    const isMuted = async (tweet: Status) => {
-      const rows = await DBMute.find()
-      return rows.some((row) => tweet.full_text.includes(row.text))
-    }
+    this.logger.info(`👤 Screen name: ${screenName}`)
+
+    const tweets = await twitter.getUserLikes(screenName, 100)
+    this.logger.info(`📝 Tweets: ${tweets.length}`)
+
+    const isFirst = await this.isFirstCrawl()
 
     let countInserted = 0
     let countNotified = 0
@@ -93,11 +83,15 @@ export default class Crawler {
       if (extendedEntities.media.every((media) => media.type !== 'photo')) {
         continue // すべてのメディアが写真でない
       }
-      if (await isNotified(tweet)) {
+      if (Number.isNaN(tweet.user.id)) {
+        continue // ユーザーが存在しない
+      }
+
+      if (await this.isNotified(tweet)) {
         countNotified++
         continue // 既に通知済み
       }
-      if (await isMuted(tweet)) {
+      if (await this.isMuted(tweet)) {
         countMuted++
         continue // ミュートされている
       }
@@ -110,11 +104,11 @@ export default class Crawler {
       if (!isFirst) await this.sendMessage(tweet)
     }
 
-    logger.info('👀 Crawled: ' + this.target.name)
-    logger.info('👀 | Tweets: ' + tweets.length)
-    logger.info('👀 | Inserted: ' + countInserted)
-    logger.info('👀 | Notified: ' + countNotified)
-    logger.info('👀 | Muted: ' + countMuted)
+    this.logger.info('👀 Crawled: ' + this.target.name)
+    this.logger.info('👀 | Tweets: ' + tweets.length)
+    this.logger.info('👀 | Inserted: ' + countInserted)
+    this.logger.info('👀 | Notified: ' + countNotified)
+    this.logger.info('👀 | Muted: ' + countMuted)
   }
 
   /** DBにアイテム挿入 */
@@ -123,24 +117,24 @@ export default class Crawler {
     if (!extendedEntities || !extendedEntities.media) {
       return
     }
-    const dbUser = await getDBUser(tweet)
-    const dbTweet = await getDBTweet(tweet, dbUser)
+    const databaseUser = await getDBUser(tweet)
+    const databaseTweet = await getDBTweet(tweet, databaseUser)
 
-    const dbImages = []
+    const databaseImages = []
     for (const media of extendedEntities.media) {
       if (media.type !== 'photo') {
         continue
       }
       for (const size of ['thumb', 'large', 'medium', 'small'] as const) {
-        dbImages.push(await getDBImage(dbTweet, media, size))
+        databaseImages.push(await getDBImage(databaseTweet, media, size))
       }
     }
 
-    const dbItem = new DBItem()
-    dbItem.tweet = dbTweet
-    dbItem.target = target
-    dbItem.images = dbImages
-    await dbItem.save()
+    const databaseItem = new DBItem()
+    databaseItem.tweet = databaseTweet
+    databaseItem.target = target
+    databaseItem.images = databaseImages
+    await databaseItem.save()
   }
 
   /** Discordにメッセージ送信 */
@@ -160,24 +154,9 @@ export default class Crawler {
 
     logger.info(`🔗 ${tweetUrl}`)
 
-    const config = getConfig()
-    const components = config.twitter.accounts.map((account) => {
-      return new ButtonBuilder()
-        .setCustomId(`favorite-${account.name}-${tweet.id_str}`)
-        .setEmoji(account.emoji)
-        .setStyle(ButtonStyle.Secondary)
-    })
-
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      ...components,
-      new ButtonBuilder()
-        .setEmoji('🔁')
-        .setURL(`https://twitter.com/intent/retweet?tweet_id=${tweet.id_str}`)
-        .setStyle(ButtonStyle.Link),
-      new ButtonBuilder()
-        .setEmoji('❤️')
-        .setURL(`https://twitter.com/intent/like?tweet_id=${tweet.id_str}`)
-        .setStyle(ButtonStyle.Link)
+    const components = Discord.getButtonComponents(
+      tweet.id_str,
+      tweet.favorited
     )
 
     const embeds = []
@@ -228,16 +207,19 @@ export default class Crawler {
       }
       const title =
         extendedEntities.media.length >= 2
-          ? `${parseInt(mediaIndex, 10) + 1} / ${extendedEntities.media.length}`
+          ? `${Number.parseInt(mediaIndex, 10) + 1} / ${
+              extendedEntities.media.length
+            }`
           : undefined
       embeds.push({
         title,
         image: {
           url: media.media_url_https,
         },
-        color: 0x1d9bf0,
-        ...(parseInt(mediaIndex, 10) === 0 ? firstEmbed : {}),
-        ...(parseInt(mediaIndex, 10) === extendedEntities.media.length - 1
+        color: 0x1d_9b_f0,
+        ...(Number.parseInt(mediaIndex, 10) === 0 ? firstEmbed : {}),
+        ...(Number.parseInt(mediaIndex, 10) ===
+        extendedEntities.media.length - 1
           ? lastEmbed
           : {}),
       })
@@ -245,11 +227,61 @@ export default class Crawler {
 
     await this.channel.send({
       embeds,
-      components: [row],
+      components,
     })
   }
 
-  isFullUser(user: User): user is FullUser {
+  private async isFirstCrawl() {
+    return (
+      (await DBItem.count({
+        where: {
+          target: {
+            userId: this.target.userId,
+          },
+        },
+      })) === 0
+    )
+  }
+
+  private async isNotified(tweet: Status) {
+    return (
+      (await DBItem.count({
+        where: {
+          target: {
+            userId: this.target.userId,
+          },
+          tweet: {
+            tweetId: tweet.id_str,
+          },
+        },
+      })) !== 0
+    )
+  }
+
+  private async isMuted(tweet: Status) {
+    const rows = await DBMute.find()
+    return rows.some((row) => tweet.full_text.includes(row.text))
+  }
+
+  private isFullUser(user: User): user is FullUser {
     return 'screen_name' in user
+  }
+
+  public static async crawlAll(
+    browser: WTLBrowser,
+    discord: Discord | undefined
+  ) {
+    const logger = Logger.configure('Crawler.crawlAll')
+
+    const targets = await DBTarget.find()
+    const promises = []
+    for (const target of targets) {
+      const crawler = new Crawler(browser, discord, target)
+      promises.push(crawler.crawl())
+    }
+
+    logger.info(`👀 Crawling all targets: ${targets.length} targets`)
+    await Promise.all(promises)
+    logger.info('👀 Crawled all targets successfully!')
   }
 }

@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { BaseRouter } from '@/base-router'
 import { DBItem } from '@/entities/item'
 import { Equal } from 'typeorm'
 import { DBTarget } from '@/entities/targets'
 import { DBTweet } from '@/entities/tweets'
+import { BaseRouter } from '../base-router'
 
 interface ImagesQuery {
   targetIds?: string[]
@@ -132,9 +132,10 @@ export class ApiRouter extends BaseRouter {
 
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
     const tweetIds = items.map((item) => item.tweet.tweetId)
-    const tweetIdCount = tweetIds.reduce((acc, cur) => {
-      acc[cur] = (acc[cur] || 0) + 1
-      return acc
+    // eslint-disable-next-line unicorn/no-array-reduce
+    const tweetIdCount = tweetIds.reduce((accumulator, current) => {
+      accumulator[current] = (accumulator[current] || 0) + 1
+      return accumulator
     }, {} as Record<string, number>)
     const filteredItems = items
       // targets指定数と同じなら残す
@@ -151,8 +152,9 @@ export class ApiRouter extends BaseRouter {
       // 同一ツイートIDの中で最初のものだけ残す
       .filter((item, index, self) => {
         return (
-          self.findIndex((i) => i.tweet.tweetId === item.tweet.tweetId) ===
-          index
+          self.findIndex(
+            (index) => index.tweet.tweetId === item.tweet.tweetId
+          ) === index
         )
       })
     reply.send({
@@ -172,6 +174,6 @@ export class ApiRouter extends BaseRouter {
   }
 
   filterNull<T>(items: (T | null)[]): T[] {
-    return items.filter((item) => item !== null).flatMap((item) => item) as T[]
+    return items.filter((item) => item !== null).flat() as T[]
   }
 }

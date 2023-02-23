@@ -1,13 +1,13 @@
-import { DBImage } from './entities/images'
-import { DBItem } from './entities/item'
-import { DBTarget } from './entities/targets'
-import { DBTweet } from './entities/tweets'
-import { DBUser } from './users'
+import { FullUser, MediaEntity, Sizes, Status, User } from 'twitter-d'
+import { DataSource } from 'typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { getConfig } from './config'
-import { DataSource } from 'typeorm'
+import { DBImage } from './entities/images'
+import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
-import { FullUser, MediaEntity, Sizes, Status, User } from 'twitter-d'
+import { DBTarget } from './entities/targets'
+import { DBTweet } from './entities/tweets'
+import { DBUser } from './entities/users'
 
 const config = getConfig()
 export const AppDataSource = new DataSource({
@@ -30,6 +30,8 @@ export const AppDataSource = new DataSource({
 
 export async function getDBUser(tweet: Status) {
   if (!isFullUser(tweet.user)) {
+    // eslint-disable-next-line no-console
+    console.error(tweet)
     throw new Error(`User is not full user: ${tweet.user.id_str}`)
   }
   const row = await DBUser.findOne({
@@ -42,13 +44,13 @@ export async function getDBUser(tweet: Status) {
     await row.save()
     return row
   }
-  const dbUser = new DBUser()
-  dbUser.userId = tweet.user.id_str
-  dbUser.screenName = tweet.user.screen_name
-  return await dbUser.save()
+  const databaseUser = new DBUser()
+  databaseUser.userId = tweet.user.id_str
+  databaseUser.screenName = tweet.user.screen_name
+  return await databaseUser.save()
 }
 
-export async function getDBTweet(tweet: Status, dbUser: DBUser) {
+export async function getDBTweet(tweet: Status, databaseUser: DBUser) {
   const row = await DBTweet.findOne({
     where: {
       tweetId: tweet.id_str,
@@ -57,29 +59,29 @@ export async function getDBTweet(tweet: Status, dbUser: DBUser) {
   if (row) {
     return row
   }
-  const dbTweet = new DBTweet()
-  dbTweet.tweetId = tweet.id_str
-  dbTweet.user = dbUser
-  dbTweet.text = tweet.full_text
-  dbTweet.tags = tweet.entities.hashtags
+  const databaseTweet = new DBTweet()
+  databaseTweet.tweetId = tweet.id_str
+  databaseTweet.user = databaseUser
+  databaseTweet.text = tweet.full_text
+  databaseTweet.tags = tweet.entities.hashtags
     ? tweet.entities.hashtags.map((tag) => tag.text)
     : []
-  return await dbTweet.save()
+  return await databaseTweet.save()
 }
 
 export async function getDBImage(
-  dbTweet: DBTweet,
+  databaseTweet: DBTweet,
   media: MediaEntity,
   size: keyof Sizes
 ) {
   const sizedMedia = media.sizes[size as keyof Sizes]
-  const dbImage = new DBImage()
-  dbImage.tweet = dbTweet
-  dbImage.imageId = getImageId(media.media_url_https)
-  dbImage.width = sizedMedia.w
-  dbImage.height = sizedMedia.h
-  dbImage.size = size
-  return await dbImage.save()
+  const databaseImage = new DBImage()
+  databaseImage.tweet = databaseTweet
+  databaseImage.imageId = getImageId(media.media_url_https)
+  databaseImage.width = sizedMedia.w
+  databaseImage.height = sizedMedia.h
+  databaseImage.size = size
+  return await databaseImage.save()
 }
 
 function getImageId(url: string) {

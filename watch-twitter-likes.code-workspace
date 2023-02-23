@@ -1,16 +1,12 @@
 {
   "folders": [
     {
-      "name": "web",
-      "path": "web"
-    },
-    {
       "name": "crawler",
       "path": "crawler"
     },
     {
-      "name": "mock-api",
-      "path": "mock-api"
+      "name": "web",
+      "path": "web"
     },
     {
       "name": "watch-twitter-likes",

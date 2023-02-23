@@ -1,21 +1,20 @@
 import fastify, { FastifyInstance } from 'fastify'
 import { BaseRouter } from './base-router'
-import { getConfig } from './config'
-import { ApiRouter } from './endpoints/api-router'
 import cors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifySession from '@fastify/session'
-import { TwitterRouter } from './endpoints/twitter-router'
-import { Logger } from './logger'
+import { WTLConfiguration } from '@/config'
+import { Logger } from '@/logger'
+import { ApiRouter } from './endpoint/api-router'
+import { TwitterRouter } from './endpoint/twitter-router'
 
 /**
  * Fastify アプリケーションを構築する
  *
  * @returns Fastify アプリケーション
  */
-export function buildApp(): FastifyInstance {
+export function buildApp(config: WTLConfiguration): FastifyInstance {
   const logger = Logger.configure('buildApp')
-  const config = getConfig()
 
   const app = fastify()
   app.register(cors, {
@@ -43,10 +42,10 @@ export function buildApp(): FastifyInstance {
     new TwitterRouter(app, config),
   ]
 
-  routers.forEach((router) => {
-    logger.info(`⏩Initializing route: ${router.constructor.name}`)
+  for (const router of routers) {
+    logger.info(`⏩ Initializing route: ${router.constructor.name}`)
     router.init()
-  })
+  }
 
   return app
 }

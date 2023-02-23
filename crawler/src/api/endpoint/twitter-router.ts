@@ -1,7 +1,7 @@
-import { BaseRouter } from '@/base-router'
 import { Logger } from '@/logger'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { TwitterApi } from 'twitter-api-v2'
+import { BaseRouter } from '../base-router'
 
 interface AuthQuery {
   backUrl?: string
@@ -35,10 +35,12 @@ export class TwitterRouter extends BaseRouter {
     }>,
     reply: FastifyReply
   ): Promise<void> {
+    if (!this.config.twAuth) {
+      reply.code(400).send('Bad Request: twAuth is not enabled')
+      return
+    }
     const {
-      twitter: {
-        auth: { appKey, appSecret, callbackUrl },
-      },
+      twAuth: { appKey, appSecret, callbackUrl },
     } = this.config
     const client = new TwitterApi({
       appKey,
@@ -93,8 +95,8 @@ export class TwitterRouter extends BaseRouter {
     const client = this.getClient(oauthToken, oauthTokenSecret)
 
     // アクセストークンの取得
-    const result = await client.login(oauthVerifier).catch((err: unknown) => {
-      reply.code(500).send(err)
+    const result = await client.login(oauthVerifier).catch((error: unknown) => {
+      reply.code(500).send(error)
       return null
     })
     if (!result) {
@@ -103,11 +105,11 @@ export class TwitterRouter extends BaseRouter {
 
     const { accessToken, accessSecret, client: loggedClient } = result
 
-    const me = await loggedClient.currentUser().catch((err) => {
+    const me = await loggedClient.currentUser().catch((error) => {
       reply
         .code(400)
         .send(
-          `Bad Request: ${err.errors[0].message} (code: ${err.errors[0].code})`
+          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
         )
       return null
     })
@@ -157,11 +159,11 @@ export class TwitterRouter extends BaseRouter {
 
     const client = this.getClient(sessionAccessToken, sessionAccessSecret)
 
-    const result = await client.currentUser().catch((err) => {
+    const result = await client.currentUser().catch((error) => {
       reply
         .code(400)
         .send(
-          `Bad Request: ${err.errors[0].message} (code: ${err.errors[0].code})`
+          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
         )
       return null
     })
@@ -202,12 +204,12 @@ export class TwitterRouter extends BaseRouter {
     }
     const tweetIds = tweetIdsRaw.split(',')
 
-    const result = await client.v1.tweets(tweetIds).catch((err) => {
-      logger.info('Failed to get tweets', err)
+    const result = await client.v1.tweets(tweetIds).catch((error) => {
+      logger.info('❌ Failed to get tweets', error)
       reply
         .code(400)
         .send(
-          `Bad Request: ${err.errors[0].message} (code: ${err.errors[0].code})`
+          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
         )
       return null
     })
@@ -250,11 +252,11 @@ export class TwitterRouter extends BaseRouter {
       .post('favorites/create.json', {
         id: tweetId,
       })
-      .catch((err) => {
+      .catch((error) => {
         reply
           .code(400)
           .send(
-            `Bad Request: ${err.errors[0].message} (code: ${err.errors[0].code})`
+            `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
           )
         return null
       })
@@ -297,11 +299,11 @@ export class TwitterRouter extends BaseRouter {
       .post('favorites/destroy.json', {
         id: tweetId,
       })
-      .catch((err) => {
+      .catch((error) => {
         reply
           .code(400)
           .send(
-            `Bad Request: ${err.errors[0].message} (code: ${err.errors[0].code})`
+            `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
           )
         return null
       })
@@ -312,10 +314,11 @@ export class TwitterRouter extends BaseRouter {
   }
 
   private getClient(accessToken: string, accessSecret: string) {
+    if (!this.config.twAuth) {
+      throw new Error('twAuth is not configured')
+    }
     const {
-      twitter: {
-        auth: { appKey, appSecret },
-      },
+      twAuth: { appKey, appSecret },
     } = this.config
     return new TwitterApi({
       appKey,

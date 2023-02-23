@@ -88,7 +88,7 @@ const clickTwitter = (): void => {
     return
   }
   useFetch(`${config.public.apiBaseURL}/twitter/logout`).then((response) => {
-    if (response.error) {
+    if (response.error.value) {
       snackbarStore.start(`ログアウトに失敗しました: ${response.error.value}`, 'red', response.error.value)
       return
     }
