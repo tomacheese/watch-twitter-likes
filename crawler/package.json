@@ -10,6 +10,17 @@
   "engines": {
     "node": "18.x"
   },
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "generate-schema": "typescript-json-schema --required tsconfig.json WTLConfiguration -o schema/Configuration.json",
+    "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
+    "lint:prettier": "prettier --check src",
+    "lint:eslint": "eslint . --ext ts,tsx",
+    "lint:tsc": "tsc",
+    "fix": "run-s fix:prettier fix:eslint",
+    "fix:eslint": "eslint . --ext ts,tsx --fix",
+    "fix:prettier": "prettier --write src"
+  },
   "devDependencies": {
     "@types/node": "18.14.0",
     "@typescript-eslint/eslint-plugin": "5.52.0",
@@ -39,17 +50,6 @@
     "winston": "3.8.2",
     "winston-daily-rotate-file": "4.7.1",
     "yarn-run-all": "3.1.1"
-  },
-  "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "generate-schema": "typescript-json-schema --required tsconfig.json WTLConfiguration -o schema/Configuration.json",
-    "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
-    "lint:prettier": "prettier --check src",
-    "lint:eslint": "eslint . --ext ts,tsx",
-    "lint:tsc": "tsc",
-    "fix": "run-s fix:prettier fix:eslint",
-    "fix:eslint": "eslint . --ext ts,tsx --fix",
-    "fix:prettier": "prettier --write src"
   },
   "dependencies": {
     "@fastify/cookie": "8.3.0",
