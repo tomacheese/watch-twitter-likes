@@ -16,9 +16,9 @@ export class Twitter {
     const url = `https://twitter.com/i/user/${userId}`
     const page = await this.browser.newPage()
 
-    await page.goto(url, { waitUntil: 'networkidle2' })
+    await page.goto(url)
 
-    await new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve) => {
       const interval = setInterval(async () => {
         const href = await page.evaluate(() => {
           return document.location.href
@@ -30,7 +30,7 @@ export class Twitter {
       }, 1000)
       setTimeout(() => {
         clearInterval(interval)
-        reject(new Error('Timeout'))
+        resolve()
       }, 10_000)
     })
 
@@ -39,7 +39,7 @@ export class Twitter {
     })
     await page.close()
 
-    if (!screenName) {
+    if (!screenName || screenName === userId) {
       throw new Error('Failed to get screen name.')
     }
     if (screenName === '404') {

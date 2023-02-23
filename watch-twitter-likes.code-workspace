@@ -1,12 +1,12 @@
 {
   "folders": [
     {
-      "name": "web",
-      "path": "web"
-    },
-    {
       "name": "crawler",
       "path": "crawler"
+    },
+    {
+      "name": "web",
+      "path": "web"
     },
     {
       "name": "mock",

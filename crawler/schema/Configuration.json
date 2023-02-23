@@ -92,6 +92,25 @@
             ],
             "type": "object"
         },
+        "twAuth": {
+            "properties": {
+                "appKey": {
+                    "type": "string"
+                },
+                "appSecret": {
+                    "type": "string"
+                },
+                "callbackUrl": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "appKey",
+                "appSecret",
+                "callbackUrl"
+            ],
+            "type": "object"
+        },
         "twitter": {
             "$ref": "#/definitions/TwitterAccount"
         }

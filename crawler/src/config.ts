@@ -19,6 +19,7 @@ export interface WTLConfiguration {
     token: string
   }
   twitter: TwitterAccount
+  twAuth?: { appKey: string; appSecret: string; callbackUrl: string }
   db: {
     type: 'mysql'
     host: string

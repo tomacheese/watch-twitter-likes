@@ -1,3 +1,4 @@
+import { buildApp } from './api'
 import { WTLBrowser } from './browser'
 import { getConfig } from './config'
 import { Crawler } from './crawler'
@@ -13,6 +14,19 @@ import { Logger } from './logger'
   logger.info('✅ Database initialized')
 
   const config = getConfig()
+
+  const host = process.env.API_HOST || '0.0.0.0'
+  const port = process.env.API_PORT
+    ? Number.parseInt(process.env.API_PORT, 10)
+    : 8000
+
+  const app = buildApp(config)
+  app.listen({ host, port }, (error, address) => {
+    if (error) {
+      logger.error('❌ Fastify.listen error', error)
+    }
+    logger.info(`✅ API Server listening at ${address}`)
+  })
 
   const browser = await WTLBrowser.init(config.twitter)
   logger.info('✅ Browser initialized')

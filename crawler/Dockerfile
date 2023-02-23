@@ -36,6 +36,8 @@ COPY tsconfig.json .
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+ENV NODE_ENV production
+ENV API_PORT 80
 ENV DISPLAY :99
 ENV LOG_DIR /data/logs/
 ENV CONFIG_PATH /data/config.json

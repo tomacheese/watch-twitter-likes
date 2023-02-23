@@ -1,12 +1,10 @@
 version: "3.8"
 
 services:
-  app:
+  crawler:
     build:
       context: crawler
       dockerfile: Dockerfile
-    environment:
-      ENABLE_DEVTOOLS: "true"
     ports:
       - 5910:5910
     volumes:
@@ -18,6 +16,22 @@ services:
         condition: service_healthy
     init: true
     restart: on-failure:5
+
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./data/
+        target: /data/
+    ports:
+      - 8080:80
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    init: true
+    restart: always
 
   mariadb:
     image: mariadb

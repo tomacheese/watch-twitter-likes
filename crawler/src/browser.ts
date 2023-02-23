@@ -41,11 +41,6 @@ export class WTLBrowser {
     }
 
     const browser = await WTLBrowser.getBrowser(userDataDirectory, account)
-
-    const loginPage = await WTLBrowser.newPage(browser)
-    await WTLBrowser.login(loginPage, account)
-    await loginPage.close()
-
     return new WTLBrowser(browser, account)
   }
 

@@ -95,12 +95,12 @@ export class Discord {
       .likeTweet(Number(tweetId))
       .catch(async (error) => {
         await interaction.editReply({
-          content: `💚: -> :x: (${error.message})`
+          content: `:green_heart: -> :x: (${error.message})`
         })
       })
       .then(async () => {
         await interaction.editReply({
-          content: '💚: -> :white_check_mark:'
+          content: ':green_heart: -> :white_check_mark:'
         })
 
         await this.disableFavoriteButton(interaction.message, tweetId)

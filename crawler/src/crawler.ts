@@ -20,7 +20,7 @@ export class Crawler {
     this.target = target
     this.browser = browser
 
-    this.logger = Logger.configure(`Crawler(${target.name})`)
+    this.logger = Logger.configure(`Crawler@${target.name}`)
 
     if (!target.threadId) {
       return
