@@ -1083,7 +1083,7 @@
     eslint-plugin-vue "^9.7.0"
     local-pkg "^0.4.2"
 
-"@pinia-plugin-persistedstate/nuxt@^1.0.0":
+"@pinia-plugin-persistedstate/nuxt@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pinia-plugin-persistedstate/nuxt/-/nuxt-1.0.0.tgz#057fd3b0649e9c4ce90f60e3fc136eeef50c0777"
   integrity sha512-oBLnkFXy0mcP9wCR0NQj1SguhgalEoubDF302gpRr1lh0V34vSL2Nlw8XDwRrULq5v3eHt4da632YSjNny1+BA==
@@ -1091,7 +1091,7 @@
     "@nuxt/kit" "^3.0.0"
     pinia-plugin-persistedstate ">=3.0.0"
 
-"@pinia/nuxt@^0.4.6":
+"@pinia/nuxt@0.4.6":
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.4.6.tgz#ce83714f700594187d8a29e8f4bdaf31abe0bef1"
   integrity sha512-HjrYEfLdFpmsjhicPJgL36jVhzHWukIQPFFHGTSF84Cplu+f2nY2XHKqe9ToHzE9rLee2RjLOwAzOnXa/I/u6A==
@@ -1207,7 +1207,7 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
-"@types/color-thief-node@^1.0.1":
+"@types/color-thief-node@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/color-thief-node/-/color-thief-node-1.0.1.tgz#851a82b48a5560e4d2c051324e42c21a25e5802c"
   integrity sha512-UU2pvvjtxvugMdCpoG7If9EqbaeITyczSXymIA/h/Quzbf4HwvT1uBKDG0R42jzHlHGOsRqCRb+RP5Kj1RIBaQ==
@@ -2156,7 +2156,7 @@ color-support@^1.1.2:
   resolved "https://registry.yarnpkg.com/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
   integrity sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==
 
-color-thief-node@^1.0.4:
+color-thief-node@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/color-thief-node/-/color-thief-node-1.0.4.tgz#662da3af83461272ddcf7ff84db6c50c488115a8"
   integrity sha512-ZcGpyUnmjJISUjDwRv+DM8ySpT/Jp9BOiEPQfAXWsDF6WT3XAPIPzIRLXdKh4ZbTkhZCvYZgTo8A7hHRvxcUnQ==

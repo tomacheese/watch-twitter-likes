@@ -5,7 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  Timestamp,
+  Timestamp
 } from 'typeorm'
 import { DBImage } from './images'
 import { DBItem } from './item'
@@ -18,7 +18,7 @@ export class DBTweet extends BaseEntity {
     unsigned: true,
     comment: 'ツイートID',
     primary: true,
-    unique: true,
+    unique: true
   })
   tweetId!: string
 
@@ -26,20 +26,20 @@ export class DBTweet extends BaseEntity {
     type: 'varchar',
     length: 255,
     comment: 'ツイート本文',
-    nullable: true,
+    nullable: true
   })
   text!: string | null
 
   @Column({
     type: 'simple-array',
     comment: 'タグ',
-    nullable: true,
+    nullable: true
   })
   tags!: string[] | null
 
   @CreateDateColumn({
     type: 'timestamp',
-    comment: '行挿入日時',
+    comment: '行挿入日時'
   })
   createdAt!: Timestamp
 

@@ -4,9 +4,7 @@ import { Page } from 'puppeteer-core'
 import { dirname } from 'node:path'
 import fs from 'node:fs'
 
-type GraphQLEndPoint =
-  | 'UserByScreenName'
-  | 'Likes'
+type GraphQLEndPoint = 'UserByScreenName' | 'Likes'
 
 type Return<T extends GraphQLEndPoint> = T extends 'UserByScreenName'
   ? GraphQLUserByScreenNameResponse
@@ -21,7 +19,7 @@ interface Errors {
 
 export class GraphQLResponse<T extends GraphQLEndPoint> {
   private errors: Errors = {
-    RATE_LIMIT_EXCEEDED: 0,
+    RATE_LIMIT_EXCEEDED: 0
   }
 
   private responses: Return<T>[] = []

@@ -11,5 +11,4 @@ if (!(Test-Path "crawler/node_modules")) {
 Start-Process -FilePath cmd -ArgumentList "/C yarn generate-schema" -WorkingDirectory "crawler" -NoNewWindow -Wait
 
 Write-Host
-Write-Host Please press any key... -NoNewLine
-[Console]::ReadKey() | Out-Null
+Write-Host Successfully generate configuration schema -ForegroundColor Green
