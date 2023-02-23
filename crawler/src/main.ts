@@ -56,7 +56,7 @@ async function startApi(config: WTLConfiguration) {
   let discord: Discord | undefined
   const enableDiscord = !isTrue(process.env.DISABLE_DISCORD)
   if (enableDiscord) {
-    const discord = new Discord(config, browser)
+    discord = new Discord(config, browser)
     await discord.waitReady()
     logger.info('✅ Discord initialized')
   } else {
