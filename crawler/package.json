@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/main.ts",
     "generate-schema": "typescript-json-schema --required tsconfig.json WTLConfiguration -o schema/Configuration.json",
     "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
     "lint:prettier": "prettier --check src",

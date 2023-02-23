@@ -41,6 +41,7 @@ ENV API_PORT 80
 ENV DISPLAY :99
 ENV LOG_DIR /data/logs/
 ENV CONFIG_PATH /data/config.json
+ENV CHROMIUM_PATH /usr/bin/chromium-browser
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/app/entrypoint.sh"]
