@@ -26,10 +26,6 @@ Crawler（バックエンド API）の開発においては、以下の環境お
 - `web`
   - TypeScript
   - [Nuxt.js v3](https://nuxt.com)
-- `mock`
-  - TypeScript
-  - [Fastify](https://www.fastify.io)
-  - [Axios](https://axios-http.com/)
 
 ## Obligation
 
@@ -43,8 +39,6 @@ Crawler（バックエンド API）の開発においては、以下の環境お
   - API エンドポイントの提供（対象情報群・ツイート群・Twitter 連携）
 - `web`
   - `likes.amatama.net` でホストされる Web サイトのフロントエンド
-- `mock`
-  - 開発用のモック API（`likes.amatama.net/api` のラッパ）
 
 ## Mechanism
 
@@ -67,9 +61,8 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 プロジェクトのルートディレクトリで `.\scripts\install-deps.ps1` を実行し、依存パッケージのインストールを実施してください。
 
 > **Note**  
-> フロントエンドのデザイン調整程度であればデータベースや各種キーの用意をせず、ここまでの作業とモック API サーバを用いて開発可能です。  
-> `.\script\mock-dev.ps1` でモック API サーバを起動してください。  
-> フロントエンドの開発サーバは `.\scripts\client-dev.ps1` で起動できます。
+> フロントエンドのデザイン調整程度であればデータベースや各種キーの用意をせず、ここまでの作業で開発可能です。  
+> `.\scripts\client-only-dev.ps1` で起動できます。
 
 最後に、データベースの初期化作業と監視対象の登録を行う必要があります。  
 プロジェクトのルートディレクトリで `.\scripts\database-dev.ps1` を実行し、データベースサーバを起動してください。  

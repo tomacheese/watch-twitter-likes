@@ -9,10 +9,6 @@
       "path": "web"
     },
     {
-      "name": "mock",
-      "path": "mock"
-    },
-    {
       "name": "watch-twitter-likes",
       "path": "."
     }
