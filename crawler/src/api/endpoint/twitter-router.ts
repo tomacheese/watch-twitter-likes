@@ -205,7 +205,7 @@ export class TwitterRouter extends BaseRouter {
     const tweetIds = tweetIdsRaw.split(',')
 
     const result = await client.v1.tweets(tweetIds).catch((error) => {
-      logger.info('Failed to get tweets', error)
+      logger.info('❌ Failed to get tweets', error)
       reply
         .code(400)
         .send(
