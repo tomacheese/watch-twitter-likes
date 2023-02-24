@@ -101,7 +101,7 @@ export class Discord {
     })
 
     const result = await twitter
-      .likeTweet(Number(tweetId))
+      .likeTweet(tweetId)
       .then(async () => {
         return {
           status: true,
