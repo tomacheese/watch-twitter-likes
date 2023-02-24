@@ -98,20 +98,32 @@ export class Discord {
     const twitter = new Twitter(this.browser)
     await interaction.deferReply()
 
-    await twitter
+    const result = await twitter
       .likeTweet(Number(tweetId))
       .catch(async (error) => {
-        await interaction.editReply({
-          content: `:green_heart: -> :x: (${error.message})`,
-        })
+        return {
+          status: true,
+          error,
+        }
       })
       .then(async () => {
-        await interaction.editReply({
-          content: ':green_heart: -> :white_check_mark:',
-        })
-
-        await this.disableFavoriteButton(interaction.message, tweetId)
+        return {
+          status: false,
+          error: new Error('Unknown error'),
+        }
       })
+
+    if (result.status) {
+      await interaction.editReply({
+        content: ':green_heart: -> :white_check_mark:',
+      })
+
+      await this.disableFavoriteButton(interaction.message, tweetId)
+    } else {
+      await interaction.editReply({
+        content: `:green_heart: -> :x: (${result.error.message})`,
+      })
+    }
   }
 
   async disableFavoriteButton(message: Message, tweetId: string) {
