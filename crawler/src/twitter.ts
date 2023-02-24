@@ -104,7 +104,8 @@ export class Twitter {
         // innerText
         .then((element) =>
           page.evaluate((element) => element?.textContent, element)
-        ).catch(() => "UNKNOWN ERROR"),
+        )
+        .catch(() => 'UNKNOWN ERROR'),
     ])
     await page.close()
 
