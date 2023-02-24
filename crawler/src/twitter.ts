@@ -77,7 +77,7 @@ export class Twitter {
     return tweets
   }
 
-  public async likeTweet(tweetId: number) {
+  public async likeTweet(tweetId: string) {
     const logger = Logger.configure(`Twitter.likeTweet`)
     const page = await this.browser.newPage()
 
