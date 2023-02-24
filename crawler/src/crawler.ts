@@ -1,13 +1,20 @@
 import { DBTarget } from './entities/targets'
-import { AnyThreadChannel, APIEmbed, TextChannel } from 'discord.js'
+import {
+  AnyThreadChannel,
+  APIEmbed,
+  AttachmentBuilder,
+  TextChannel,
+} from 'discord.js'
 import { Logger } from './logger'
 import { WTLBrowser } from './browser'
 import { Twitter } from './twitter'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
 import { FullUser, Status, User } from 'twitter-d'
-import { getDBImage, getDBTweet, getDBUser } from './database'
+import { getDBImage as getDBMedia, getDBTweet, getDBUser } from './database'
 import { Discord } from './discord'
+import axios from 'axios'
+import { WriteStream } from 'node:fs'
 
 export class Crawler {
   private readonly browser: WTLBrowser
@@ -80,9 +87,6 @@ export class Crawler {
       if (!extendedEntities || !extendedEntities.media) {
         return // 拡張メディアがない
       }
-      if (extendedEntities.media.every((media) => media.type !== 'photo')) {
-        continue // すべてのメディアが写真でない
-      }
       if (Number.isNaN(tweet.user.id)) {
         continue // ユーザーが存在しない
       }
@@ -120,20 +124,17 @@ export class Crawler {
     const databaseUser = await getDBUser(tweet)
     const databaseTweet = await getDBTweet(tweet, databaseUser)
 
-    const databaseImages = []
+    const databaseMedia = []
     for (const media of extendedEntities.media) {
-      if (media.type !== 'photo') {
-        continue
-      }
       for (const size of ['thumb', 'large', 'medium', 'small'] as const) {
-        databaseImages.push(await getDBImage(databaseTweet, media, size))
+        databaseMedia.push(await getDBMedia(databaseTweet, media, size))
       }
     }
 
     const databaseItem = new DBItem()
     databaseItem.tweet = databaseTweet
     databaseItem.target = target
-    databaseItem.images = databaseImages
+    databaseItem.media = databaseMedia
     await databaseItem.save()
   }
 
@@ -159,13 +160,11 @@ export class Crawler {
       tweet.favorited
     )
 
-    const embeds = []
     const extendedEntities = tweet.extended_entities
     if (!extendedEntities || !extendedEntities.media) {
       return
     }
 
-    // 同一ツイートのうち、一番最初の画像だけに適用する
     const firstEmbed: APIEmbed = {
       description: tweet.full_text,
       fields: [
@@ -185,48 +184,46 @@ export class Crawler {
           inline: false,
         },
       ],
+      color: 0x1d_9b_f0,
       author: {
         name: `${tweet.user.name} (@${tweet.user.screen_name})`,
         url: `https://twitter.com/${tweet.user.screen_name}`,
         icon_url: tweet.user.profile_image_url_https,
       },
     }
-    // 同一ツイートのうち、一番最後の画像だけに適用する
-    // 単一画像の場合は、一番最初の画像に適用する
+
     const lastEmbed: APIEmbed = {
+      color: 0x1d_9b_f0,
       footer: {
         text: `Twitter by ${this.target.name} likes`,
       },
       timestamp: new Date(tweet.created_at).toISOString(),
     }
 
+    const promises = []
     for (const mediaIndex in extendedEntities.media) {
       const media = extendedEntities.media[mediaIndex]
-      if (media.type !== 'photo') {
-        continue
-      }
-      const title =
-        extendedEntities.media.length >= 2
-          ? `${Number.parseInt(mediaIndex, 10) + 1} / ${
-              extendedEntities.media.length
-            }`
-          : undefined
-      embeds.push({
-        title,
-        image: {
-          url: media.media_url_https,
-        },
-        color: 0x1d_9b_f0,
-        ...(Number.parseInt(mediaIndex, 10) === 0 ? firstEmbed : {}),
-        ...(Number.parseInt(mediaIndex, 10) ===
-        extendedEntities.media.length - 1
-          ? lastEmbed
-          : {}),
-      })
+
+      promises.push(
+        axios
+          .get<WriteStream>(media.media_url_https, {
+            responseType: 'stream',
+          })
+          .then((response) =>
+            new AttachmentBuilder(response.data)
+              .setName(media.media_url_https.split('/').pop() || '')
+              .setSpoiler(tweet.possibly_sensitive || false)
+          )
+      )
     }
+    const attachments: AttachmentBuilder[] = await Promise.all(promises)
 
     await this.channel.send({
-      embeds,
+      embeds: [firstEmbed],
+    })
+    await this.channel.send({
+      embeds: [lastEmbed],
+      files: attachments,
       components,
     })
   }
@@ -273,15 +270,14 @@ export class Crawler {
   ) {
     const logger = Logger.configure('Crawler.crawlAll')
 
+    // 同時にページを開くと上手く動かなくなったりするので、1つずつ開く
+    logger.info(`👀 Crawling all targets...`)
     const targets = await DBTarget.find()
-    const promises = []
     for (const target of targets) {
       const crawler = new Crawler(browser, discord, target)
-      promises.push(crawler.crawl())
+      await crawler.crawl()
     }
 
-    logger.info(`👀 Crawling all targets: ${targets.length} targets`)
-    await Promise.all(promises)
     logger.info('👀 Crawled all targets successfully!')
   }
 }

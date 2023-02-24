@@ -43,6 +43,10 @@ export class Discord {
     return this.client
   }
 
+  public close() {
+    this.client.destroy()
+  }
+
   async onReady() {
     this.logger.info(`👌 ready: ${this.client.user?.tag}`)
   }

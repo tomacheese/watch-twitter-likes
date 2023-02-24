@@ -159,6 +159,10 @@ export class Twitter {
 
   private createStatusObject(tweet: CustomGraphQLUserTweet): Status {
     const legacy = tweet.legacy ?? tweet.tweet?.legacy ?? undefined
+    const userResult =
+      tweet.core?.user_results.result ??
+      tweet.tweet?.core.user_results.result ??
+      undefined
     if (!legacy) {
       throw new Error('Failed to get legacy')
     }
@@ -167,9 +171,9 @@ export class Twitter {
       source: tweet.source ?? 'NULL',
       truncated: false,
       user: {
-        id: Number(tweet.core?.user_results.result.rest_id),
-        id_str: tweet.core?.user_results.result.rest_id ?? 'NULL',
-        ...tweet.core?.user_results.result.legacy,
+        id: Number(userResult?.rest_id),
+        id_str: userResult?.rest_id ?? 'NULL',
+        ...userResult?.legacy,
       },
       ...legacy,
       display_text_range: legacy.display_text_range

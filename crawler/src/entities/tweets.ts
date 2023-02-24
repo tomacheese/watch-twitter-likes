@@ -7,7 +7,7 @@ import {
   OneToMany,
   Timestamp,
 } from 'typeorm'
-import { DBImage } from './images'
+import { DBMedia } from './media'
 import { DBItem } from './item'
 import { DBUser } from './users'
 
@@ -49,6 +49,6 @@ export class DBTweet extends BaseEntity {
   @OneToMany(() => DBItem, (item) => item.tweet)
   items!: DBItem[]
 
-  @OneToMany(() => DBImage, (image) => image.tweet)
-  images!: DBImage[]
+  @OneToMany(() => DBMedia, (image) => image.tweet)
+  media!: DBMedia[]
 }

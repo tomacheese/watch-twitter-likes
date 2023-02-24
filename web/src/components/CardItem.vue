@@ -55,7 +55,7 @@ const isLoading = ref<boolean>(true)
  * @returns 画像の高さ
  */
 const calcHeight = (item: Item): string => {
-  const image = item.images.find((image) => image.size === 'small')
+  const image = item.media.find((image) => image.size === 'small')
   if (!image || !image.height) { return '338px' }
   return `${(image.height / image.width) * 240}px`
 }
@@ -203,7 +203,7 @@ onMounted(async () => {
   isNew.value = !viewedStore.isViewed(props.item.rowId)
 
   // ツイートの画像 URL
-  const imageURL = props.item.images[0].url
+  const imageURL = props.item.media[0].url
   if (!imageURL) {
     isLoading.value = false
     throw new Error('imageURL is undefined')

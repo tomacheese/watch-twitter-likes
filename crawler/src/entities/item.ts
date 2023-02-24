@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm'
-import { DBImage } from './images'
+import { DBMedia } from './media'
 import { DBTarget } from './targets'
 import { DBTweet } from './tweets'
 
@@ -27,8 +27,8 @@ export class DBItem extends BaseEntity {
   })
   tweet!: DBTweet
 
-  @OneToMany(() => DBImage, (image) => image.items)
-  images!: DBImage[]
+  @OneToMany(() => DBMedia, (image) => image.items)
+  media!: DBMedia[]
 
   @ManyToOne(() => DBTarget, (target) => target.items)
   @JoinColumn({
