@@ -11,21 +11,40 @@ import {
 import { DBItem } from './item'
 import { DBTweet } from './tweets'
 
-@Entity('images')
-export class DBImage extends BaseEntity {
+@Entity('media')
+export class DBMedia extends BaseEntity {
   @PrimaryGeneratedColumn('increment', {
     type: 'int',
-    comment: '画像独自ID',
+    comment: 'メディア独自ID',
   })
   rowId!: number
 
   @Column({
-    type: 'varchar',
-    comment: '画像ID',
+    type: 'enum',
+    enum: ['photo', 'video', 'animated_gif'],
+    comment: 'メディアの種類',
   })
-  imageId!: string
+  type!: string
 
-  @ManyToOne(() => DBTweet, (tweet) => tweet.images)
+  @Column({
+    type: 'varchar',
+    comment: 'メディアのURLタイプ',
+  })
+  urlType!: string
+
+  @Column({
+    type: 'varchar',
+    comment: 'メディアID',
+  })
+  mediaId!: string
+
+  @Column({
+    type: 'varchar',
+    comment: 'メディアの拡張子',
+  })
+  extension!: string
+
+  @ManyToOne(() => DBTweet, (tweet) => tweet.media)
   @JoinColumn({
     name: 'tweet_id',
     referencedColumnName: 'tweetId',
@@ -35,22 +54,22 @@ export class DBImage extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ['thumb', 'large', 'medium', 'small'],
-    comment: '画像サイズ',
+    comment: 'メディアサイズ',
   })
   size!: 'thumb' | 'large' | 'medium' | 'small'
 
-  @ManyToOne(() => DBItem, (item) => item.images)
+  @ManyToOne(() => DBItem, (item) => item.media)
   items!: DBItem
 
   @Column({
     type: 'int',
-    comment: '画像の幅',
+    comment: 'メディアの幅',
   })
   width!: number
 
   @Column({
     type: 'int',
-    comment: '画像の高さ',
+    comment: 'メディアの高さ',
   })
   height!: number
 

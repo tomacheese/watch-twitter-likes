@@ -77,7 +77,7 @@ export class ApiRouter extends BaseRouter {
 
     // まずはOR検索する
     const results = await DBItem.find({
-      relations: ['tweet', 'tweet.user', 'images', 'target'],
+      relations: ['tweet', 'tweet.user', 'media', 'target'],
       where: targetIds
         ? targetIds.map((targetId) => {
             return {
@@ -94,10 +94,10 @@ export class ApiRouter extends BaseRouter {
     let items = results.map((item) => {
       return {
         ...item,
-        images: item.images.map((image) => {
+        media: item.media.map((m) => {
           return {
-            ...image,
-            url: `https://pbs.twimg.com/media/${image.imageId}?format=jpg&name=small`,
+            ...m,
+            url: `https://pbs.twimg.com/${m.urlType}/${m.mediaId}?format=jpg&name=small`,
           }
         }),
       }

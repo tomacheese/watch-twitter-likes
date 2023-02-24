@@ -2,12 +2,13 @@ import { FullUser, MediaEntity, Sizes, Status, User } from 'twitter-d'
 import { DataSource } from 'typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { getConfig } from './config'
-import { DBImage } from './entities/images'
+import { DBMedia } from './entities/media'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
 import { DBTarget } from './entities/targets'
 import { DBTweet } from './entities/tweets'
 import { DBUser } from './entities/users'
+import { MigrationImages2Media1677269790107 } from './migrations/1677269790107-images2media'
 
 const config = getConfig()
 export const AppDataSource = new DataSource({
@@ -17,12 +18,11 @@ export const AppDataSource = new DataSource({
   username: config.db.username,
   password: config.db.password,
   database: config.db.database,
-  synchronize: true,
   logging: process.env.NODE_ENV === 'development',
   namingStrategy: new SnakeNamingStrategy(),
-  entities: [DBImage, DBItem, DBTarget, DBTweet, DBUser, DBMute],
+  entities: [DBMedia, DBItem, DBTarget, DBTweet, DBUser, DBMute],
   subscribers: [],
-  migrations: [],
+  migrations: [MigrationImages2Media1677269790107],
   timezone: '+09:00',
   supportBigNumbers: true,
   bigNumberStrings: true,
@@ -69,28 +69,35 @@ export async function getDBTweet(tweet: Status, databaseUser: DBUser) {
   return await databaseTweet.save()
 }
 
-export async function getDBImage(
+export async function getDBMedia(
   databaseTweet: DBTweet,
   media: MediaEntity,
   size: keyof Sizes
 ) {
+  // https://pbs.twimg.com/media/FpuUfNIaYAQXO8X.jpg
+  // https://pbs.twimg.com/ext_tw_video_thumb/1625974487828111361/pu/img/p7ku8Y7B4uLCkQi3.jpg
+  // https://pbs.twimg.com/tweet_video_thumb/FnCpI_4aEAg03vM.jpg
+  const regex =
+    /^https:\/\/pbs\.twimg\.com\/(?<type>.+?)\/(?<name>.+?)\.(?<ext>[a-z]+?)$/
+  const match = media.media_url_https.match(regex)
+  if (!match || !match.groups) {
+    throw new Error(`Invalid media url: ${media.media_url_https}`)
+  }
+  const type = match.groups.type
+  const name = match.groups.name
+  const extension = match.groups.ext
+
   const sizedMedia = media.sizes[size as keyof Sizes]
-  const databaseImage = new DBImage()
+  const databaseImage = new DBMedia()
+  databaseImage.type = media.type
+  databaseImage.mediaId = name
+  databaseImage.urlType = type
+  databaseImage.extension = extension
   databaseImage.tweet = databaseTweet
-  databaseImage.imageId = getImageId(media.media_url_https)
+  databaseImage.size = size
   databaseImage.width = sizedMedia.w
   databaseImage.height = sizedMedia.h
-  databaseImage.size = size
   return await databaseImage.save()
-}
-
-function getImageId(url: string) {
-  const regex = /^https:\/\/pbs\.twimg\.com\/media\/(.+?)\.([a-z]+?)$/
-  const match = url.match(regex)
-  if (match) {
-    return match[1]
-  }
-  return ''
 }
 
 function isFullUser(user: User): user is FullUser {

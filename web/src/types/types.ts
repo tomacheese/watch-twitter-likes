@@ -4,9 +4,12 @@ export interface User {
   createdAt: string
 }
 
-export interface Image {
+export interface Media {
   rowId: number
-  imageId: string
+  type: string
+  mediaId: string
+  urlType: string
+  extension: string
   size: string
   width: number
   height: number
@@ -26,7 +29,7 @@ export interface Tweet {
   user: User
   tags: string[]
   text: string
-  images: Image
+  media: Media
   target: Target
 }
 
@@ -34,6 +37,6 @@ export interface Item {
   rowId: number;
   createdAt: string;
   tweet: Tweet;
-  images: Image[];
+  media: Media[];
   target?: Target
 }
