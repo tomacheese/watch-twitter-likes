@@ -92,19 +92,20 @@ export class Twitter {
         .catch(() => null),
       page
         .waitForSelector('div[role="button"][data-testid="unlike"]', {
-          timeout: 5000,
+          timeout: 7000,
         })
         .then((element) => element?.click())
         .then(() => 'ALREADY_LIKED')
         .catch(() => null),
       page
-        .waitForSelector('div#layers div[role="alert][data-testid="toast"]', {
-          timeout: 5000,
+        .waitForSelector('div#layers div[role="alert"][data-testid="toast"]', {
+          timeout: 7000,
         })
         // innerText
         .then((element) =>
           page.evaluate((element) => element?.textContent, element)
-        ),
+        )
+        .catch(() => 'UNKNOWN ERROR'),
     ])
     await page.close()
 
