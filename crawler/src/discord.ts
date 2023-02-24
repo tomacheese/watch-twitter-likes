@@ -96,20 +96,22 @@ export class Discord {
       return
     }
     const twitter = new Twitter(this.browser)
-    await interaction.deferReply()
+    await interaction.deferReply({
+      ephemeral: true,
+    })
 
     const result = await twitter
       .likeTweet(Number(tweetId))
-      .catch(async (error) => {
-        return {
-          status: true,
-          error,
-        }
-      })
       .then(async () => {
         return {
+          status: true,
+          error: new Error('No error'),
+        }
+      })
+      .catch(async (error) => {
+        return {
           status: false,
-          error: new Error('Unknown error'),
+          error,
         }
       })
 
