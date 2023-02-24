@@ -69,7 +69,7 @@ export async function getDBTweet(tweet: Status, databaseUser: DBUser) {
   return await databaseTweet.save()
 }
 
-export async function getDBImage(
+export async function getDBMedia(
   databaseTweet: DBTweet,
   media: MediaEntity,
   size: keyof Sizes
