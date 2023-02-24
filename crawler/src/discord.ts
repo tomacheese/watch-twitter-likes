@@ -100,16 +100,16 @@ export class Discord {
 
     const result = await twitter
       .likeTweet(Number(tweetId))
-      .catch(async (error) => {
-        return {
-          status: true,
-          error,
-        }
-      })
       .then(async () => {
         return {
+          status: true,
+          error: new Error('No error'),
+        }
+      })
+      .catch(async (error) => {
+        return {
           status: false,
-          error: new Error('Unknown error'),
+          error,
         }
       })
 

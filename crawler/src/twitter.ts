@@ -4,6 +4,7 @@ import { GraphQLLikesResponse } from './models/likes'
 import { Status } from 'twitter-d'
 import { CustomGraphQLUserTweet } from './models/custom-graphql-user-tweet'
 import { WTLBrowser } from './browser'
+import { Logger } from './logger'
 
 export class Twitter {
   private readonly browser: WTLBrowser
@@ -77,6 +78,7 @@ export class Twitter {
   }
 
   public async likeTweet(tweetId: number) {
+    const logger = Logger.configure(`Twitter.likeTweet`)
     const page = await this.browser.newPage()
 
     const url = `https://twitter.com/i/status/${tweetId}`
@@ -108,6 +110,8 @@ export class Twitter {
         .catch(() => 'UNKNOWN ERROR'),
     ])
     await page.close()
+
+    logger.info(`Result: ${result}`)
 
     if (result !== 'LIKED') {
       throw new Error(result ?? 'UNKNOWN')
