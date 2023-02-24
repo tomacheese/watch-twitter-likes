@@ -96,7 +96,9 @@ export class Discord {
       return
     }
     const twitter = new Twitter(this.browser)
-    await interaction.deferReply()
+    await interaction.deferReply({
+      ephemeral: true,
+    })
 
     const result = await twitter
       .likeTweet(Number(tweetId))
