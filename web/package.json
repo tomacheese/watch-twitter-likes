@@ -32,7 +32,7 @@
     "@kevinmarrec/nuxt-pwa": "0.16.2",
     "@mdi/font": "7.1.96",
     "@pinia-plugin-persistedstate/nuxt": "1.0.0",
-    "@pinia/nuxt": "0.4.6",
+    "@pinia/nuxt": "0.4.7",
     "color-thief-node": "1.0.4",
     "js-yaml": "4.1.0",
     "nuxt": "3.2.2",
