@@ -40,7 +40,7 @@
     "mysql2": "3.2.0",
     "otplib": "12.0.1",
     "prettier": "2.8.4",
-    "puppeteer-core": "19.7.2",
+    "puppeteer-core": "19.7.3",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
     "twitter-api-v2": "1.14.2",
