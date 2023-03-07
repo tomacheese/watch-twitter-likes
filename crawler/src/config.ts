@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import { Logger } from './logger'
+import { Logger } from '@book000/node-utils'
 
 export const PATH = {
   config: process.env.CONFIG_PATH || 'data/config.json',

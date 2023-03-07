@@ -4,7 +4,7 @@ import cors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifySession from '@fastify/session'
 import { WTLConfiguration } from '@/config'
-import { Logger } from '@/logger'
+import { Logger } from '@book000/node-utils'
 import { ApiRouter } from './endpoint/api-router'
 import { TwitterRouter } from './endpoint/twitter-router'
 

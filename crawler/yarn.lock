@@ -23,6 +23,16 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@book000/node-utils@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.0.4.tgz#22f37aac6e9a9fc55b4ced9fd807ef676143f088"
+  integrity sha512-uYY8LJN9twrDrdMrj9qqmZ8DDB7+cXDes3mR+SyrXbeZ0jk5xl4GC/XUHP3YWPDu9pJcJmXpPDuhppQZBWRnYw==
+  dependencies:
+    cycle "1.0.3"
+    logform "2.5.1"
+    winston "3.8.2"
+    winston-daily-rotate-file "4.7.1"
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"

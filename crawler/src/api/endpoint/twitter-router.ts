@@ -1,4 +1,4 @@
-import { Logger } from '@/logger'
+import { Logger } from '@book000/node-utils'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { TwitterApi } from 'twitter-api-v2'
 import { BaseRouter } from '../base-router'

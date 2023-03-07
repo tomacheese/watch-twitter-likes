@@ -5,7 +5,7 @@ import {
   AttachmentBuilder,
   TextChannel,
 } from 'discord.js'
-import { Logger } from './logger'
+import { Logger } from '@book000/node-utils'
 import { WTLBrowser } from './browser'
 import { Twitter } from './twitter'
 import { DBItem } from './entities/item'

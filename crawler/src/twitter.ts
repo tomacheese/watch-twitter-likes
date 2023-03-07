@@ -4,7 +4,7 @@ import { GraphQLLikesResponse } from './models/likes'
 import { Status } from 'twitter-d'
 import { CustomGraphQLUserTweet } from './models/custom-graphql-user-tweet'
 import { WTLBrowser } from './browser'
-import { Logger } from './logger'
+import { Logger } from '@book000/node-utils'
 
 export class Twitter {
   private readonly browser: WTLBrowser
