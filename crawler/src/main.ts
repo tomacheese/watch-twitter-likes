@@ -4,7 +4,7 @@ import { getConfig, WTLConfiguration } from './config'
 import { Crawler } from './crawler'
 import { AppDataSource } from './database'
 import { Discord } from './discord'
-import { Logger } from './logger'
+import { Logger } from '@book000/node-utils'
 
 function isTrue(s: string | undefined) {
   if (!s) return false // undefined or null -> false

@@ -10,7 +10,7 @@ import {
 } from 'discord.js'
 import { WTLBrowser } from './browser'
 import { WTLConfiguration } from './config'
-import { Logger } from './logger'
+import { Logger } from '@book000/node-utils'
 import { Twitter } from './twitter'
 
 export class Discord {
