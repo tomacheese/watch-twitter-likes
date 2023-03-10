@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@book000/node-utils@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.0.5.tgz#3c54b2f1aebe9fd37bed897acf3585ef88d0c768"
-  integrity sha512-oh2tnvC3fL+9PaK4BZqabUvKibrq2gnKl7Pu5b84do9D9BYJRWSib7B12vdr9Hnd75FQC1lHLqHRwRXrCQ1dbQ==
+"@book000/node-utils@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.0.6.tgz#e4943cd5aaae3031f7b5f1a10f7bb0537b85549d"
+  integrity sha512-HCeOeiybSpkUEu3wLfrPKPe+1cUWypZJ88lNKmzA+Bc7MGZxFI+wAMGDib1DifR+6XbvpdtUOZqJXU3C+xkWEg==
   dependencies:
     cycle "1.0.3"
     logform "2.5.1"
