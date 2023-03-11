@@ -23,12 +23,14 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@book000/node-utils@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.1.1.tgz#69a3a8e2cda79466dd54e528d6869bc1c50f7b78"
-  integrity sha512-3zqzwzg0mFsxEmjs2ViYSvglmoSQxEUdur4gKmEa2SYpTZ9DQjwksZQiP+CnuCcIBguQa2iXkNeU6DtzQeM7LQ==
+"@book000/node-utils@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.2.0.tgz#2452bc0dc503a3728163304cd9fa9153f0687fb6"
+  integrity sha512-LMUUwWjRrvZBi8m6hXBsIRlC7WhYKjLPccT9tEfW14wgg5m6J5ALwAj/Zp8L4Hn5M3CEoXdFMqZ6ZBofttxn7Q==
   dependencies:
+    axios "1.3.4"
     cycle "1.0.3"
+    form-data "4.0.0"
     jsonc-parser "3.2.0"
     logform "2.5.1"
     winston "3.8.2"
@@ -1647,7 +1649,7 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
-form-data@^4.0.0:
+form-data@4.0.0, form-data@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
   integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
