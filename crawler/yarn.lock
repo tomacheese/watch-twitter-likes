@@ -23,12 +23,13 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@book000/node-utils@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.0.6.tgz#e4943cd5aaae3031f7b5f1a10f7bb0537b85549d"
-  integrity sha512-HCeOeiybSpkUEu3wLfrPKPe+1cUWypZJ88lNKmzA+Bc7MGZxFI+wAMGDib1DifR+6XbvpdtUOZqJXU3C+xkWEg==
+"@book000/node-utils@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.1.1.tgz#69a3a8e2cda79466dd54e528d6869bc1c50f7b78"
+  integrity sha512-3zqzwzg0mFsxEmjs2ViYSvglmoSQxEUdur4gKmEa2SYpTZ9DQjwksZQiP+CnuCcIBguQa2iXkNeU6DtzQeM7LQ==
   dependencies:
     cycle "1.0.3"
+    jsonc-parser "3.2.0"
     logform "2.5.1"
     winston "3.8.2"
     winston-daily-rotate-file "4.7.1"
@@ -2185,6 +2186,11 @@ json5@^1.0.1:
   integrity sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==
   dependencies:
     minimist "^1.2.0"
+
+jsonc-parser@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.2.0.tgz#31ff3f4c2b9793f89c67212627c51c6394f88e76"
+  integrity sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==
 
 kuler@^2.0.0:
   version "2.0.0"
