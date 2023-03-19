@@ -5,6 +5,7 @@ import { Status } from 'twitter-d'
 import { CustomGraphQLUserTweet } from './models/custom-graphql-user-tweet'
 import { WTLBrowser } from './browser'
 import { Logger } from '@book000/node-utils'
+import fs from 'node:fs'
 
 export class Twitter {
   private readonly browser: WTLBrowser
@@ -109,6 +110,14 @@ export class Twitter {
         )
         .catch(() => 'UNKNOWN ERROR'),
     ])
+    if (!result || result !== 'LIKED') {
+      if (!fs.existsSync(`/data/debug/like-failed`)) {
+        fs.mkdirSync(`/data/debug/like-failed`)
+      }
+      await page.screenshot({
+        path: `/data/debug/like-failed/${tweetId}.png`,
+      })
+    }
     await page.close()
 
     logger.info(`Result: ${result}`)
