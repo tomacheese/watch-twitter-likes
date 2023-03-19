@@ -56,12 +56,18 @@ export class GraphQLResponse<T extends GraphQLEndPoint> {
   }
 
   private init(page: Page, endpoint?: T) {
-    const regex = /https:\/\/api\.twitter\.com\/graphql\/.+?\/(.+?)\?/
+    const apiRegex = /https:\/\/api\.twitter\.com\/graphql\/.+?\/(.+?)\?/
+    const graphqlRegex = /https:\/\/twitter\.com\/i\/api\/graphql\/.+?\/(.+?)\?/
     page.on('response', async (response) => {
       if (response.request().method() === 'OPTIONS') {
         return
       }
-      const match = response.url().match(regex)
+      const apiMatch = response.url().match(apiRegex)
+      const graphqlMatch = response.url().match(graphqlRegex)
+      if (!apiMatch && !graphqlMatch) {
+        return
+      }
+      const match = apiMatch ?? graphqlMatch
       if (!match || match.length !== 2) {
         return
       }
