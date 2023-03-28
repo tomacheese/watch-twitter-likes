@@ -53,7 +53,7 @@
   "dependencies": {
     "@fastify/cookie": "8.3.0",
     "@fastify/cors": "8.2.1",
-    "@fastify/session": "10.1.1",
+    "@fastify/session": "10.2.0",
     "fastify": "4.15.0"
   }
 }
