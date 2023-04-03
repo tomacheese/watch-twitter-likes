@@ -104,7 +104,32 @@ export class Discord {
       ephemeral: true,
     })
 
-    const result = await twitter
+    // first try
+    const result = await this.likeTweet(twitter, tweetId)
+    if (result.status) {
+      await interaction.editReply({
+        content: ':green_heart: -> :white_check_mark:',
+      })
+
+      await this.disableFavoriteButton(interaction.message, tweetId)
+    } else {
+      // failed retry
+      await interaction.editReply({
+        content: `:arrows_counterclockwise: :x: (${result.error.message}). Retrying...`,
+      })
+
+      const resultRetry = await this.likeTweet(twitter, tweetId)
+      const content = resultRetry.status
+        ? ':green_heart: -> :white_check_mark:'
+        : `:green_heart: -> :x: (${result.error.message})`
+      await interaction.editReply({
+        content,
+      })
+    }
+  }
+
+  async likeTweet(twitter: Twitter, tweetId: string) {
+    return await twitter
       .likeTweet(tweetId)
       .then(async () => {
         return {
@@ -118,18 +143,6 @@ export class Discord {
           error,
         }
       })
-
-    if (result.status) {
-      await interaction.editReply({
-        content: ':green_heart: -> :white_check_mark:',
-      })
-
-      await this.disableFavoriteButton(interaction.message, tweetId)
-    } else {
-      await interaction.editReply({
-        content: `:green_heart: -> :x: (${result.error.message})`,
-      })
-    }
   }
 
   async disableFavoriteButton(message: Message, tweetId: string) {
