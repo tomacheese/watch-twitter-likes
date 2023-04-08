@@ -46,7 +46,7 @@
     "twitter-d": "0.6.0",
     "typeorm": "0.3.13",
     "typeorm-naming-strategies": "4.1.0",
-    "typescript": "5.0.3",
+    "typescript": "5.0.4",
     "typescript-json-schema": "0.56.0",
     "yarn-run-all": "3.1.1"
   },
