@@ -1,12 +1,9 @@
 {
   "name": "watch-twitter-likes-web",
   "version": "3.0.0",
-  "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
   "author": "Tomachi",
   "private": true,
-  "engines": {
-    "node": "18.x"
-  },
+  "repository": "git@github.com:tomacheese/watch-twitter-likes.git",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -15,6 +12,16 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix"
+  },
+  "dependencies": {
+    "@kevinmarrec/nuxt-pwa": "0.17.0",
+    "@mdi/font": "7.2.96",
+    "@pinia-plugin-persistedstate/nuxt": "1.1.1",
+    "@pinia/nuxt": "0.4.9",
+    "color-thief-node": "1.0.4",
+    "js-yaml": "4.1.0",
+    "nuxt": "3.4.2",
+    "vuetify": "3.1.15"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "12.0.0",
@@ -27,15 +34,5 @@
     "typescript": "5.0.4",
     "vite-plugin-eslint": "1.8.1",
     "vue-tsc": "1.4.4"
-  },
-  "dependencies": {
-    "@kevinmarrec/nuxt-pwa": "0.17.0",
-    "@mdi/font": "7.2.96",
-    "@pinia-plugin-persistedstate/nuxt": "1.1.1",
-    "@pinia/nuxt": "0.4.9",
-    "color-thief-node": "1.0.4",
-    "js-yaml": "4.1.0",
-    "nuxt": "3.4.2",
-    "vuetify": "3.1.15"
   }
 }
