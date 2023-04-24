@@ -125,6 +125,14 @@ export class Discord {
       await interaction.editReply({
         content,
       })
+
+      await (resultRetry.status
+        ? this.disableFavoriteButton(interaction.message, tweetId)
+        : interaction.user.createDM().then(async (dm) => {
+            await dm.send({
+              content: `:warning: Failed to like tweet: ${tweetId}\n\`\`\`\n${result.error.message}\n\`\`\`\n${interaction.message.url}`,
+            })
+          }))
     }
   }
 
