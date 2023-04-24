@@ -79,13 +79,15 @@ export class Crawler {
     let countInserted = 0
     let countNotified = 0
     let countMuted = 0
+
+    const notifyTweets = []
     for (const tweet of tweets) {
       if (!tweet.entities.media) {
         continue // メディアがない
       }
       const extendedEntities = tweet.extended_entities
       if (!extendedEntities || !extendedEntities.media) {
-        return // 拡張メディアがない
+        continue // 拡張メディアがない
       }
       if (Number.isNaN(tweet.user.id)) {
         continue // ユーザーが存在しない
@@ -104,8 +106,19 @@ export class Crawler {
       await this.addNewItem(this.target, tweet)
       countInserted++
 
-      // Discordにメッセージ送信
-      if (!isFirst) await this.sendMessage(tweet)
+      // 通知対象に追加
+      notifyTweets.push(tweet)
+    }
+
+    this.logger.info(`🔔 NotifyTweets: ${notifyTweets.length}`)
+
+    // Discordにメッセージ送信
+    if (!isFirst && this.channel) {
+      await this.channel.sendTyping()
+      for (const tweet of notifyTweets) {
+        await this.sendMessage(tweet)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
     }
 
     this.logger.info('👀 Crawled: ' + this.target.name)
