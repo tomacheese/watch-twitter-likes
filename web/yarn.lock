@@ -7558,10 +7558,10 @@ vue@^3.2.47:
     "@vue/server-renderer" "3.2.47"
     "@vue/shared" "3.2.47"
 
-vuetify@3.1.15:
-  version "3.1.15"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.1.15.tgz#aacee61d81dcaaeabaae44f68172de142dadd274"
-  integrity sha512-uxB4UCrP+hFyJaoSsVObAGBRD73qq5ga7HULepzGoMeUWap2H99mcqmMdN/a/Yp4ODK3gT8EcUeph3EgEcsArQ==
+vuetify@3.1.16:
+  version "3.1.16"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.1.16.tgz#25d294c48c82c71c75f2de3b0d31ae09e275816d"
+  integrity sha512-KU3EdCCciqIDeK2M35RJtqKy1Ue6nrYi48H/EtWFsgcI6ZpQrXbzfPAebif71dl2Vy5s1a7p4coPyD8DGOEOuw==
 
 wcwidth@^1.0.1:
   version "1.0.1"
