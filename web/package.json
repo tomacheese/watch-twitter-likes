@@ -20,7 +20,7 @@
     "@pinia/nuxt": "0.4.9",
     "color-thief-node": "1.0.4",
     "js-yaml": "4.1.0",
-    "nuxt": "3.4.2",
+    "nuxt": "3.4.3",
     "vuetify": "3.2.1"
   },
   "devDependencies": {
