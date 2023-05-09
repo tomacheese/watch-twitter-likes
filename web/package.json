@@ -17,7 +17,7 @@
     "@kevinmarrec/nuxt-pwa": "0.17.0",
     "@mdi/font": "7.2.96",
     "@pinia-plugin-persistedstate/nuxt": "1.1.1",
-    "@pinia/nuxt": "0.4.9",
+    "@pinia/nuxt": "0.4.10",
     "color-thief-node": "1.0.4",
     "js-yaml": "4.1.0",
     "nuxt": "3.4.3",
