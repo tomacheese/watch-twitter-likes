@@ -81,8 +81,8 @@ function convertCustomGraphQLUserTweetResponse(
 
 function getHyphenType(type: string) {
   return type
-    .replace(/(GraphQL|Rest)/g, '')
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replaceAll(/(GraphQL|Rest)/g, '')
+    .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
     .toLowerCase()
 }
 
