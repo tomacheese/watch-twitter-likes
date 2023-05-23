@@ -146,6 +146,12 @@ export class Discord {
         }
       })
       .catch(async (error) => {
+        if (error.message === 'ALREADY_LIKED') {
+          return {
+            status: true,
+            error: new Error('Already liked'),
+          }
+        }
         return {
           status: false,
           error,
