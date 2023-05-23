@@ -5,6 +5,7 @@ import { Crawler } from './crawler'
 import { AppDataSource } from './database'
 import { Discord } from './discord'
 import { Logger } from '@book000/node-utils'
+import { generateTypeInterfaces } from './generate-type-interface'
 
 function isTrue(s: string | undefined) {
   if (!s) return false // undefined or null -> false
@@ -30,6 +31,13 @@ async function startApi(config: WTLConfiguration) {
 ;(async () => {
   const logger = Logger.configure('main')
   logger.info('🚀 Starting...')
+
+  if (isTrue(process.env.ONLY_GENERATE_TYPE_INTERFACE)) {
+    logger.info('⏩ Generating type interface...')
+    await generateTypeInterfaces()
+    logger.info('✅ Type interface generated')
+    return
+  }
 
   let browser: WTLBrowser | undefined
   let discord: Discord | undefined
