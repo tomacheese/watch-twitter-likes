@@ -88,21 +88,21 @@ export class Twitter {
     const result = await Promise.race([
       page
         .waitForSelector('div[role="button"][data-testid="like"]', {
-          timeout: 5000,
+          timeout: 7000,
         })
         .then((element) => element?.click())
         .then(() => 'LIKED')
         .catch(() => null),
       page
         .waitForSelector('div[role="button"][data-testid="unlike"]', {
-          timeout: 7000,
+          timeout: 10_000,
         })
         .then((element) => element?.click())
         .then(() => 'ALREADY_LIKED')
         .catch(() => null),
       page
         .waitForSelector('div#layers div[role="alert"][data-testid="toast"]', {
-          timeout: 7000,
+          timeout: 10_000,
         })
         // innerText
         .then((element) =>
@@ -115,7 +115,7 @@ export class Twitter {
         fs.mkdirSync(`/data/debug/like-failed`)
       }
       await page.screenshot({
-        path: `/data/debug/like-failed/${tweetId}.png`,
+        path: `/data/debug/like-failed/${tweetId}-${result ?? 'UNKNOWN'}.png`,
       })
     }
     await page.close()
