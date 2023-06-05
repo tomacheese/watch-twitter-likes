@@ -57,7 +57,7 @@
     "typeorm": "0.3.16",
     "typeorm-naming-strategies": "4.1.0",
     "typescript": "5.0.4",
-    "typescript-json-schema": "0.56.0",
+    "typescript-json-schema": "0.57.0",
     "yarn-run-all": "3.1.1"
   }
 }
