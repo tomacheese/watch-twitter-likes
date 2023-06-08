@@ -24,7 +24,7 @@ export class DBTweet extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    length: 255,
+    length: 2000,
     comment: 'ツイート本文',
     nullable: true,
   })
