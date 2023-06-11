@@ -3,6 +3,7 @@ import {
   AnyThreadChannel,
   APIEmbed,
   AttachmentBuilder,
+  Client,
   TextChannel,
 } from 'discord.js'
 import { Logger } from '@book000/node-utils'
@@ -19,6 +20,7 @@ import { WriteStream } from 'node:fs'
 export class Crawler {
   private readonly browser: WTLBrowser
   private readonly target: DBTarget
+  private readonly client?: Client
   private channel?: TextChannel | AnyThreadChannel
 
   private readonly logger
@@ -43,8 +45,23 @@ export class Crawler {
       return
     }
 
-    const client = discord.getClient()
-    const channel = client.channels.resolve(target.threadId.toString())
+    this.client = discord.getClient()
+  }
+
+  public async crawl() {
+    this.logger.info(
+      `👀 Crawling ${this.target.name} (${this.target.userId})...`
+    )
+    if (!this.client) {
+      throw new Error('Client is not defined.')
+    }
+    if (!this.target.threadId) {
+      return
+    }
+
+    const channel = await this.client.channels.fetch(
+      this.target.threadId.toString()
+    )
     if (!channel) {
       throw new Error('Channel not found.')
     }
@@ -52,12 +69,6 @@ export class Crawler {
       throw new Error('Channel is not text based.')
     }
     this.channel = channel as TextChannel | AnyThreadChannel
-  }
-
-  public async crawl() {
-    this.logger.info(
-      `👀 Crawling ${this.target.name} (${this.target.userId})...`
-    )
 
     const twitter = new Twitter(this.browser)
 
@@ -287,8 +298,12 @@ export class Crawler {
     logger.info(`👀 Crawling all targets...`)
     const targets = await DBTarget.find()
     for (const target of targets) {
-      const crawler = new Crawler(browser, discord, target)
-      await crawler.crawl()
+      try {
+        const crawler = new Crawler(browser, discord, target)
+        await crawler.crawl()
+      } catch (error) {
+        logger.error(`❌ Failed to crawl: ${target.name}`, error as Error)
+      }
     }
 
     logger.info('👀 Crawled all targets successfully!')
