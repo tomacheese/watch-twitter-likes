@@ -131,6 +131,7 @@ export class Discord {
         : interaction.user.createDM().then(async (dm) => {
             await dm.send({
               content: `:warning: Failed to like tweet: ${tweetId}\n\`\`\`\n${result.error.message}\n\`\`\`\n${interaction.message.url}`,
+              components: Discord.getButtonComponents(tweetId, false, true),
             })
           }))
     }
@@ -167,23 +168,33 @@ export class Discord {
     })
   }
 
-  public static getButtonComponents(tweetId: string, isFavorite: boolean) {
-    return [
-      new ActionRowBuilder<ButtonBuilder>().addComponents(
+  public static getButtonComponents(
+    tweetId: string,
+    isFavorite: boolean,
+    isDm = false
+  ) {
+    const components: ButtonBuilder[] = []
+    if (!isDm) {
+      components.push(
         new ButtonBuilder()
           .setCustomId(`favorite-${tweetId}`)
           .setEmoji('💚')
           .setStyle(ButtonStyle.Secondary)
-          .setDisabled(isFavorite),
-        new ButtonBuilder()
-          .setEmoji('🔁')
-          .setURL(`https://twitter.com/intent/retweet?tweet_id=${tweetId}`)
-          .setStyle(ButtonStyle.Link),
-        new ButtonBuilder()
-          .setEmoji('❤️')
-          .setURL(`https://twitter.com/intent/like?tweet_id=${tweetId}`)
-          .setStyle(ButtonStyle.Link)
-      ),
-    ]
+          .setDisabled(isFavorite)
+      )
+    }
+
+    components.push(
+      new ButtonBuilder()
+        .setEmoji('🔁')
+        .setURL(`https://twitter.com/intent/retweet?tweet_id=${tweetId}`)
+        .setStyle(ButtonStyle.Link),
+      new ButtonBuilder()
+        .setEmoji('❤️')
+        .setURL(`https://twitter.com/intent/like?tweet_id=${tweetId}`)
+        .setStyle(ButtonStyle.Link)
+    )
+
+    return [new ActionRowBuilder<ButtonBuilder>().addComponents(...components)]
   }
 }
