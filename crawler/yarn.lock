@@ -229,10 +229,10 @@
   dependencies:
     fast-json-stringify "^5.7.0"
 
-"@fastify/session@10.2.1":
-  version "10.2.1"
-  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.2.1.tgz#8e15b5944839d64bf6b3b4aab992a5aae100b1a9"
-  integrity sha512-NexpVWWy+dyyj2gx5VvVaox+M3TJBX1AebJPERY9cx/h4rC7gmwO3sJG3xOC2FaVzU1boFXswJ3rYGLj5yq/Ag==
+"@fastify/session@10.4.0":
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.4.0.tgz#d08a106d29bb732f7d457ee7be29c42c4c4cffaa"
+  integrity sha512-0lABZ0Rcg0VjiRj5xWeAwC1LBwgclaoAPikaONxTz0LJQTPPWSfSDDXafLkGDAqrl5KF8sC3jqLiZ9CbRHZ0Jg==
   dependencies:
     fastify-plugin "^4.0.0"
     safe-stable-stringify "^2.3.1"
