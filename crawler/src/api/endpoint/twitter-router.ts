@@ -83,13 +83,13 @@ export class TwitterRouter extends BaseRouter {
       return
     }
 
-    const oauthTokenSecret = request.session.get<string>('oauth_token_secret')
+    const oauthTokenSecret = request.session.get('oauth_token_secret')
     if (!oauthTokenSecret) {
       reply.code(400).send('Bad Request: session@codeVerifier is required')
       return
     }
 
-    const sessionBackUrl = request.session.get<string | undefined>('backUrl')
+    const sessionBackUrl = request.session.get('backUrl')
 
     // TwitterApiの初期化
     const client = this.getClient(oauthToken, oauthTokenSecret)
@@ -142,16 +142,12 @@ export class TwitterRouter extends BaseRouter {
     request: FastifyRequest,
     reply: FastifyReply
   ): Promise<void> {
-    const sessionAccessToken = request.session.get<string | undefined>(
-      'accessToken'
-    )
+    const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
       reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
-    const sessionAccessSecret = request.session.get<string | undefined>(
-      'accessSecret'
-    )
+    const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
       reply.code(400).send('Bad Request: session@accessSecret is required')
       return
@@ -180,16 +176,12 @@ export class TwitterRouter extends BaseRouter {
     reply: FastifyReply
   ): Promise<void> {
     const logger = Logger.configure('TwitterRouter.routeGetLookup')
-    const sessionAccessToken = request.session.get<string | undefined>(
-      'accessToken'
-    )
+    const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
       reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
-    const sessionAccessSecret = request.session.get<string | undefined>(
-      'accessSecret'
-    )
+    const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
       reply.code(400).send('Bad Request: session@accessSecret is required')
       return
@@ -225,16 +217,12 @@ export class TwitterRouter extends BaseRouter {
     }>,
     reply: FastifyReply
   ): Promise<void> {
-    const sessionAccessToken = request.session.get<string | undefined>(
-      'accessToken'
-    )
+    const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
       reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
-    const sessionAccessSecret = request.session.get<string | undefined>(
-      'accessSecret'
-    )
+    const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
       reply.code(400).send('Bad Request: session@accessSecret is required')
       return
@@ -272,16 +260,12 @@ export class TwitterRouter extends BaseRouter {
     }>,
     reply: FastifyReply
   ): Promise<void> {
-    const sessionAccessToken = request.session.get<string | undefined>(
-      'accessToken'
-    )
+    const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
       reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
-    const sessionAccessSecret = request.session.get<string | undefined>(
-      'accessSecret'
-    )
+    const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
       reply.code(400).send('Bad Request: session@accessSecret is required')
       return

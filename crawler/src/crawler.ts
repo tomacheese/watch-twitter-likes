@@ -7,8 +7,6 @@ import {
   TextChannel,
 } from 'discord.js'
 import { Logger } from '@book000/node-utils'
-import { WTLBrowser } from './browser'
-import { Twitter } from './twitter'
 import { DBItem } from './entities/item'
 import { DBMute } from './entities/mutes'
 import { FullUser, Status, User } from 'twitter-d'
@@ -16,9 +14,10 @@ import { getDBMedia, getDBTweet, getDBUser } from './database'
 import { Discord } from './discord'
 import axios from 'axios'
 import { WriteStream } from 'node:fs'
+import { Twitter } from '@book000/twitterts'
 
 export class Crawler {
-  private readonly browser: WTLBrowser
+  private readonly twitter: Twitter
   private readonly target: DBTarget
   private readonly client?: Client
   private channel?: TextChannel | AnyThreadChannel
@@ -26,12 +25,12 @@ export class Crawler {
   private readonly logger
 
   constructor(
-    browser: WTLBrowser,
+    twitter: Twitter,
     discord: Discord | undefined,
     target: DBTarget
   ) {
     this.target = target
-    this.browser = browser
+    this.twitter = twitter
 
     this.logger = Logger.configure(`Crawler@${target.name}`)
 
@@ -52,28 +51,11 @@ export class Crawler {
     this.logger.info(
       `👀 Crawling ${this.target.name} (${this.target.userId})...`
     )
-    if (!this.client) {
-      throw new Error('Client is not defined.')
-    }
-    if (!this.target.threadId) {
-      return
-    }
 
-    const channel = await this.client.channels.fetch(
-      this.target.threadId.toString()
-    )
-    if (!channel) {
-      throw new Error('Channel not found.')
-    }
-    if (!channel.isTextBased()) {
-      throw new Error('Channel is not text based.')
-    }
-    this.channel = channel as TextChannel | AnyThreadChannel
-
-    const twitter = new Twitter(this.browser)
-
-    const screenName = await twitter
-      .getUserScreenName(this.target.userId)
+    const screenName = await this.twitter
+      .getScreenNameByUserId({
+        userId: this.target.userId,
+      })
       .catch((error) => {
         this.logger.error('Failed to get screen name.', error)
       })
@@ -82,7 +64,10 @@ export class Crawler {
     }
     this.logger.info(`👤 Screen name: ${screenName}`)
 
-    const tweets = await twitter.getUserLikes(screenName, 100)
+    const tweets = await this.twitter.getUserLikeTweets({
+      screenName,
+      limit: 100,
+    })
     this.logger.info(`📝 Tweets: ${tweets.length}`)
 
     const isFirst = await this.isFirstCrawl()
@@ -121,10 +106,34 @@ export class Crawler {
       notifyTweets.push(tweet)
     }
 
+    if (!this.target.threadId) {
+      this.logger.warn(
+        '⚠️ Thread ID is not defined. The send message to Discord feature will not work.'
+      )
+      return
+    }
+    if (!this.client) {
+      this.logger.warn(
+        '⚠️ Discord client is not initialized. The send message to Discord feature will not work.'
+      )
+      return
+    }
+
+    const channel = await this.client.channels.fetch(
+      this.target.threadId.toString()
+    )
+    if (!channel) {
+      throw new Error('Channel not found.')
+    }
+    if (!channel.isTextBased()) {
+      throw new Error('Channel is not text based.')
+    }
+    this.channel = channel as TextChannel | AnyThreadChannel
+
     this.logger.info(`🔔 NotifyTweets: ${notifyTweets.length}`)
 
     // Discordにメッセージ送信
-    if (!isFirst && this.channel) {
+    if (!isFirst && this.channel && notifyTweets.length > 0) {
       await this.channel.sendTyping()
       for (const tweet of notifyTweets) {
         await this.sendMessage(tweet)
@@ -288,10 +297,7 @@ export class Crawler {
     return 'screen_name' in user
   }
 
-  public static async crawlAll(
-    browser: WTLBrowser,
-    discord: Discord | undefined
-  ) {
+  public static async crawlAll(twitter: Twitter, discord: Discord | undefined) {
     const logger = Logger.configure('Crawler.crawlAll')
 
     // 同時にページを開くと上手く動かなくなったりするので、1つずつ開く
@@ -299,7 +305,7 @@ export class Crawler {
     const targets = await DBTarget.find()
     for (const target of targets) {
       try {
-        const crawler = new Crawler(browser, discord, target)
+        const crawler = new Crawler(twitter, discord, target)
         await crawler.crawl()
       } catch (error) {
         logger.error(`❌ Failed to crawl: ${target.name}`, error as Error)

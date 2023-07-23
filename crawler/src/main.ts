@@ -1,11 +1,10 @@
 import { buildApp } from './api'
-import { WTLBrowser } from './browser'
 import { getConfig, WTLConfiguration } from './config'
 import { Crawler } from './crawler'
 import { AppDataSource } from './database'
 import { Discord } from './discord'
 import { Logger } from '@book000/node-utils'
-import { generateTypeInterfaces } from './generate-type-interface'
+import { Twitter } from '@book000/twitterts'
 
 function isTrue(s: string | undefined) {
   if (!s) return false // undefined or null -> false
@@ -32,14 +31,7 @@ async function startApi(config: WTLConfiguration) {
   const logger = Logger.configure('main')
   logger.info('🚀 Starting...')
 
-  if (isTrue(process.env.ONLY_GENERATE_TYPE_INTERFACE)) {
-    logger.info('⏩ Generating type interface...')
-    await generateTypeInterfaces()
-    logger.info('✅ Type interface generated')
-    return
-  }
-
-  let browser: WTLBrowser | undefined
+  let twitter: Twitter | undefined
   let discord: Discord | undefined
 
   try {
@@ -68,44 +60,61 @@ async function startApi(config: WTLConfiguration) {
       logger.warn('⚠️ API Server disabled')
     }
 
-    const enableBrowser = !isTrue(process.env.DISABLE_BROWSER)
-    if (enableBrowser) {
-      browser = await WTLBrowser.init(config.twitter)
-      logger.info('✅ Browser initialized')
+    const enableTwitter = !isTrue(process.env.DISABLE_TWITTER)
+    if (enableTwitter) {
+      twitter = await Twitter.login({
+        username: config.twitter.username,
+        password: config.twitter.password,
+        otpSecret: config.twitter.authCodeSecret,
+        puppeteerOptions: {
+          userDataDirectory: '/data/userdata',
+          executablePath: process.env.CHROMIUM_PATH,
+        },
+        debugOptions: {
+          outputResponse: {
+            enable: true,
+            outputDirectory: '/data/responses',
+          },
+        },
+      })
+      logger.info('✅ Twitter initialized')
     } else {
-      logger.warn('⚠️ Browser disabled')
+      logger.warn('⚠️ Twitter disabled')
     }
 
     const enableDiscord = !isTrue(process.env.DISABLE_DISCORD)
     if (enableDiscord) {
-      discord = new Discord(config, browser)
+      discord = new Discord(config, twitter)
       await discord.waitReady()
       logger.info('✅ Discord initialized')
     } else {
       logger.warn('⚠️ Discord linking feature disabled')
     }
 
-    if (!browser) {
-      logger.warn('⚠️ Browser is not initialized. The crawler will not work.')
+    if (!twitter) {
+      logger.warn('⚠️ Twitter is not initialized. The crawler will not work.')
       return
     }
 
-    setInterval(async () => {
-      if (!browser) {
-        logger.error('❌ Browser is not initialized!')
-        return
-      }
-      await Crawler.crawlAll(browser, discord)
-    }, 1000 * 60 * 10) // 10分ごとに実行
+    setInterval(
+      async () => {
+        if (!twitter) {
+          logger.error('❌ Twitter is not initialized!')
+          return
+        }
+        await Crawler.crawlAll(twitter, discord)
+      },
+      1000 * 60 * 10
+    ) // 10分ごとに実行
 
-    await Crawler.crawlAll(browser, discord)
+    await Crawler.crawlAll(twitter, discord)
   } catch (error) {
     logger.error('❌ Uncaught error', error as Error)
 
-    if (browser) {
-      logger.info('👋 Closing Puppeteer browser...')
-      await browser.close()
-      logger.info('✅ Browser closed')
+    if (twitter) {
+      logger.info('👋 Closing twitter...')
+      await twitter.close()
+      logger.info('✅ Twitter closed')
     }
     if (discord) {
       logger.info('👋 Closing Discord client...')

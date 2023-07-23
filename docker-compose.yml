@@ -12,7 +12,7 @@ services:
         source: ./data
         target: /data
     depends_on:
-      mariadb:
+      mysql:
         condition: service_healthy
     init: true
     restart: on-failure:5
@@ -28,16 +28,16 @@ services:
     ports:
       - 8080:80
     depends_on:
-      mariadb:
+      mysql:
         condition: service_healthy
     init: true
     restart: always
 
-  mariadb:
-    image: mariadb
+  mysql:
+    image: mysql
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: rootPassword
+      MYSQL_ROOT_PASSWORD: rootPassword
       MYSQL_USER: watcher
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: watch-twitter-likes
@@ -48,12 +48,12 @@ services:
       test:
         [
           "CMD",
-          "mariadb-admin",
+          "mysqladmin",
           "ping",
           "-h",
           "localhost",
-          "-uroot",
-          "-prootPassword",
+          "-uwatcher",
+          "-ppassword",
         ]
       timeout: 20s
       interval: 5s
@@ -66,12 +66,12 @@ services:
     restart: always
     environment:
       PMA_ARBITRARY: 1
-      PMA_HOST: mariadb
+      PMA_HOST: mysql
       PMA_USER: root
       PMA_PASSWORD: rootPassword
       TZ: Asia/Tokyo
     depends_on:
-      mariadb:
+      mysql:
         condition: service_healthy
     ports:
       - 8000:80
