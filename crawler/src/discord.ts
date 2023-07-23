@@ -8,18 +8,17 @@ import {
   Interaction,
   Message,
 } from 'discord.js'
-import { WTLBrowser } from './browser'
 import { WTLConfiguration } from './config'
 import { Logger } from '@book000/node-utils'
-import { Twitter } from './twitter'
+import { AlreadyLikedError, Twitter } from '@book000/twitterts'
 
 export class Discord {
   private readonly logger = Logger.configure('Discord')
-  private readonly browser: WTLBrowser | undefined
+  private readonly twitter: Twitter | undefined
   private readonly client: Client
   private readonly config: WTLConfiguration
 
-  constructor(config: WTLConfiguration, browser: WTLBrowser | undefined) {
+  constructor(config: WTLConfiguration, twitter: Twitter | undefined) {
     this.client = new Client({
       intents: ['Guilds', 'GuildMembers', 'GuildMessages'],
     })
@@ -36,7 +35,7 @@ export class Discord {
     this.client.login(config.discord.token)
 
     this.config = config
-    this.browser = browser
+    this.twitter = twitter
   }
 
   public getClient() {
@@ -92,20 +91,19 @@ export class Discord {
     interaction: ButtonInteraction<CacheType>,
     tweetId: string
   ) {
-    if (!this.browser) {
+    if (!this.twitter) {
       await interaction.reply({
-        content: ':warning: Disabled browser! This feature is not available.',
+        content: ':warning: Disabled twitter! This feature is not available.',
         ephemeral: true,
       })
       return
     }
-    const twitter = new Twitter(this.browser)
     await interaction.deferReply({
       ephemeral: true,
     })
 
     // first try
-    const result = await this.likeTweet(twitter, tweetId)
+    const result = await this.likeTweet(tweetId)
     if (result.status) {
       await interaction.editReply({
         content: ':green_heart: -> :white_check_mark:',
@@ -115,13 +113,13 @@ export class Discord {
     } else {
       // failed retry
       await interaction.editReply({
-        content: `:arrows_counterclockwise: :x: (${result.error.message}). Retrying...`,
+        content: `:arrows_counterclockwise: :x: (${result.message}). Retrying...`,
       })
 
-      const resultRetry = await this.likeTweet(twitter, tweetId)
+      const resultRetry = await this.likeTweet(tweetId)
       const content = resultRetry.status
         ? ':green_heart: -> :white_check_mark:'
-        : `:green_heart: -> :x: (${result.error.message})`
+        : `:green_heart: -> :x: (${result.message})`
       await interaction.editReply({
         content,
       })
@@ -130,32 +128,39 @@ export class Discord {
         ? this.disableFavoriteButton(interaction.message, tweetId)
         : interaction.user.createDM().then(async (dm) => {
             await dm.send({
-              content: `:warning: Failed to like tweet: ${tweetId}\n\`\`\`\n${result.error.message}\n\`\`\`\n${interaction.message.url}`,
+              content: `:warning: Failed to like tweet: ${tweetId}\n\`\`\`\n${result.message}\n\`\`\`\n${interaction.message.url}`,
               components: Discord.getButtonComponents(tweetId, false, true),
             })
           }))
     }
   }
 
-  async likeTweet(twitter: Twitter, tweetId: string) {
-    return await twitter
-      .likeTweet(tweetId)
-      .then(async () => {
+  async likeTweet(
+    tweetId: string
+  ): Promise<{ status: boolean; message: string }> {
+    if (!this.twitter) {
+      throw new Error('Twitter is not initialized')
+    }
+    return await this.twitter
+      .likeTweet({
+        tweetId,
+      })
+      .then(() => {
         return {
           status: true,
-          error: new Error('No error'),
+          message: 'Success',
         }
       })
-      .catch(async (error) => {
-        if (error.message === 'ALREADY_LIKED') {
+      .catch((error) => {
+        if (error instanceof AlreadyLikedError) {
           return {
             status: true,
-            error: new Error('Already liked'),
+            message: 'Already liked',
           }
         }
         return {
           status: false,
-          error,
+          message: error.message,
         }
       })
   }

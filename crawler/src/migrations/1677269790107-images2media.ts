@@ -16,6 +16,11 @@ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
 */
 export class MigrationImages2Media1677269790107 implements MigrationInterface {
   public async up(runner: QueryRunner): Promise<void> {
+    // imagesテーブルが存在しない場合は何もしない
+    if (!(await runner.hasTable('images'))) {
+      return
+    }
+
     // 1. imagesテーブルをmediaテーブルにリネーム
     await runner.renameTable('images', 'media')
 

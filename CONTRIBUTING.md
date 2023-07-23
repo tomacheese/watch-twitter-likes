@@ -63,7 +63,7 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 
 この場合、以下の依存関係と初期設定を必要とします。
 
-- MariaDB (MySQL でも可)
+- MySQL
 - `crawler/package.json` に記載された依存パッケージ群
 - `data/config.json` への設定情報の入力
 
@@ -78,7 +78,7 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
 
 最後に、データベースの初期化作業と監視対象の登録を行う必要があります。  
 プロジェクトのルートディレクトリで `.\scripts\database-dev.ps1` を実行し、データベースサーバを起動してください。  
-`mariadbd: ready for connections` と表示されれば、正常に起動しています。
+`MySQL init process done. Ready for start up.` と表示されれば、正常に起動しています。
 
 データベースの初期化処理を実施するため、一度クローラーを動作させる必要があります。  
 プロジェクトのルートディレクトリで `.\scripts\crawler-dev.ps1` を実行し、`Database initialized` と表示されたことを確認してください。
@@ -119,7 +119,7 @@ watch-twitter-likes では、いいねしたツイート取得を以下の仕組
   - `callbackUrl`: Twitter API のアプリ画面で登録したコールバック URL
 - `db`: データベースに関する設定
   - `type`: データベースの種別。`mysql` で固定
-  - `host`: ホスト名。Docker で動作させる場合はサービス名である `mariadb` で固定
+  - `host`: ホスト名。Docker で動作させる場合はサービス名である `mysql` で固定
   - `port`: ポート番号。Docker で動作させる場合は `3306` で固定
   - `username`: ユーザ名
   - `password`: パスワード
@@ -139,8 +139,3 @@ JSON Schemaとして、`crawler/schema/Configuration.json` が利用できます
   "$schema": "../crawler/schema/Configuration.json"
 }
 ```
-
-## Troubleshooting
-
-一部の環境において、2 回目以降のデータベース接続時に MariaDB がエラーを発生し二度と起動できなくなる症状があるようです。  
-この場合、MariaDB と互換性のある MySQL サーバを利用することで回避できるかもしれません。
