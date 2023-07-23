@@ -26,11 +26,17 @@ export class Discord {
     this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
 
     // 1時間ごとに interactionCreate を再登録する
-    setInterval(() => {
-      this.logger.info('🔄 Re-registering interactionCreate handler')
-      this.client.off('interactionCreate', this.onInteractionCreate.bind(this))
-      this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
-    }, 1000 * 60 * 60)
+    setInterval(
+      () => {
+        this.logger.info('🔄 Re-registering interactionCreate handler')
+        this.client.off(
+          'interactionCreate',
+          this.onInteractionCreate.bind(this)
+        )
+        this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+      },
+      1000 * 60 * 60
+    )
 
     this.client.login(config.discord.token)
 

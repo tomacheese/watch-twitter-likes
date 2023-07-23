@@ -96,13 +96,16 @@ async function startApi(config: WTLConfiguration) {
       return
     }
 
-    setInterval(async () => {
-      if (!twitter) {
-        logger.error('❌ Twitter is not initialized!')
-        return
-      }
-      await Crawler.crawlAll(twitter, discord)
-    }, 1000 * 60 * 10) // 10分ごとに実行
+    setInterval(
+      async () => {
+        if (!twitter) {
+          logger.error('❌ Twitter is not initialized!')
+          return
+        }
+        await Crawler.crawlAll(twitter, discord)
+      },
+      1000 * 60 * 10
+    ) // 10分ごとに実行
 
     await Crawler.crawlAll(twitter, discord)
   } catch (error) {

@@ -133,10 +133,13 @@ export class ApiRouter extends BaseRouter {
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
     const tweetIds = items.map((item) => item.tweet.tweetId)
     // eslint-disable-next-line unicorn/no-array-reduce
-    const tweetIdCount = tweetIds.reduce((accumulator, current) => {
-      accumulator[current] = (accumulator[current] || 0) + 1
-      return accumulator
-    }, {} as Record<string, number>)
+    const tweetIdCount = tweetIds.reduce(
+      (accumulator, current) => {
+        accumulator[current] = (accumulator[current] || 0) + 1
+        return accumulator
+      },
+      {} as Record<string, number>
+    )
     const filteredItems = items
       // targets指定数と同じなら残す
       .filter((item) => {
