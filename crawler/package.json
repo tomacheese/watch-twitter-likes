@@ -48,7 +48,7 @@
     "json-schema-to-typescript": "13.0.2",
     "mysql2": "3.5.2",
     "otplib": "12.0.1",
-    "prettier": "2.8.8",
+    "prettier": "3.0.0",
     "puppeteer-core": "20.9.0",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
