@@ -29,7 +29,7 @@
     "@types/node": "18.17.1",
     "eslint": "8.45.0",
     "eslint-plugin-nuxt": "4.0.0",
-    "fastify": "4.20.0",
+    "fastify": "4.21.0",
     "sass": "1.64.1",
     "typescript": "5.1.6",
     "vite-plugin-eslint": "1.8.1",
