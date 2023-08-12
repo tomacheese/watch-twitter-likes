@@ -233,23 +233,32 @@ export class Crawler {
       timestamp: new Date(tweet.created_at).toISOString(),
     }
 
+    const medias = extendedEntities.media
+    if (!medias) {
+      return
+    }
+
     const promises = []
-    for (const mediaIndex in extendedEntities.media) {
-      const media = extendedEntities.media[mediaIndex]
+    for (const mediaIndex in medias) {
+      const media = medias[mediaIndex]
 
       promises.push(
         axios
           .get<WriteStream>(media.media_url_https, {
             responseType: 'stream',
           })
-          .then((response) =>
-            new AttachmentBuilder(response.data)
-              .setName(media.media_url_https.split('/').pop() || '')
-              .setSpoiler(tweet.possibly_sensitive || false)
-          )
+          .then((response) => {
+            return response.data
+          })
       )
     }
-    const attachments: AttachmentBuilder[] = await Promise.all(promises)
+    const streams: WriteStream[] = await Promise.all(promises)
+    const attachments: AttachmentBuilder[] = streams.map((stream, index) => {
+      const media = medias[index]
+      return new AttachmentBuilder(stream)
+        .setName(media.media_url_https.split('/').pop() || '')
+        .setSpoiler(tweet.possibly_sensitive || false)
+    })
 
     await this.channel.send({
       embeds: [firstEmbed],
@@ -259,6 +268,10 @@ export class Crawler {
       files: attachments,
       components,
     })
+
+    for (const stream of streams) {
+      stream.destroy()
+    }
   }
 
   private async isFirstCrawl() {
