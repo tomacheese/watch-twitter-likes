@@ -27,7 +27,7 @@
     "@fastify/cookie": "9.0.4",
     "@fastify/cors": "8.3.0",
     "@fastify/session": "10.5.0",
-    "fastify": "4.23.1"
+    "fastify": "4.23.2"
   },
   "devDependencies": {
     "@book000/node-utils": "1.6.1",
