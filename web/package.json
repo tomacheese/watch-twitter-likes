@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@kevinmarrec/nuxt-pwa": "0.17.0",
-    "@mdi/font": "7.2.96",
+    "@mdi/font": "7.3.67",
     "@pinia-plugin-persistedstate/nuxt": "1.1.2",
     "@pinia/nuxt": "0.4.11",
     "color-thief-node": "1.0.4",
