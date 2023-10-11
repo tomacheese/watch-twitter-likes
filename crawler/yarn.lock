@@ -3924,10 +3924,10 @@ tslib@^2.6.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.1.tgz#fd8c9a0ff42590b25703c0acb3de3d3f4ede0410"
   integrity sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==
 
-twitter-api-v2@1.15.1:
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.15.1.tgz#e7959bcaea5ee1633df7124f94ab0e7939357963"
-  integrity sha512-KNxoJL+sldWMI3AooPGcNkbP8awQai93d9xxsTurVPuUo/qnOUR3iO0XZTGC5sezdejHHqNyTwBAgGGw948MDg==
+twitter-api-v2@1.15.2:
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.15.2.tgz#212944065e86c1a8001f712447f06e275514faea"
+  integrity sha512-iIGItwkUGsAGA6VNnULXL5dllVJ35IZQjLSTWvqSn4M7s19B6X1+pUB/ZDSJD+u6q6+FinNxy0dnDIEoCZ5x8w==
 
 twitter-d@0.6.0:
   version "0.6.0"
