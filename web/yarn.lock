@@ -1606,13 +1606,13 @@
     defu "^6.1.2"
     pinia-plugin-persistedstate ">=3.2.0"
 
-"@pinia/nuxt@0.4.11":
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.4.11.tgz#1b3f728ae112d45deff5971376e05b8a8d64f720"
-  integrity sha512-bhuNFngJpmBCdAqWguezNJ/oJFR7wvKieqiZrmmdmPR07XjsidAw8RLXHMZE9kUm32M9E6T057OBbG/22jERTg==
+"@pinia/nuxt@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.5.0.tgz#417b54961139178d53a7f7c709a20d10ae884a60"
+  integrity sha512-p9Ojw+H2dp5l6A1TFLwl03kQZuuO7cjEtppnwjEjkQA6y8SitpiarmogouFTks1hOSXPjMfXPDTW0vRV+wSxVg==
   dependencies:
     "@nuxt/kit" "^3.5.0"
-    pinia ">=2.1.0"
+    pinia ">=2.1.7"
 
 "@rollup/plugin-alias@^5.0.0":
   version "5.0.0"
@@ -6334,13 +6334,13 @@ pinia-plugin-persistedstate@>=3.2.0:
   resolved "https://registry.yarnpkg.com/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-3.2.0.tgz#9932ca2ae88aa6c0d6763bebc6447d7bd1f097d0"
   integrity sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==
 
-pinia@>=2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.1.1.tgz#542c6bb8a7c27b342082f431bccd6124b63c5b55"
-  integrity sha512-Y2CgpcUtD8Ogdvo5LW5g20ykSZgnVDMgTSZFr40EvO6HB8axQk+0lHa1UrRah9wworFaxjovwRlY/wRICWj/KQ==
+pinia@>=2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.1.7.tgz#4cf5420d9324ca00b7b4984d3fbf693222115bbc"
+  integrity sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
-    vue-demi ">=0.14.2"
+    vue-demi ">=0.14.5"
 
 pino-abstract-transport@v1.0.0:
   version "1.0.0"
@@ -8252,10 +8252,10 @@ vue-bundle-renderer@^1.0.3:
   dependencies:
     ufo "^1.1.1"
 
-vue-demi@>=0.14.2:
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.3.tgz#5c7375527ad32580a7d8d28ee322bc059dbc1b99"
-  integrity sha512-aknytzARm7U20nMhvOdfa5IRiS+oyATtd55s3fICsT7wEtN/qoOiOINsNsNJjeZCOsPNOGS4p1yDOwH9cTxgjg==
+vue-demi@>=0.14.5:
+  version "0.14.6"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.6.tgz#dc706582851dc1cdc17a0054f4fec2eb6df74c92"
+  integrity sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==
 
 vue-devtools-stub@^0.1.0:
   version "0.1.0"
