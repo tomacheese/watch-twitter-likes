@@ -1714,10 +1714,10 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
-"@types/color-thief-node@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@types/color-thief-node/-/color-thief-node-1.0.2.tgz#e27e371d62add510239e6a8afbf918bf7d819203"
-  integrity sha512-LaeL8NFrVUyc4wpppaEMYUMMylbwMbCqhCvj6+q47ZTFazxYW5KsjUQRBHf6TKqYe4dQq/2HTulqiI7VUEF9GA==
+"@types/color-thief-node@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/color-thief-node/-/color-thief-node-1.0.3.tgz#087184c879fad479e7a6ccf384da02aca17e1b04"
+  integrity sha512-AeZTpkoRgMp3171kuho/AXgvAhlvo4F/CBtQxGLVaVLkmNBudFAg/btVrpuL3icqrhKFvFEcjN4XqJjOT6uVrw==
 
 "@types/eslint@^8.4.5":
   version "8.4.10"
