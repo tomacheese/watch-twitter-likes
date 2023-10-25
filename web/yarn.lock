@@ -8339,10 +8339,10 @@ vue@^3.3.4:
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
 
-vuetify@3.3.22:
-  version "3.3.22"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.22.tgz#1be1fa66e810774fbbe9abd9068fa4274aeaa5de"
-  integrity sha512-+X7IBnlvmj/3h2hgnGXWWKNM/N0ioi7xMEoBC5gPQnlaUPMvzXFG70BP9YlhYyUQhi05sD6n/BirImKur1gOEw==
+vuetify@3.3.23:
+  version "3.3.23"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.23.tgz#b456ac20ea945fa746f2a056f8157e38ee2756e6"
+  integrity sha512-EVEFvDyKr/HK2+hQJyhQSjIDULDaBi9vfgAAB0ekm+2Tvc8AkaDwb7VK44R2eilGFGpju6iN52FV7Uasj8SmIg==
 
 wcwidth@^1.0.1:
   version "1.0.1"
