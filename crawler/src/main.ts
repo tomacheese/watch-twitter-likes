@@ -73,7 +73,6 @@ async function startApi(config: WTLConfiguration) {
         debugOptions: {
           outputResponse: {
             enable: true,
-            outputDirectory: '/data/responses',
           },
         },
       })

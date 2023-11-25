@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Item, Target } from './types/types'
+import { type Item, type Target } from './types/types'
 import ItemWrapper from './components/ItemWrapper.vue'
 import { useViewedStore } from './store/viewed'
 import { useSettingsStore } from './store/settings'
@@ -114,6 +114,8 @@ const fetchItems = async (forceAll = false): Promise<void> => {
     `${config.public.apiBaseURL}/images`,
     {
       method: 'POST',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       body: {
         targetIds: selected.value.map((s) => s.userId),
         type: isAnd.value ? 'and' : 'or',
