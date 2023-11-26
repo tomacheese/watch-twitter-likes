@@ -63,12 +63,27 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.52.0":
-  version "0.52.0"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.52.0.tgz#2c5b469b4fe3dc6177b0654d2681fd0b86a71aaf"
-  integrity sha512-1VZxoIBOiNT21URLJY8xZhF0c0d05pMrV/+7Pl7mXKpZnAfz2wl/VNQ5qWdUZGJcygZCzBltsJ3aK+1G9qvLsA==
+"@book000/node-utils@1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.11.0.tgz#646941875858a1c58d23ef9b6b0b6794be2cc7fe"
+  integrity sha512-nAZEXRFtz3DBMz7++BrakLIBZDjvmPkKqBYMFbu/5ZqJbEAToD6QoofVXHQhLW0mzxPb6D2upMYh4GW/uf6bEg==
   dependencies:
-    "@book000/node-utils" "1.10.9"
+    axios "1.6.2"
+    cycle "1.0.3"
+    date-fns "2.30.0"
+    date-fns-tz "2.0.0"
+    form-data "4.0.0"
+    jsonc-parser "3.2.0"
+    logform "2.6.0"
+    winston "3.11.0"
+    winston-daily-rotate-file "4.7.1"
+
+"@book000/twitterts@0.52.1":
+  version "0.52.1"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.52.1.tgz#2287cae69bf8a06b153fc1b0c7ec8194c6782a9e"
+  integrity sha512-ubLZ2Y81Cvfg3nZNTTujmPjV4+zgaQhKuQmqfggp0zzX/JGkxjomfG3UvbIcPuraaPtdLeymvhxz9zPYyDGhdQ==
+  dependencies:
+    "@book000/node-utils" "1.11.0"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.1"
     mysql2 "3.6.5"
@@ -1193,7 +1208,12 @@ data-uri-to-buffer@^5.0.1:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-5.0.1.tgz#db89a9e279c2ffe74f50637a59a32fb23b3e4d7c"
   integrity sha512-a9l6T1qqDogvvnw0nKlfZzqsyikEBZBClF39V3TFoKhDtGBqHu2HkuomJc02j5zft8zrUaXEuoicLeW54RkzPg==
 
-date-fns@^2.29.3:
+date-fns-tz@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-2.0.0.tgz#1b14c386cb8bc16fc56fe333d4fc34ae1d1099d5"
+  integrity sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==
+
+date-fns@2.30.0, date-fns@^2.29.3:
   version "2.30.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
