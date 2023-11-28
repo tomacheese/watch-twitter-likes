@@ -270,10 +270,10 @@
   dependencies:
     fast-json-stringify "^5.7.0"
 
-"@fastify/session@10.6.0":
-  version "10.6.0"
-  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.6.0.tgz#fcbcc1d36eb22bb7f03dda6b80aacffa335d89ec"
-  integrity sha512-ZGWxsdHKlhflGHxN6zlH+lzLo5odHVaoH07NeJQPGNEZbPWKxE47Qufev1GdLQO09t9ALsWpTGwqNwHnG92mrw==
+"@fastify/session@10.6.1":
+  version "10.6.1"
+  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.6.1.tgz#1cda4e9de3a3bde988baa84899a6fafed20b5b50"
+  integrity sha512-S8qonAVTyF1h9+b8Ht76DhrFRERUO3wGBPBXDt2BFnteuJjcnEJVSqhhvOv1CpnbpJjmsyfgBpTOLcPWRNmjyg==
   dependencies:
     fastify-plugin "^4.0.0"
     safe-stable-stringify "^2.3.1"
