@@ -46,21 +46,6 @@
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
 
-"@book000/node-utils@1.11.15":
-  version "1.11.15"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.11.15.tgz#44b4e1ba40249bfbd86c8d1864fd52b480d5d4ab"
-  integrity sha512-vmn9i2T7zryVhPa0/Qxk4GgM3V/Nii2MVsYaqGrcLGRGu1xF3LQnhcVen98/gvyBPTYJU8fDsyRP7/pvV65WTA==
-  dependencies:
-    axios "1.6.2"
-    cycle "1.0.3"
-    date-fns "2.30.0"
-    date-fns-tz "2.0.0"
-    form-data "4.0.0"
-    jsonc-parser "3.2.0"
-    logform "2.6.0"
-    winston "3.11.0"
-    winston-daily-rotate-file "4.7.1"
-
 "@book000/node-utils@1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.0.tgz#4aa118786bff9c2da740f6293a11a984d2cf3be9"
@@ -75,12 +60,12 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.57.27":
-  version "0.57.27"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.57.27.tgz#7797b5c6fb1c9eeaaf611e2c16d8d215e9498d29"
-  integrity sha512-qzMdnay2MvLntamDPmUcMU0IA4H3W1VKyFu6xeGHLIfFRZI/3OsqcqwCOdY4jGfFGeh/zItL66yuO0jozLGtQw==
+"@book000/twitterts@0.57.28":
+  version "0.57.28"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.57.28.tgz#70c3cccd3c2d09068cc2739ea40e5d5ed45dd663"
+  integrity sha512-/REN+4+k7SuHFHDOyy7WB6URnY1/Sn1lxz/WE2lRgVaeNpcEMsFLtVGxQIR1eRcX4TKiCCkpLQlmxZNhruDFyQ==
   dependencies:
-    "@book000/node-utils" "1.11.15"
+    "@book000/node-utils" "1.12.0"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.1"
     mysql2 "3.6.5"
@@ -1184,12 +1169,7 @@ data-uri-to-buffer@^6.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-6.0.1.tgz#540bd4c8753a25ee129035aebdedf63b078703c7"
   integrity sha512-MZd3VlchQkp8rdend6vrx7MmVDJzSNTBvghvKjirLkD+WTChA3KUf0jkE68Q4UyctNqI11zZO9/x2Yx+ub5Cvg==
 
-date-fns-tz@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-2.0.0.tgz#1b14c386cb8bc16fc56fe333d4fc34ae1d1099d5"
-  integrity sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==
-
-date-fns@2.30.0, date-fns@^2.29.3:
+date-fns@^2.29.3:
   version "2.30.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
