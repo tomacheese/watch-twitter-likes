@@ -46,6 +46,20 @@
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
 
+"@book000/node-utils@1.12.10":
+  version "1.12.10"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.10.tgz#95d2d4f71662df42630c315d7027b34124bc9894"
+  integrity sha512-idp+2Jl1ZFiJGyBh3e6+b/OylDr8u+as1grwk5wKiN0ryJW8i4baPcKLRYGLJ0l6CR/UDB4XIB0Zv2/v57SmLA==
+  dependencies:
+    axios "1.6.3"
+    cycle "1.0.3"
+    form-data "4.0.0"
+    jsonc-parser "3.2.0"
+    logform "2.6.0"
+    moment-timezone "0.5.44"
+    winston "3.11.0"
+    winston-daily-rotate-file "4.7.1"
+
 "@book000/node-utils@1.12.11":
   version "1.12.11"
   resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.11.tgz#4077892c78fd0471cd4bd7a26183813ad149e7ab"
@@ -60,26 +74,12 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/node-utils@1.12.9":
-  version "1.12.9"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.9.tgz#2c17a693cd83364a8598d4813797d042b48ed87c"
-  integrity sha512-ah9H3NEFH6/2QXE88AtgIjG+wtoiZ5vS7oJTTcxQOTtSbOYDNtFQm7HbH2Urrf+h2oSQe4Bvqqh/dR6wZmoPGA==
+"@book000/twitterts@0.57.54":
+  version "0.57.54"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.57.54.tgz#11595f387b545ae2a9fc6fc4f0f29f0a81879511"
+  integrity sha512-G1lA9/A2Rr+BgisI/RBkZyEzdqBA4yJgaXmgEjHJCuHIY23ooKIEHXKa05MWoD72YaHC+gTTQ1xMGldH/5cR8Q==
   dependencies:
-    axios "1.6.3"
-    cycle "1.0.3"
-    form-data "4.0.0"
-    jsonc-parser "3.2.0"
-    logform "2.6.0"
-    moment-timezone "0.5.43"
-    winston "3.11.0"
-    winston-daily-rotate-file "4.7.1"
-
-"@book000/twitterts@0.57.52":
-  version "0.57.52"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.57.52.tgz#752072bd62a951aecc0423e17a36cfc8c90aaf6e"
-  integrity sha512-9/HkX27sRKxIYPLIsUSuJZyDIetAnmSh6FT/EiM1idQDGaChaKN12R6axGEFA2vQeLXiCiMF37855P+Q5rU3WQ==
-  dependencies:
-    "@book000/node-utils" "1.12.9"
+    "@book000/node-utils" "1.12.10"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.1"
     mysql2 "3.6.5"
@@ -2829,13 +2829,6 @@ mnemonist@0.39.6:
   integrity sha512-A/0v5Z59y63US00cRSLiloEIw3t5G+MiKz4BhX21FI+YBJXBOGW0ohFxTxO08dsOYlzxo87T7vGfZKYp2bcAWA==
   dependencies:
     obliterator "^2.0.1"
-
-moment-timezone@0.5.43:
-  version "0.5.43"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.43.tgz#3dd7f3d0c67f78c23cd1906b9b2137a09b3c4790"
-  integrity sha512-72j3aNyuIsDxdF1i7CEgV2FfxM1r6aaqJyLB2vwb33mXYyoyLly+F1zbWqhA3/bVIoJ4szlUoMbUnVdid32NUQ==
-  dependencies:
-    moment "^2.29.4"
 
 moment-timezone@0.5.44:
   version "0.5.44"
