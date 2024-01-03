@@ -29,13 +29,6 @@
     chalk "^2.4.2"
     js-tokens "^4.0.0"
 
-"@babel/runtime@^7.21.0":
-  version "7.23.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.5.tgz#11edb98f8aeec529b82b211028177679144242db"
-  integrity sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==
-  dependencies:
-    regenerator-runtime "^0.14.0"
-
 "@bcherny/json-schema-ref-parser@10.0.5-fork":
   version "10.0.5-fork"
   resolved "https://registry.yarnpkg.com/@bcherny/json-schema-ref-parser/-/json-schema-ref-parser-10.0.5-fork.tgz#9b5e1e7e07964ea61840174098e634edbe8197bc"
@@ -60,10 +53,10 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.58.9":
-  version "0.58.9"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.9.tgz#3887115dd71cec1d565e8351119f90281dbcc0dd"
-  integrity sha512-tFxUMl915IIzgq5O21FC1Yyhe6JTx0PulAJCm/Bvmc4Nnfw0huLb40W57+QQN8M3aYVEiNfQXSkQyPYIh3LjDw==
+"@book000/twitterts@0.58.10":
+  version "0.58.10"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.10.tgz#94b3f2a3275dbc625744fec6583b8a0a8f4e3494"
+  integrity sha512-kk5stjE1VELEfsgT26+CDlY0Q7r5LWOZePAx0gN/3JCy0Dv2M0LOLZ8JGdwaN1Qoczh/bBWSNgBST7McM5RsrQ==
   dependencies:
     "@book000/node-utils" "1.12.14"
     genson-js "0.0.8"
@@ -72,7 +65,7 @@
     otplib "12.0.1"
     puppeteer-core "21.6.1"
     twitter-d "0.6.0"
-    typeorm "0.3.17"
+    typeorm "0.3.19"
     typeorm-naming-strategies "4.1.0"
 
 "@colors/colors@1.6.0", "@colors/colors@^1.6.0":
@@ -1219,13 +1212,6 @@ data-uri-to-buffer@^6.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-6.0.1.tgz#540bd4c8753a25ee129035aebdedf63b078703c7"
   integrity sha512-MZd3VlchQkp8rdend6vrx7MmVDJzSNTBvghvKjirLkD+WTChA3KUf0jkE68Q4UyctNqI11zZO9/x2Yx+ub5Cvg==
 
-date-fns@^2.29.3:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-
 dayjs@^1.11.9:
   version "1.11.10"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
@@ -2158,17 +2144,6 @@ glob@^7.1.3, glob@^7.1.6, glob@^7.1.7:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-8.1.0.tgz#d388f656593ef708ee3e34640fdfb99a9fd1c33e"
-  integrity sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^5.0.1"
-    once "^1.3.0"
-
 globals@^13.19.0:
   version "13.23.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-13.23.0.tgz#ef31673c926a0976e1f61dab4dca57e0c0a8af02"
@@ -2852,13 +2827,6 @@ minimatch@^3.0.2, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^5.0.1:
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.6.tgz#1cfcb8cf5522ea69952cd2af95ae09477f122a96"
-  integrity sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==
-  dependencies:
-    brace-expansion "^2.0.1"
-
 minimist@^1.2.0, minimist@^1.2.6:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
@@ -3504,11 +3472,6 @@ reflect-metadata@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
-
-regenerator-runtime@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
-  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
 
 regexp-tree@^0.1.27:
   version "0.1.27"
@@ -4247,27 +4210,6 @@ typeorm-naming-strategies@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/typeorm-naming-strategies/-/typeorm-naming-strategies-4.1.0.tgz#1ec6eb296c8d7b69bb06764d5b9083ff80e814a9"
   integrity sha512-vPekJXzZOTZrdDvTl1YoM+w+sUIfQHG4kZTpbFYoTsufyv9NIBRe4Q+PdzhEAFA2std3D9LZHEb1EjE9zhRpiQ==
-
-typeorm@0.3.17:
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.3.17.tgz#a73c121a52e4fbe419b596b244777be4e4b57949"
-  integrity sha512-UDjUEwIQalO9tWw9O2A4GU+sT3oyoUXheHJy4ft+RFdnRdQctdQ34L9SqE2p7LdwzafHx1maxT+bqXON+Qnmig==
-  dependencies:
-    "@sqltools/formatter" "^1.2.5"
-    app-root-path "^3.1.0"
-    buffer "^6.0.3"
-    chalk "^4.1.2"
-    cli-highlight "^2.1.11"
-    date-fns "^2.29.3"
-    debug "^4.3.4"
-    dotenv "^16.0.3"
-    glob "^8.1.0"
-    mkdirp "^2.1.3"
-    reflect-metadata "^0.1.13"
-    sha.js "^2.4.11"
-    tslib "^2.5.0"
-    uuid "^9.0.0"
-    yargs "^17.6.2"
 
 typeorm@0.3.19:
   version "0.3.19"
