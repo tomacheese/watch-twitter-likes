@@ -39,20 +39,6 @@
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
 
-"@book000/node-utils@1.12.15":
-  version "1.12.15"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.15.tgz#6432eb1599125eb827555a6ad3ac79503922f953"
-  integrity sha512-b3vQu/01MzF0YcXQqg9X3cLreFhIJb8F37GsbSYAx+BrGEb4HFXHVUfCErWlf/WlPLXTfW5BBMrCcL2jsNEUXA==
-  dependencies:
-    axios "1.6.4"
-    cycle "1.0.3"
-    form-data "4.0.0"
-    jsonc-parser "3.2.0"
-    logform "2.6.0"
-    moment-timezone "0.5.44"
-    winston "3.11.0"
-    winston-daily-rotate-file "4.7.1"
-
 "@book000/node-utils@1.12.17":
   version "1.12.17"
   resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.17.tgz#fb76dbbcda5910a7131299f374825f7ca8cd50af"
@@ -67,12 +53,12 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.58.13":
-  version "0.58.13"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.13.tgz#a54080cc54166fc7eebe60adfb82abd8ed61c1b7"
-  integrity sha512-gg+MFM6QpH2COlO0bHUhqVlIc4jjr58QIrlgOmpqHxmBUd6HSyy9w2lvSAdH192p6+A1Snjt3PTvgQulVlZ7VA==
+"@book000/twitterts@0.58.14":
+  version "0.58.14"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.14.tgz#654dda46b6f2c6dc96896ea9c386556535a9135a"
+  integrity sha512-b8u/sFSUaewp716OvP0fxjhhLnqj6ySkDK12Uborq+bcSQcBBY9MKHhfOX10xjzHF27wOIfIvI2Sjy7dNrUMiA==
   dependencies:
-    "@book000/node-utils" "1.12.15"
+    "@book000/node-utils" "1.12.17"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.1"
     mysql2 "3.6.5"
@@ -869,15 +855,6 @@ avvio@^8.2.1:
     archy "^1.0.0"
     debug "^4.0.0"
     fastq "^1.6.1"
-
-axios@1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.4.tgz#184ee1f63d412caffcf30d2c50982253c3ee86e0"
-  integrity sha512-heJnIs6N4aa1eSthhN9M5ioILu8Wi8vmQW9iHQ9NUvfkJb0lEEDUiIdQNAuBtfUt3FxReaKdpQA5DbmMOqzF/A==
-  dependencies:
-    follow-redirects "^1.15.4"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
 
 axios@1.6.5:
   version "1.6.5"
