@@ -39,20 +39,6 @@
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
 
-"@book000/node-utils@1.12.18":
-  version "1.12.18"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.18.tgz#0c93acfec4a78d07b894e77659c1734da5dea939"
-  integrity sha512-b94N84pL0/YZpVklSGc3HtOUDvX6oMvlEFReHW5O2H7v8fuzqeMejVDddSOASFEbqa1AU37/eqvCLUywBQv9ww==
-  dependencies:
-    axios "1.6.5"
-    cycle "1.0.3"
-    form-data "4.0.0"
-    jsonc-parser "3.2.0"
-    logform "2.6.0"
-    moment-timezone "0.5.44"
-    winston "3.11.0"
-    winston-daily-rotate-file "4.7.1"
-
 "@book000/node-utils@1.12.19":
   version "1.12.19"
   resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.19.tgz#40f788e24e9a6ac9e6c3084e3cbcb2984348689c"
@@ -67,12 +53,26 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.58.19":
-  version "0.58.19"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.19.tgz#ff1bc2656afbc78e94fe0bce0c694bf96d7f4ade"
-  integrity sha512-WJM/Mra+BpSrA4xEsT6tyNhaQ6jhkmObEmzLwrURdkjDh081eBUhSqcXrh1R/0Rys7qkGM7gRt628rLsHPNbCg==
+"@book000/node-utils@1.12.20":
+  version "1.12.20"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.20.tgz#ee32efd51ec4a3a39d636fca4f555482535a29a8"
+  integrity sha512-ARJfi8qxbaoYEKJ4KFb39eJRUzgjO2eBgTIOMGZh24sTIAd2PEtBSYZo04jy0oTri9byEkPuxNVRfIJMIfre+A==
   dependencies:
-    "@book000/node-utils" "1.12.18"
+    axios "1.6.5"
+    cycle "1.0.3"
+    form-data "4.0.0"
+    jsonc-parser "3.2.0"
+    logform "2.6.0"
+    moment-timezone "0.5.44"
+    winston "3.11.0"
+    winston-daily-rotate-file "4.7.1"
+
+"@book000/twitterts@0.58.22":
+  version "0.58.22"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.58.22.tgz#8a435819c28917c30a4d550dfd7b3321aef6bb00"
+  integrity sha512-f9dpWzkPVATs3qyVkAIC0ESFaDWP43laE1ZelX1XNMrZV753mqBYqlT+f405asYN3L+TWphtpK6b6Oxnm56Dfg==
+  dependencies:
+    "@book000/node-utils" "1.12.20"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.1"
     mysql2 "3.7.0"
