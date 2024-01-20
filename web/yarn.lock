@@ -8023,10 +8023,10 @@ vue@^3.4.14:
     "@vue/server-renderer" "3.4.14"
     "@vue/shared" "3.4.14"
 
-vuetify@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.0.tgz#9fa1e9dafcebb866641a258f6dc1602867230131"
-  integrity sha512-zpZFZoJE9c8QlHc8s9zowKzMUTjytdzz2PQpZPezVENm0Jp+KBi+KooZGxvj7l+YfeFdKOcSjht7nEptSSMPMg==
+vuetify@3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.1.tgz#c2f35dad5e54a090e87e55ed1a4e76091199ed4a"
+  integrity sha512-fkhU4UFnX/lBARXg+n9mBCDPTaEDHoYGx9SZ5A/1LlzM7LohoqldmrNgza4WgpPTLIWqr6NvYp2NvT2IrcTfhg==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"
