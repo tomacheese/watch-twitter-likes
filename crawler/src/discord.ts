@@ -135,7 +135,7 @@ export class Discord {
         : interaction.user.createDM().then(async (dm) => {
             await dm.send({
               content: `:warning: Failed to like tweet: ${tweetId}\n\`\`\`\n${result.message}\n\`\`\`\n${interaction.message.url}`,
-              components: Discord.getButtonComponents(tweetId, false, true),
+              components: Discord.getButtonComponents(tweetId, false),
             })
           }))
     }
@@ -179,23 +179,14 @@ export class Discord {
     })
   }
 
-  public static getButtonComponents(
-    tweetId: string,
-    isFavorite: boolean,
-    isDm = false
-  ) {
+  public static getButtonComponents(tweetId: string, isFavorite: boolean) {
     const components: ButtonBuilder[] = []
-    if (!isDm) {
-      components.push(
-        new ButtonBuilder()
-          .setCustomId(`favorite-${tweetId}`)
-          .setEmoji('💚')
-          .setStyle(ButtonStyle.Secondary)
-          .setDisabled(isFavorite)
-      )
-    }
-
     components.push(
+      new ButtonBuilder()
+        .setCustomId(`favorite-${tweetId}`)
+        .setEmoji('💚')
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(isFavorite),
       new ButtonBuilder()
         .setEmoji('🔁')
         .setURL(`https://twitter.com/intent/retweet?tweet_id=${tweetId}`)
