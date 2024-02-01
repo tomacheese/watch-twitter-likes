@@ -174,6 +174,19 @@ export class Discord {
   async disableFavoriteButton(message: Message, tweetId: string) {
     const component = Discord.getButtonComponents(tweetId, true)
 
+    if (message.partial) {
+      await message.fetch()
+    }
+
+    if (message.channel.partial) {
+      await message.channel.fetch()
+    }
+
+    if (!message.editable) {
+      await message.delete()
+      return
+    }
+
     await message.edit({
       components: component,
     })
