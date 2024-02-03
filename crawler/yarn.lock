@@ -222,10 +222,10 @@
     cookie-signature "^1.1.0"
     fastify-plugin "^4.0.0"
 
-"@fastify/cors@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-9.0.0.tgz#6dd5ac1257dd51a66810b8600e07f845f3fa0da8"
-  integrity sha512-KVsBFs2jZHbtN4vI/jJFaeRHXr3htB3koquGD5TwQQt/lmspyrS1a2UOBTlMOC/5hawC81vdoCzmiR03HbjdXg==
+"@fastify/cors@9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-9.0.1.tgz#9ddb61b4a61e02749c5c54ca29f1c646794145be"
+  integrity sha512-YY9Ho3ovI+QHIL2hW+9X4XqQjXLjJqsU+sMV/xFsxZkE8p3GNnYVFpoOxF7SsP5ZL76gwvbo3V9L+FIekBGU4Q==
   dependencies:
     fastify-plugin "^4.0.0"
     mnemonist "0.39.6"
