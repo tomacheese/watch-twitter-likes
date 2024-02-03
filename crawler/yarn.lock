@@ -39,12 +39,12 @@
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
 
-"@book000/node-utils@1.12.39":
-  version "1.12.39"
-  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.39.tgz#4fa017f6a109eb09a323562dbef1ac97c0432e71"
-  integrity sha512-9y9BEd74N4aymUpLebFPy1nsin/oAygpChKxo+BhkFeMxlSK7zoOe7u1Y/WbDM6X2yA7EJtg7RTthM3iKNKQ/w==
+"@book000/node-utils@1.12.40":
+  version "1.12.40"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.12.40.tgz#4a5127676042514ce4cef1eae3122a19e7bde259"
+  integrity sha512-vfogd6pVD+Ifdyqcw9DDtc/kqCHFMKB/IdXCmJ6JfNSSwrjAozVA2Bhv2BuZRVjHFKPmVE+DU5N7nRvyJ82M/w==
   dependencies:
-    axios "1.6.5"
+    axios "1.6.6"
     cycle "1.0.3"
     form-data "4.0.0"
     jsonc-parser "3.2.1"
@@ -67,12 +67,12 @@
     winston "3.11.0"
     winston-daily-rotate-file "4.7.1"
 
-"@book000/twitterts@0.59.34":
-  version "0.59.34"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.59.34.tgz#435eed0b46de00f9799d9c9279cd10f118f31f3f"
-  integrity sha512-2cPBFhi41kOhhBOGCHfXTrFOPvgLmgP48vNdwcOC3bINKKdOmSd/JSrU6xkjywv3HavA9QOUHZOjaQlSLZ/JQg==
+"@book000/twitterts@0.59.35":
+  version "0.59.35"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.59.35.tgz#3e75531084233b3dca8ec640757716c5fc87e490"
+  integrity sha512-5NqIqQtbQZWeCKd5O7Lc0uoUGhxJ93DleZQdxNPh4lTDhDyjkAwdecVEbuGZermNU+SXlE94Qe5XuOo/45g0TQ==
   dependencies:
-    "@book000/node-utils" "1.12.39"
+    "@book000/node-utils" "1.12.40"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.2"
     mysql2 "3.9.0"
@@ -875,10 +875,10 @@ avvio@^8.2.1:
     debug "^4.0.0"
     fastq "^1.6.1"
 
-axios@1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.5.tgz#2c090da14aeeab3770ad30c3a1461bc970fb0cd8"
-  integrity sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==
+axios@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.6.tgz#878db45401d91fe9e53aed8ac962ed93bde8dd1c"
+  integrity sha512-XZLZDFfXKM9U/Y/B4nNynfCRUqNyVZ4sBC/n9GDRCkq9vd2mIvKjKKsbIh1WPmHmNbg6ND7cTBY3Y2+u1G3/2Q==
   dependencies:
     follow-redirects "^1.15.4"
     form-data "^4.0.0"
