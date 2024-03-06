@@ -32,7 +32,7 @@
     "eslint-plugin-nuxt": "4.0.0",
     "fastify": "4.26.2",
     "sass": "1.71.1",
-    "typescript": "5.3.3",
+    "typescript": "5.4.2",
     "vite-plugin-eslint": "1.8.1",
     "vue-tsc": "2.0.5"
   }
