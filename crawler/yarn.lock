@@ -54,15 +54,15 @@
     winston "3.13.0"
     winston-daily-rotate-file "5.0.0"
 
-"@book000/twitterts@0.60.67":
-  version "0.60.67"
-  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.60.67.tgz#c1c8a9d06de12496a6b5030ec382b16371aa39c7"
-  integrity sha512-/HzlbeO0jq74rZFg1sCkwKJLtkzC1V/JlJ9H9GHxgqvzMfCwxNLbLX50Iam1AW+y2JqFSDpyG06pTEwY9ZdWtw==
+"@book000/twitterts@0.60.69":
+  version "0.60.69"
+  resolved "https://registry.yarnpkg.com/@book000/twitterts/-/twitterts-0.60.69.tgz#d818dc79c36c84b7d72d7d66b08dd1eba58edd84"
+  integrity sha512-j/tzBe1XgeaKTbWpuv8Md4i2SqFcVoGaEQHZbNdqpg228tZvmXE8rUFKGHmLrzZdKRNjBI6Jg/X/VluHRy8edA==
   dependencies:
     "@book000/node-utils" "1.12.103"
     genson-js "0.0.8"
     json-schema-to-typescript "13.1.2"
-    mysql2 "3.9.2"
+    mysql2 "3.9.3"
     otplib "12.0.1"
     puppeteer-core "22.6.1"
     twitter-d "0.6.0"
