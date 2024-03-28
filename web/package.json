@@ -22,7 +22,7 @@
     "js-yaml": "4.1.0",
     "nuxt": "3.11.1",
     "sharp": "0.33.3",
-    "vuetify": "3.5.11"
+    "vuetify": "3.5.13"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "12.1.0",
