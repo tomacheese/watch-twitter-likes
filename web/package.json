@@ -27,7 +27,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@types/color-thief-node": "1.0.4",
-    "@types/node": "20.12.6",
+    "@types/node": "20.12.7",
     "eslint": "8.57.0",
     "eslint-plugin-nuxt": "4.0.0",
     "fastify": "4.26.2",
