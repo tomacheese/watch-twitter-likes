@@ -25,7 +25,7 @@ COPY src/ src/
 RUN yarn generate
 
 # ----- final image ----- #
-FROM nginx:1.25.4-alpine
+FROM nginx:1.25.5-alpine
 
 COPY nginx-template.conf /etc/nginx/templates/default.conf.template
 
