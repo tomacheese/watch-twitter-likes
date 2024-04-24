@@ -39,6 +39,19 @@
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
+"@book000/node-utils@1.13.10":
+  version "1.13.10"
+  resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.13.10.tgz#8a89d2fd4518e44af1b162d0ec036a543f4a433c"
+  integrity sha512-nsihmPY1FFesdbIwkyS4Xciz8Na+er1GWrCzl47S5DF2cRWoO24lGsKNfZ6HDC/Ds2Zl/arFzhgtM1EGuT4U4A==
+  dependencies:
+    axios "1.6.8"
+    cycle "1.0.3"
+    form-data "4.0.0"
+    jsonc-parser "3.2.1"
+    moment-timezone "0.5.45"
+    winston "3.13.0"
+    winston-daily-rotate-file "5.0.0"
+
 "@book000/node-utils@1.13.8":
   version "1.13.8"
   resolved "https://registry.yarnpkg.com/@book000/node-utils/-/node-utils-1.13.8.tgz#410b5cb02ecd15e23a0d4d57cbf3a4e6c7fa507d"
