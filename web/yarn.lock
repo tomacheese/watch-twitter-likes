@@ -7913,10 +7913,10 @@ vue@^3.4.21:
     "@vue/server-renderer" "3.4.25"
     "@vue/shared" "3.4.25"
 
-vuetify@3.5.17:
-  version "3.5.17"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.5.17.tgz#b45b94910da08b39a3c2f91f9bb4828fc96ea3e1"
-  integrity sha512-/Veklxxyu/l63q7QQOqJZeZukIKI2sBxY7FKMDcNup2KSGMjyjT+oYXy1DOdl7wlU3c3fKGQMFHqVWb0HDsyDw==
+vuetify@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.0.tgz#04c02d7085a6521dd583718167638900d12777d1"
+  integrity sha512-ic7VrB+nOTo8F7APhcKPjtDEO3yBCK5CJ2LIQ/4oAC/aaAKtuGuNMBUiUVitDKQjr0tcnDgy9Ar1CrHU5d28IA==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"
