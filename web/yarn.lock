@@ -1652,26 +1652,26 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.0.4.tgz#508d6a0f2440f86945835d903fcc0d95d1bb8a37"
   integrity sha512-WS3hevEszI6CEVEx28F8RjTX97k3KsrcY6kvTg7+Whm5y3oYvcqzVeGCU3hxSAn4uY2CLCkeokkGKpoctccilQ==
 
-"@volar/language-core@2.2.0-alpha.12":
-  version "2.2.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@volar/language-core/-/language-core-2.2.0-alpha.12.tgz#6bafe1cd2ec222bb00d660645d1d89e13dfc53c9"
-  integrity sha512-zgWof8q02kADyb4lalVzoqnvTs/wJRDul5qHl0VC2ZVXwes6j2ZYumjXqAW+8W1CQp8lfJkEn9Z6a5jvU6S7Jw==
+"@volar/language-core@2.2.0", "@volar/language-core@~2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@volar/language-core/-/language-core-2.2.0.tgz#f6049ed29d356dac06f85d8b013469d514640baf"
+  integrity sha512-a8WG9+4OdeNDW4ywABZIM6S6UN7em8uIlM/BZ2pWQUYrVmX+m8sj/X+QadvO+Li/t/LjAqbWJQtVgxdpEWLALQ==
   dependencies:
-    "@volar/source-map" "2.2.0-alpha.12"
+    "@volar/source-map" "2.2.0"
 
-"@volar/source-map@2.2.0-alpha.12":
-  version "2.2.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-2.2.0-alpha.12.tgz#d845a3624b7535f4bb80a27298ed374f6329b208"
-  integrity sha512-d7vDWBE3Ijenff+f1GbWWvdXK4i0wsWsDnfry7G0Jwhbs2/q+NoQya27ZEc3Is0E5m7sOmgUOvRnLGLKEmWFBg==
+"@volar/source-map@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-2.2.0.tgz#9d9947ce64396290d80a15d692cc35003c5613c3"
+  integrity sha512-HQlPRlHOVqCCHK8wI76ZldHkEwKsjp7E6idUc36Ekni+KJDNrqgSqPvyHQixybXPHNU7CI9Uxd9/IkxO7LuNBw==
   dependencies:
     muggle-string "^0.4.0"
 
-"@volar/typescript@2.2.0-alpha.12":
-  version "2.2.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@volar/typescript/-/typescript-2.2.0-alpha.12.tgz#7a517acf3d702e833c9888a48ae77e6fc465457a"
-  integrity sha512-Ie4/Pj7NcIZWss+kteREZUYRU0jjiAmWCNoUJ7ViYQsYCrtiLMgPthha09V9zAyhk1rUGErF7/TLtAAX1VuflA==
+"@volar/typescript@~2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@volar/typescript/-/typescript-2.2.0.tgz#826a901cefbe9f6c2ca295291eab48ed3eaeef80"
+  integrity sha512-wC6l4zLiiCLxF+FGaHCbWlQYf4vMsnRxYhcI6WgvaNppOD6r1g+Ef1RKRJUApALWU46Yy/JDU/TbdV6w/X6Liw==
   dependencies:
-    "@volar/language-core" "2.2.0-alpha.12"
+    "@volar/language-core" "2.2.0"
     path-browserify "^1.0.1"
 
 "@vue-macros/common@^1.8.0":
@@ -1823,12 +1823,12 @@
     colord "^2.9.3"
     focus-trap "^7.5.4"
 
-"@vue/language-core@2.0.15":
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.15.tgz#29777f05753048bb2e33277c57b3b1273c0274a2"
-  integrity sha512-a2n5Oc+PkWPX5zhnTkddH/hzPCrQmwUz1EwmFje3mqd+c8Ux+yCVEnAE2XtGQZoELgSWvY7EmJfidRbs+nR19Q==
+"@vue/language-core@2.0.16":
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.16.tgz#c059228e6a0a17b4505421da0e5747a4a04facbe"
+  integrity sha512-Bc2sexRH99pznOph8mLw2BlRZ9edm7tW51kcBXgx8adAoOcZUWJj3UNSsdQ6H9Y8meGz7BoazVrVo/jUukIsPw==
   dependencies:
-    "@volar/language-core" "2.2.0-alpha.12"
+    "@volar/language-core" "~2.2.0"
     "@vue/compiler-dom" "^3.4.0"
     "@vue/shared" "^3.4.0"
     computeds "^0.0.1"
@@ -7884,13 +7884,13 @@ vue-template-compiler@^2.7.14:
     de-indent "^1.0.2"
     he "^1.2.0"
 
-vue-tsc@2.0.15:
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.15.tgz#3b6176ae69a8cfe9b5b727863e3e99ceaf1b1c0b"
-  integrity sha512-R7qcN33tJcNvo59g7ZuoZN1bbIe3rkDz4YjaK5kH/WxeyOZV4ynqa2IsQO4sCHXdx9hFTVDEXWuUgbGPuCz49A==
+vue-tsc@2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.16.tgz#ba82c4cdac283e8e39e30e817c8c1c967e528358"
+  integrity sha512-/gHAWJa216PeEhfxtAToIbxdWgw01wuQzo48ZUqMYVEyNqDp+OYV9xMO5HaPS2P3Ls0+EsjguMZLY4cGobX4Ew==
   dependencies:
-    "@volar/typescript" "2.2.0-alpha.12"
-    "@vue/language-core" "2.0.15"
+    "@volar/typescript" "~2.2.0"
+    "@vue/language-core" "2.0.16"
     semver "^7.5.4"
 
 vue-virtual-scroller@2.0.0-beta.8:
