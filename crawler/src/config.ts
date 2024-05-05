@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import fs from 'node:fs'
 import { Logger } from '@book000/node-utils'
 
 export const PATH = {
-  config: process.env.CONFIG_PATH || 'data/config.json',
+  config: process.env.CONFIG_PATH ?? 'data/config.json',
 }
 
 export interface TwitterAccount {
@@ -34,9 +35,7 @@ export interface WTLConfiguration {
 
 const isConfig = (config: any): config is WTLConfiguration => {
   const logger = Logger.configure('isConfig')
-  const checks: {
-    [key: string]: boolean
-  } = {
+  const checks: Record<string, boolean> = {
     'config is defined': !!config,
     'discord is defined': !!config.discord,
     'discord.token is defined': !!config.discord.token,

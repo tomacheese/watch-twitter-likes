@@ -123,7 +123,7 @@ export class MigrationImages2Media1677269790107 implements MigrationInterface {
     )
   }
 
-  public async down(): Promise<void> {
+  public down(): Promise<void> {
     // めんどくさい
     throw new Error('This migration cannot be reverted.')
   }

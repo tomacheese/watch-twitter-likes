@@ -56,8 +56,8 @@ export class Crawler {
       .getScreenNameByUserId({
         userId: this.target.userId,
       })
-      .catch((error) => {
-        this.logger.error('Failed to get screen name.', error)
+      .catch((error: unknown) => {
+        this.logger.error('Failed to get screen name.', error as Error)
       })
     if (!screenName) {
       return
@@ -82,7 +82,7 @@ export class Crawler {
         continue // メディアがない
       }
       const extendedEntities = tweet.extended_entities
-      if (!extendedEntities || !extendedEntities.media) {
+      if (!extendedEntities?.media) {
         continue // 拡張メディアがない
       }
       if (Number.isNaN(tweet.user.id)) {
@@ -133,7 +133,7 @@ export class Crawler {
     this.logger.info(`🔔 NotifyTweets: ${notifyTweets.length}`)
 
     // Discordにメッセージ送信
-    if (!isFirst && this.channel && notifyTweets.length > 0) {
+    if (!isFirst && notifyTweets.length > 0) {
       await this.channel.sendTyping()
       for (const tweet of notifyTweets) {
         await this.sendMessage(tweet)
@@ -142,16 +142,16 @@ export class Crawler {
     }
 
     this.logger.info('👀 Crawled: ' + this.target.name)
-    this.logger.info('👀 | Tweets: ' + tweets.length)
-    this.logger.info('👀 | Inserted: ' + countInserted)
-    this.logger.info('👀 | Notified: ' + countNotified)
-    this.logger.info('👀 | Muted: ' + countMuted)
+    this.logger.info('👀 | Tweets: ' + tweets.length.toString())
+    this.logger.info('👀 | Inserted: ' + countInserted.toString())
+    this.logger.info('👀 | Notified: ' + countNotified.toString())
+    this.logger.info('👀 | Muted: ' + countMuted.toString())
   }
 
   /** DBにアイテム挿入 */
   private async addNewItem(target: DBTarget, tweet: Status) {
     const extendedEntities = tweet.extended_entities
-    if (!extendedEntities || !extendedEntities.media) {
+    if (!extendedEntities?.media) {
       return
     }
     const databaseUser = await getDBUser(tweet)
@@ -194,7 +194,7 @@ export class Crawler {
     )
 
     const extendedEntities = tweet.extended_entities
-    if (!extendedEntities || !extendedEntities.media) {
+    if (!extendedEntities?.media) {
       return
     }
 
@@ -234,14 +234,8 @@ export class Crawler {
     }
 
     const medias = extendedEntities.media
-    if (!medias) {
-      return
-    }
-
     const promises = []
-    for (const mediaIndex in medias) {
-      const media = medias[mediaIndex]
-
+    for (const media of medias) {
       promises.push(
         axios
           .get<WriteStream>(media.media_url_https, {
@@ -256,8 +250,8 @@ export class Crawler {
     const attachments: AttachmentBuilder[] = streams.map((stream, index) => {
       const media = medias[index]
       return new AttachmentBuilder(stream)
-        .setName(media.media_url_https.split('/').pop() || '')
-        .setSpoiler(tweet.possibly_sensitive || false)
+        .setName(media.media_url_https.split('/').pop() ?? '')
+        .setSpoiler(tweet.possibly_sensitive ?? false)
     })
 
     await this.channel.send({

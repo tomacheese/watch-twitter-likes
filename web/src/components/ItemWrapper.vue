@@ -5,7 +5,7 @@
 -->
 
 <script setup lang="ts">
-import { Item } from '../types/types'
+import { type Item } from '../types/types'
 
 // props
 const props = defineProps<{

@@ -1,4 +1,4 @@
-import { Target } from '../types/types'
+import type { Target } from '../types/types'
 
 export const useSettingsStore = defineStore('settings', {
   state: (): {

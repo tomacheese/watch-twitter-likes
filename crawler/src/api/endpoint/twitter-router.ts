@@ -13,8 +13,8 @@ interface CallbackQuery {
 }
 
 export class TwitterRouter extends BaseRouter {
-  init(): void {
-    this.fastify.register(
+  async init(): Promise<void> {
+    await this.fastify.register(
       (fastify, _, done) => {
         fastify.get('/auth', this.routeGetAuth.bind(this))
         fastify.get('/callback', this.routeGetCallback.bind(this))
@@ -36,7 +36,7 @@ export class TwitterRouter extends BaseRouter {
     reply: FastifyReply
   ): Promise<void> {
     if (!this.config.twAuth) {
-      reply.code(400).send('Bad Request: twAuth is not enabled')
+      await reply.code(400).send('Bad Request: twAuth is not enabled')
       return
     }
     const {
@@ -63,7 +63,7 @@ export class TwitterRouter extends BaseRouter {
       request.session.set('backUrl', backUrl)
     }
 
-    reply.redirect(url)
+    await reply.redirect(url)
   }
 
   async routeGetCallback(
@@ -75,17 +75,21 @@ export class TwitterRouter extends BaseRouter {
     const { oauth_token: oauthToken, oauth_verifier: oauthVerifier } =
       request.query
     if (!oauthToken) {
-      reply.code(400).send('Bad Request: query@oauth_token is required')
+      await reply.code(400).send('Bad Request: query@oauth_token is required')
       return
     }
     if (!oauthVerifier) {
-      reply.code(400).send('Bad Request: query@oauth_verifier is required')
+      await reply
+        .code(400)
+        .send('Bad Request: query@oauth_verifier is required')
       return
     }
 
     const oauthTokenSecret = request.session.get('oauth_token_secret')
     if (!oauthTokenSecret) {
-      reply.code(400).send('Bad Request: session@codeVerifier is required')
+      await reply
+        .code(400)
+        .send('Bad Request: session@codeVerifier is required')
       return
     }
 
@@ -95,24 +99,29 @@ export class TwitterRouter extends BaseRouter {
     const client = this.getClient(oauthToken, oauthTokenSecret)
 
     // アクセストークンの取得
-    const result = await client.login(oauthVerifier).catch((error: unknown) => {
-      reply.code(500).send(error)
-      return null
-    })
+    const result = await client
+      .login(oauthVerifier)
+      .catch(async (error: unknown) => {
+        await reply.code(500).send(error)
+        return null
+      })
     if (!result) {
       return
     }
 
     const { accessToken, accessSecret, client: loggedClient } = result
 
-    const me = await loggedClient.currentUser().catch((error) => {
-      reply
-        .code(400)
-        .send(
-          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
-        )
-      return null
-    })
+    const me = await loggedClient
+      .currentUser()
+      .catch(async (error: unknown) => {
+        const errorWithTyped = error as {
+          errors?: { message: string; code: number }[]
+        }
+        const message = errorWithTyped.errors?.[0]?.message
+        const code = errorWithTyped.errors?.[0]?.code
+        await reply.code(400).send(`Bad Request: ${message} (code: ${code})`)
+        return null
+      })
     if (!me) {
       return
     }
@@ -123,19 +132,17 @@ export class TwitterRouter extends BaseRouter {
     request.session.set('twitterUserId', me.id)
 
     // リダイレクト
-    if (sessionBackUrl) {
-      reply.redirect(sessionBackUrl)
-    } else {
-      reply.redirect('/')
-    }
+    await (sessionBackUrl
+      ? reply.redirect(sessionBackUrl)
+      : reply.redirect('/'))
   }
 
   async routeGetLogout(
     request: FastifyRequest,
     reply: FastifyReply
   ): Promise<void> {
-    request.session.destroy()
-    reply.code(204).send()
+    await request.session.destroy()
+    await reply.code(204).send()
   }
 
   async routeGetMe(
@@ -144,29 +151,32 @@ export class TwitterRouter extends BaseRouter {
   ): Promise<void> {
     const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
-      reply.code(400).send('Bad Request: session@accessToken is required')
+      await reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
     const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
-      reply.code(400).send('Bad Request: session@accessSecret is required')
+      await reply
+        .code(400)
+        .send('Bad Request: session@accessSecret is required')
       return
     }
 
     const client = this.getClient(sessionAccessToken, sessionAccessSecret)
 
-    const result = await client.currentUser().catch((error) => {
-      reply
-        .code(400)
-        .send(
-          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
-        )
+    const result = await client.currentUser().catch(async (error: unknown) => {
+      const errorWithTyped = error as {
+        errors?: { message: string; code: number }[]
+      }
+      const message = errorWithTyped.errors?.[0]?.message
+      const code = errorWithTyped.errors?.[0]?.code
+      await reply.code(400).send(`Bad Request: ${message} (code: ${code})`)
       return null
     })
     if (!result) {
       return
     }
-    reply.send(result)
+    await reply.send(result)
   }
 
   async routeGetLookup(
@@ -178,12 +188,14 @@ export class TwitterRouter extends BaseRouter {
     const logger = Logger.configure('TwitterRouter.routeGetLookup')
     const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
-      reply.code(400).send('Bad Request: session@accessToken is required')
+      await reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
     const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
-      reply.code(400).send('Bad Request: session@accessSecret is required')
+      await reply
+        .code(400)
+        .send('Bad Request: session@accessSecret is required')
       return
     }
 
@@ -191,24 +203,27 @@ export class TwitterRouter extends BaseRouter {
 
     const { tweetIds: tweetIdsRaw } = request.query
     if (!tweetIdsRaw) {
-      reply.code(400).send('Bad Request: query@tweetIds is required')
+      await reply.code(400).send('Bad Request: query@tweetIds is required')
       return
     }
     const tweetIds = tweetIdsRaw.split(',')
 
-    const result = await client.v1.tweets(tweetIds).catch((error) => {
-      logger.info('❌ Failed to get tweets', error)
-      reply
-        .code(400)
-        .send(
-          `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
-        )
-      return null
-    })
+    const result = await client.v1
+      .tweets(tweetIds)
+      .catch(async (error: unknown) => {
+        const errorWithTyped = error as {
+          errors?: { message: string; code: number }[]
+        }
+        const message = errorWithTyped.errors?.[0]?.message
+        const code = errorWithTyped.errors?.[0]?.code
+        logger.error('❌ Failed to get tweets', error as Error)
+        await reply.code(400).send(`Bad Request: ${message} (code: ${code})`)
+        return null
+      })
     if (!result) {
       return
     }
-    reply.send(result)
+    await reply.send(result)
   }
 
   async routePostLike(
@@ -219,12 +234,14 @@ export class TwitterRouter extends BaseRouter {
   ): Promise<void> {
     const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
-      reply.code(400).send('Bad Request: session@accessToken is required')
+      await reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
     const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
-      reply.code(400).send('Bad Request: session@accessSecret is required')
+      await reply
+        .code(400)
+        .send('Bad Request: session@accessSecret is required')
       return
     }
 
@@ -232,7 +249,7 @@ export class TwitterRouter extends BaseRouter {
 
     const { tweetId } = request.body
     if (!tweetId) {
-      reply.code(400).send('Bad Request: body@tweetId is required')
+      await reply.code(400).send('Bad Request: body@tweetId is required')
       return
     }
 
@@ -240,18 +257,19 @@ export class TwitterRouter extends BaseRouter {
       .post('favorites/create.json', {
         id: tweetId,
       })
-      .catch((error) => {
-        reply
-          .code(400)
-          .send(
-            `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
-          )
+      .catch(async (error: unknown) => {
+        const errorWithTyped = error as {
+          errors?: { message: string; code: number }[]
+        }
+        const message = errorWithTyped.errors?.[0]?.message
+        const code = errorWithTyped.errors?.[0]?.code
+        await reply.code(400).send(`Bad Request: ${message} (code: ${code})`)
         return null
       })
     if (!result) {
       return
     }
-    reply.send(result)
+    await reply.send(result)
   }
 
   async routeDeleteLike(
@@ -262,12 +280,14 @@ export class TwitterRouter extends BaseRouter {
   ): Promise<void> {
     const sessionAccessToken = request.session.get('accessToken')
     if (!sessionAccessToken) {
-      reply.code(400).send('Bad Request: session@accessToken is required')
+      await reply.code(400).send('Bad Request: session@accessToken is required')
       return
     }
     const sessionAccessSecret = request.session.get('accessSecret')
     if (!sessionAccessSecret) {
-      reply.code(400).send('Bad Request: session@accessSecret is required')
+      await reply
+        .code(400)
+        .send('Bad Request: session@accessSecret is required')
       return
     }
 
@@ -275,7 +295,7 @@ export class TwitterRouter extends BaseRouter {
 
     const { tweetId } = request.body
     if (!tweetId) {
-      reply.code(400).send('Bad Request: body@tweetId is required')
+      await reply.code(400).send('Bad Request: body@tweetId is required')
       return
     }
 
@@ -283,18 +303,19 @@ export class TwitterRouter extends BaseRouter {
       .post('favorites/destroy.json', {
         id: tweetId,
       })
-      .catch((error) => {
-        reply
-          .code(400)
-          .send(
-            `Bad Request: ${error.errors[0].message} (code: ${error.errors[0].code})`
-          )
+      .catch(async (error: unknown) => {
+        const errorWithTyped = error as {
+          errors?: { message: string; code: number }[]
+        }
+        const message = errorWithTyped.errors?.[0]?.message
+        const code = errorWithTyped.errors?.[0]?.code
+        await reply.code(400).send(`Bad Request: ${message} (code: ${code})`)
         return null
       })
     if (!result) {
       return
     }
-    reply.send(result)
+    await reply.send(result)
   }
 
   private getClient(accessToken: string, accessSecret: string) {

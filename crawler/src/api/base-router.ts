@@ -18,5 +18,5 @@ export abstract class BaseRouter {
    *
    * this.fastify.register() でルーターを登録する
    */
-  abstract init(): void
+  abstract init(): void | Promise<void>
 }

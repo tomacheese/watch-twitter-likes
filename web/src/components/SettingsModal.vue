@@ -105,14 +105,14 @@ const reset = (): void => {
       <v-card-actions>
         <v-spacer />
         <v-btn
-          text
+          variant="text"
           color="red"
           @click="reset()"
         >
           Reset
         </v-btn>
         <v-btn
-          text
+          variant="text"
           color="green"
           @click="isOpen = false"
         >

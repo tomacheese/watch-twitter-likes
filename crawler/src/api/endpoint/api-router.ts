@@ -15,8 +15,8 @@ interface ImagesQuery {
 }
 
 export class ApiRouter extends BaseRouter {
-  init(): void {
-    this.fastify.register(
+  async init(): Promise<void> {
+    await this.fastify.register(
       (fastify, _, done) => {
         fastify.get('/targets', this.routeGetTargets.bind(this))
         fastify.get('/tags', this.routeGetTags.bind(this))
@@ -32,7 +32,7 @@ export class ApiRouter extends BaseRouter {
     reply: FastifyReply
   ): Promise<void> {
     const targets = await DBTarget.find()
-    reply.send(targets)
+    await reply.send(targets)
   }
 
   async routeGetTags(
@@ -50,13 +50,11 @@ export class ApiRouter extends BaseRouter {
           if (!tag) return null
           return {
             tag,
-            count: tweets.filter(
-              (tweet) => tweet.tags && tweet.tags?.includes(tag)
-            ).length,
+            count: tweets.filter((tweet) => tweet.tags?.includes(tag)).length,
           }
         })
     ).sort((a, b) => b.count - a.count)
-    reply.send(tagsWithCount)
+    await reply.send(tagsWithCount)
   }
 
   async routePostImages(
@@ -123,7 +121,7 @@ export class ApiRouter extends BaseRouter {
 
     // OR検索かつ、targets指定なしの場合はここで終了
     if (filterType === 'or' || filterType === undefined || !targetIds) {
-      reply.send({
+      await reply.send({
         items: this.pagination(items, offset, limit),
         total: items.length,
       })
@@ -133,12 +131,12 @@ export class ApiRouter extends BaseRouter {
     // 同一ツイートIDが出てくる回数をカウントする。targets指定数と同じなら残す
     const tweetIds = items.map((item) => item.tweet.tweetId)
     // eslint-disable-next-line unicorn/no-array-reduce
-    const tweetIdCount = tweetIds.reduce(
+    const tweetIdCount = tweetIds.reduce<Record<string, number>>(
       (accumulator, current) => {
         accumulator[current] = (accumulator[current] || 0) + 1
         return accumulator
       },
-      {} as Record<string, number>
+      {}
     )
     const filteredItems = items
       // targets指定数と同じなら残す
@@ -160,7 +158,7 @@ export class ApiRouter extends BaseRouter {
           ) === index
         )
       })
-    reply.send({
+    await reply.send({
       items: this.pagination(filteredItems, offset, limit),
       total: items.length,
     })

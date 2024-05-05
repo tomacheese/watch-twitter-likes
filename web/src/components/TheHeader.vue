@@ -5,7 +5,7 @@ import { useDisplay } from 'vuetify'
 import { useSettingsStore } from '../store/settings'
 import { useSnackbarStore } from '../store/snackbar'
 import { useTwitterStore } from '../store/twitter'
-import { Item, Target } from '../types/types'
+import { type Item, type Target } from '../types/types'
 import TagSelector from './TagSelector.vue'
 
 /// --- store

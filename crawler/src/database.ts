@@ -30,7 +30,7 @@ export const AppDataSource = new DataSource({
 
 export async function getDBUser(tweet: Status) {
   if (!isFullUser(tweet.user)) {
-    // eslint-disable-next-line no-console
+     
     console.error(tweet)
     throw new Error(`User is not full user: ${tweet.user.id_str}`)
   }
@@ -80,14 +80,14 @@ export async function getDBMedia(
   const regex =
     /^https:\/\/pbs\.twimg\.com\/(?<type>.+?)\/(?<name>.+?)\.(?<ext>[a-z]+?)$/
   const match = media.media_url_https.match(regex)
-  if (!match || !match.groups) {
+  if (!match?.groups) {
     throw new Error(`Invalid media url: ${media.media_url_https}`)
   }
   const type = match.groups.type
   const name = match.groups.name
   const extension = match.groups.ext
 
-  const sizedMedia = media.sizes[size as keyof Sizes]
+  const sizedMedia = media.sizes[size]
   const databaseImage = new DBMedia()
   databaseImage.type = media.type
   databaseImage.mediaId = name
