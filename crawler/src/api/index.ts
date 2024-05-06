@@ -13,22 +13,24 @@ import { TwitterRouter } from './endpoint/twitter-router'
  *
  * @returns Fastify アプリケーション
  */
-export function buildApp(config: WTLConfiguration): FastifyInstance {
+export async function buildApp(
+  config: WTLConfiguration
+): Promise<Promise<FastifyInstance>> {
   const logger = Logger.configure('buildApp')
 
   const app = fastify()
-  app.register(cors, {
+  await app.register(cors, {
     origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   })
-  app.register(fastifyCookie)
+  await app.register(fastifyCookie)
   if (config.session) {
-    app.register(fastifySession, {
+    await app.register(fastifySession, {
       cookieName: 'wtl_session',
       secret: config.session.secret,
       cookie: {
-        secure: config.session.isSecure || false,
+        secure: config.session.isSecure ?? false,
         httpOnly: true,
         sameSite: 'lax',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -44,7 +46,7 @@ export function buildApp(config: WTLConfiguration): FastifyInstance {
 
   for (const router of routers) {
     logger.info(`⏩ Initializing route: ${router.constructor.name}`)
-    router.init()
+    await router.init()
   }
 
   return app

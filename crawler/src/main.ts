@@ -13,12 +13,12 @@ function isTrue(s: string | undefined) {
 
 async function startApi(config: WTLConfiguration) {
   const logger = Logger.configure('startApi')
-  const host = process.env.API_HOST || '0.0.0.0'
+  const host = process.env.API_HOST ?? '0.0.0.0'
   const port = process.env.API_PORT
     ? Number.parseInt(process.env.API_PORT, 10)
     : 8000
 
-  const app = buildApp(config)
+  const app = await buildApp(config)
   app.listen({ host, port }, (error, address) => {
     if (error) {
       logger.error('❌ Fastify.listen error', error)
@@ -55,7 +55,7 @@ async function startApi(config: WTLConfiguration) {
 
     const enableApi = !isTrue(process.env.DISABLE_API)
     if (enableApi) {
-      startApi(config)
+      await startApi(config)
     } else {
       logger.warn('⚠️ API Server disabled')
     }
@@ -96,12 +96,14 @@ async function startApi(config: WTLConfiguration) {
     }
 
     setInterval(
-      async () => {
+      () => {
         if (!twitter) {
           logger.error('❌ Twitter is not initialized!')
           return
         }
-        await Crawler.crawlAll(twitter, discord)
+        Crawler.crawlAll(twitter, discord).catch((error: unknown) => {
+          logger.error('❌ Failed to crawl', error as Error)
+        })
       },
       1000 * 60 * 10
     ) // 10分ごとに実行
@@ -117,7 +119,7 @@ async function startApi(config: WTLConfiguration) {
     }
     if (discord) {
       logger.info('👋 Closing Discord client...')
-      discord.close()
+      await discord.close()
       logger.info('✅ Discord client closed')
     }
     if (AppDataSource.isInitialized) {

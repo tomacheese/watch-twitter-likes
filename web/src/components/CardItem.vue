@@ -2,12 +2,12 @@
 
 <script setup lang="ts">
 import { Buffer } from 'buffer'
-import { getColor, Palette } from 'color-thief-node'
-import { PropType } from 'vue'
+import { getColor, type Palette } from 'color-thief-node'
+import type { PropType } from 'vue'
 import { useViewedStore } from '../store/viewed'
 import { useSnackbarStore } from '../store/snackbar'
 import { useTwitterStore } from '../store/twitter'
-import { Item } from '@/types/types'
+import type { Item } from '@/types/types'
 
 // --- store
 const viewedStore = useViewedStore()

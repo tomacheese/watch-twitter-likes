@@ -10,8 +10,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
-    "lintfix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore . --fix"
+    "lint": "run-p -c lint:eslint",
+    "fix": "run-s fix:eslint",
+    "lint:eslint": "eslint . -c eslint.config.mjs",
+    "fix:eslint": "eslint . -c eslint.config.mjs --fix"
   },
   "dependencies": {
     "@kevinmarrec/nuxt-pwa": "0.17.0",
@@ -25,15 +27,16 @@
     "vuetify": "3.6.3"
   },
   "devDependencies": {
+    "@nuxt/eslint": "0.3.10",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@types/color-thief-node": "1.0.4",
     "@types/node": "20.12.8",
-    "eslint": "8.57.0",
-    "eslint-plugin-nuxt": "4.0.0",
+    "eslint": "9.2.0",
     "fastify": "4.26.2",
     "sass": "1.76.0",
     "typescript": "5.4.5",
     "vite-plugin-eslint": "1.8.1",
-    "vue-tsc": "2.0.16"
+    "vue-tsc": "2.0.16",
+    "yarn-run-all": "3.1.1"
   }
 }

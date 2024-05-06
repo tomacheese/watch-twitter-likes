@@ -134,7 +134,8 @@ export default defineNuxtConfig({
         autoImports: ['defineStore', 'acceptHMRUpdate']
       }
     ],
-    '@pinia-plugin-persistedstate/nuxt'
+    '@pinia-plugin-persistedstate/nuxt',
+    '@nuxt/eslint'
   ],
 
   imports: {

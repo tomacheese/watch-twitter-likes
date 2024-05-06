@@ -3,7 +3,6 @@ import {
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
-  CacheType,
   Client,
   Interaction,
   Message,
@@ -18,41 +17,47 @@ export class Discord {
   private readonly client: Client
   private readonly config: WTLConfiguration
 
+  private onInteractionFunction: (interaction: Interaction) => void
+
   constructor(config: WTLConfiguration, twitter: Twitter | undefined) {
+    const logger = Logger.configure('Discord.constructor')
     this.client = new Client({
       intents: ['Guilds', 'GuildMembers', 'GuildMessages'],
     })
     this.client.on('ready', this.onReady.bind(this))
-    this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+    this.onInteractionFunction = (interaction) => {
+      this.onInteractionCreate(interaction).catch((error: unknown) => {
+        logger.error('❌ Failed to run onInteractionCreate', error as Error)
+      })
+    }
+    this.client.on('interactionCreate', this.onInteractionFunction)
 
     // 1時間ごとに interactionCreate を再登録する
     setInterval(
       () => {
         this.logger.info('🔄 Re-registering interactionCreate handler')
-        this.client.off(
-          'interactionCreate',
-          this.onInteractionCreate.bind(this)
-        )
-        this.client.on('interactionCreate', this.onInteractionCreate.bind(this))
+        this.client.off('interactionCreate', this.onInteractionFunction)
+        this.client.on('interactionCreate', this.onInteractionFunction)
       },
       1000 * 60 * 60
     )
-
-    this.client.login(config.discord.token)
-
     this.config = config
     this.twitter = twitter
+
+    this.client.login(config.discord.token).catch((error: unknown) => {
+      logger.error('❌ Failed to login', error as Error)
+    })
   }
 
   public getClient() {
     return this.client
   }
 
-  public close() {
-    this.client.destroy()
+  public async close() {
+    await this.client.destroy()
   }
 
-  async onReady() {
+  onReady() {
     this.logger.info(`👌 ready: ${this.client.user?.tag}`)
   }
 
@@ -93,10 +98,7 @@ export class Discord {
     })
   }
 
-  async actionFavorite(
-    interaction: ButtonInteraction<CacheType>,
-    tweetId: string
-  ) {
+  async actionFavorite(interaction: ButtonInteraction, tweetId: string) {
     if (!this.twitter) {
       await interaction.reply({
         content: ':warning: Disabled twitter! This feature is not available.',
@@ -157,7 +159,7 @@ export class Discord {
           message: 'Success',
         }
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         if (error instanceof AlreadyLikedError) {
           return {
             status: true,
@@ -166,17 +168,13 @@ export class Discord {
         }
         return {
           status: false,
-          message: error.message,
+          message: error instanceof Error ? error.message : 'Unknown error',
         }
       })
   }
 
   async disableFavoriteButton(message: Message, tweetId: string) {
     const component = Discord.getButtonComponents(tweetId, true)
-
-    if (message.partial) {
-      await message.fetch()
-    }
 
     if (message.channel.partial) {
       await message.channel.fetch()

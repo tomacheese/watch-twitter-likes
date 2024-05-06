@@ -1,7 +1,7 @@
 <!-- 表示対象選択コンポーネント -->
 
 <script setup lang="ts">
-import { Target } from '../types/types'
+import { type Target } from '../types/types'
 
 // --- emits
 interface Emits {

@@ -12,7 +12,7 @@ COPY yarn.lock yarn.lock
 WORKDIR /build
 
 RUN echo network-timeout 600000 > .yarnrc && \
-  yarn install --frozen-lockfile --non-interactive --production
+  yarn install --frozen-lockfile --non-interactive
 
 # ----- common end ----- #
 
