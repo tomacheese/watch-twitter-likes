@@ -24,7 +24,7 @@
     "js-yaml": "4.1.0",
     "nuxt": "3.11.2",
     "sharp": "0.33.3",
-    "vuetify": "3.6.3"
+    "vuetify": "3.6.4"
   },
   "devDependencies": {
     "@nuxt/eslint": "0.3.10",
