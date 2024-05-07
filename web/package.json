@@ -32,7 +32,7 @@
     "@types/color-thief-node": "1.0.4",
     "@types/node": "20.12.10",
     "eslint": "9.2.0",
-    "fastify": "4.26.2",
+    "fastify": "4.27.0",
     "sass": "1.77.0",
     "typescript": "5.4.5",
     "vite-plugin-eslint": "1.8.1",
