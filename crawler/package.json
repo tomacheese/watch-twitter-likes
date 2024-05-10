@@ -32,7 +32,7 @@
   "devDependencies": {
     "@book000/eslint-config": "1.6.10",
     "@book000/node-utils": "1.13.42",
-    "@book000/twitterts": "0.61.71",
+    "@book000/twitterts": "0.61.72",
     "@types/node": "20.12.11",
     "@vercel/ncc": "0.38.1",
     "axios": "1.6.8",
