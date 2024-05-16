@@ -23,7 +23,7 @@
     "color-thief-node": "1.0.4",
     "js-yaml": "4.1.0",
     "nuxt": "3.11.2",
-    "sharp": "0.33.3",
+    "sharp": "0.33.4",
     "vuetify": "3.6.6"
   },
   "devDependencies": {
