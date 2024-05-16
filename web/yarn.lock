@@ -2215,10 +2215,10 @@
     colord "^2.9.3"
     focus-trap "^7.5.4"
 
-"@vue/language-core@2.0.18":
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.18.tgz#e910953d9a8acd601ae2b4ab798e68ecfe3dc907"
-  integrity sha512-MwKRQAReHN1z7P3/8k/ISC5MjDRjHxGyitn50jWrMmzW9FNySG/1NxMPgAHcVJ4zApJUolS9TexYzT4I6BKL5w==
+"@vue/language-core@2.0.19":
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.19.tgz#d55f9c1e92690c77ffd599688ba36c2b50c4303b"
+  integrity sha512-A9EGOnvb51jOvnCYoRLnMP+CcoPlbZVxI9gZXE/y2GksRWM6j/PrLEIC++pnosWTN08tFpJgxhSS//E9v/Sg+Q==
   dependencies:
     "@volar/language-core" "~2.2.4"
     "@vue/compiler-dom" "^3.4.0"
@@ -8703,13 +8703,13 @@ vue-template-compiler@^2.7.14:
     de-indent "^1.0.2"
     he "^1.2.0"
 
-vue-tsc@2.0.18:
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.18.tgz#bec851200859a25fdc12ace4c72092438dc81a33"
-  integrity sha512-0SrsAJzsUrX7A6aXLsBrXrAesozAirASPnVz5VUt2+4imFNP2cEXtLQy1s8ayUHLex3zoYIoZVgZ7h7UgqaEVw==
+vue-tsc@2.0.19:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.19.tgz#db0158a36b7e3773d31855fad5185554bbc7584f"
+  integrity sha512-JWay5Zt2/871iodGF72cELIbcAoPyhJxq56mPPh+M2K7IwI688FMrFKc/+DvB05wDWEuCPexQJ6L10zSwzzapg==
   dependencies:
     "@volar/typescript" "~2.2.4"
-    "@vue/language-core" "2.0.18"
+    "@vue/language-core" "2.0.19"
     semver "^7.5.4"
 
 vue-virtual-scroller@2.0.0-beta.8:
