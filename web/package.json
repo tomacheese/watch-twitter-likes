@@ -27,7 +27,7 @@
     "vuetify": "3.6.6"
   },
   "devDependencies": {
-    "@nuxt/eslint": "0.3.12",
+    "@nuxt/eslint": "0.3.13",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@types/color-thief-node": "1.0.4",
     "@types/node": "20.12.12",
