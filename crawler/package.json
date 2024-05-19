@@ -35,7 +35,7 @@
     "@book000/twitterts": "0.62.3",
     "@types/node": "20.12.12",
     "@vercel/ncc": "0.38.1",
-    "axios": "1.6.8",
+    "axios": "1.7.0",
     "discord.js": "14.15.2",
     "eslint": "9.3.0",
     "eslint-config-standard": "17.1.0",
