@@ -317,7 +317,7 @@
     debug "^4.3.1"
     globals "^11.1.0"
 
-"@babel/types@^7.22.15", "@babel/types@^7.22.19", "@babel/types@^7.23.6", "@babel/types@^7.23.9", "@babel/types@^7.24.0", "@babel/types@^7.24.6":
+"@babel/types@^7.22.15", "@babel/types@^7.22.19", "@babel/types@^7.23.6", "@babel/types@^7.23.9", "@babel/types@^7.24.0", "@babel/types@^7.24.5", "@babel/types@^7.24.6":
   version "7.24.6"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.24.6.tgz#ba4e1f59870c10dc2fa95a274ac4feec23b21912"
   integrity sha512-WaMsgi6Q8zMgMth93GvWPXkhAIEobfsIkLTacoVZoK1J0CevIPGYY2Vo5YvJGqyHqXM6P4ppOYGsIRU8MM9pFQ==
@@ -2009,16 +2009,16 @@
     path-browserify "^1.0.1"
 
 "@vue-macros/common@^1.8.0":
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/@vue-macros/common/-/common-1.10.3.tgz#4a6a3d4e2cefd3e38f62383e0f6c25c5aa5264df"
-  integrity sha512-YSgzcbXrRo8a/TF/YIguqEmTld1KA60VETKJG8iFuaAfj7j+Tbdin3cj7/cYbcCHORSq1v9IThgq7r8keH7LXQ==
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/@vue-macros/common/-/common-1.10.4.tgz#cfe8a24026a1f239d1942d720063993c019250d0"
+  integrity sha512-akO6Bd6U4jP0+ZKbHq6mbYkw1coOrJpLeVmkuMlUsT5wZRi11BjauGcZHusBSzUjgCBsa1kZTyipxrxrWB54Hw==
   dependencies:
-    "@babel/types" "^7.24.0"
+    "@babel/types" "^7.24.5"
     "@rollup/pluginutils" "^5.1.0"
-    "@vue/compiler-sfc" "^3.4.25"
+    "@vue/compiler-sfc" "^3.4.27"
     ast-kit "^0.12.1"
     local-pkg "^0.5.0"
-    magic-string-ast "^0.5.0"
+    magic-string-ast "^0.6.0"
 
 "@vue/babel-helper-vue-transform-on@1.2.2":
   version "1.2.2"
@@ -2072,7 +2072,7 @@
     "@vue/compiler-core" "3.4.27"
     "@vue/shared" "3.4.27"
 
-"@vue/compiler-sfc@3.4.27", "@vue/compiler-sfc@^3.4.15", "@vue/compiler-sfc@^3.4.25":
+"@vue/compiler-sfc@3.4.27", "@vue/compiler-sfc@^3.4.15", "@vue/compiler-sfc@^3.4.27":
   version "3.4.27"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.4.27.tgz#399cac1b75c6737bf5440dc9cf3c385bb2959701"
   integrity sha512-nDwntUEADssW8e0rrmE0+OrONwmRlegDA1pD6QhVeXxjIytV03yDqTey9SBDiALsvAd5U4ZrEKbMyVXhX6mCGA==
@@ -5543,12 +5543,12 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-magic-string-ast@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/magic-string-ast/-/magic-string-ast-0.5.0.tgz#b87659f1ebda70f5a097b398a82a7c5be1c2033f"
-  integrity sha512-mxjxZ5zoR4+ybulZ7Z5qdZUTdAfiKJ1Il80kN/I4jWsHTTqNKZ9KsBa3Jepo+3U09I04qiyC2+7MZD8v4rJOoA==
+magic-string-ast@^0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/magic-string-ast/-/magic-string-ast-0.6.1.tgz#c1e5d78b20ec920265567446181f6e5c521e8217"
+  integrity sha512-eczKQUDaBpB/mcEqZZNGEUG1FQNsXCuk3uOrCpu6y7qTygIy6jnpqDa62j9MGKSoqlXhM1lCFQv1THuGDQtvUA==
   dependencies:
-    magic-string "^0.30.9"
+    magic-string "^0.30.10"
 
 magic-string@^0.30.0, magic-string@^0.30.10, magic-string@^0.30.3, magic-string@^0.30.4, magic-string@^0.30.8, magic-string@^0.30.9:
   version "0.30.10"
