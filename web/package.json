@@ -33,7 +33,7 @@
     "@types/node": "20.12.12",
     "eslint": "9.3.0",
     "fastify": "4.27.0",
-    "sass": "1.77.2",
+    "sass": "1.77.3",
     "typescript": "5.4.5",
     "vite-plugin-eslint": "1.8.1",
     "vue-tsc": "2.0.19",
