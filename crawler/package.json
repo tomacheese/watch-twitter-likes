@@ -33,7 +33,7 @@
     "@book000/eslint-config": "1.6.25",
     "@book000/node-utils": "1.13.79",
     "@book000/twitterts": "0.62.34",
-    "@types/node": "20.12.12",
+    "@types/node": "20.12.13",
     "@vercel/ncc": "0.38.1",
     "axios": "1.7.2",
     "discord.js": "14.15.2",
