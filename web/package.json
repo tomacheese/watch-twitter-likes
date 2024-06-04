@@ -30,7 +30,7 @@
     "@nuxt/eslint": "0.3.13",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@types/color-thief-node": "1.0.4",
-    "@types/node": "20.14.0",
+    "@types/node": "20.14.1",
     "eslint": "9.4.0",
     "fastify": "4.27.0",
     "sass": "1.77.4",
