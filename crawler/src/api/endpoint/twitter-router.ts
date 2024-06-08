@@ -129,7 +129,7 @@ export class TwitterRouter extends BaseRouter {
     // アクセストークンの保存
     request.session.set('accessToken', accessToken)
     request.session.set('accessSecret', accessSecret)
-    request.session.set('twitterUserId', me.id)
+    request.session.set('twitterUserId', me.id.toString())
 
     // リダイレクト
     await (sessionBackUrl
