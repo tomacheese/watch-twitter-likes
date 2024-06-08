@@ -250,10 +250,10 @@
   dependencies:
     fast-deep-equal "^3.1.3"
 
-"@fastify/session@10.7.2":
-  version "10.7.2"
-  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.7.2.tgz#8c4441133257075fc7eb79ce31b9a9d594e32ea8"
-  integrity sha512-PezR26nY8FMmAs4cww5rpnVyRkPDv2WQcVBLEKrtLTQy8mjL+twUKv9TLo/SXZYHZOIETzmquWoLYlnY3dSb+w==
+"@fastify/session@10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.9.0.tgz#7c703a4513274a5a183bd3095eb9b49714b494a5"
+  integrity sha512-u/c42RuAaxCeEuRCAwK2+/SfGqKOd0NSyRzEvDwFBWySQoKUZQyb9OmmJSWJBbOP1OfaU2OsDrjbPbghE1l/YQ==
   dependencies:
     fastify-plugin "^4.0.0"
     safe-stable-stringify "^2.3.1"
