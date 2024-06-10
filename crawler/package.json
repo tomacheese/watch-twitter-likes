@@ -30,7 +30,7 @@
     "fastify": "4.27.0"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.6.33",
+    "@book000/eslint-config": "1.6.34",
     "@book000/node-utils": "1.13.111",
     "@book000/twitterts": "0.62.80",
     "@types/node": "20.14.2",
